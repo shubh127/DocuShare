@@ -16,13 +16,10 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_questions"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/cl_on_boarding_top_layout"
-        app:layout_constraintStart_toStartOf="@id/cl_on_boarding_top_layout"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_on_boarding_top_layout" />
-
-    <include
-        android:id="@+id/cl_on_boarding_bottom_layout"
-        layout="@layout/on_boarding_bottom_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

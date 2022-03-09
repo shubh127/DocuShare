@@ -10,6 +10,7 @@
         android:id="@+id/tv_question_head"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_50"
         android:text="@string/login_to_softnotes"
         android:textColor="@color/black"
@@ -22,6 +23,7 @@
         android:id="@+id/til_input"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_40"
         android:hint="@string/alias_name"
@@ -38,5 +40,9 @@
             android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <include
+        android:id="@+id/cl_on_boarding_bottom_layout"
+        layout="@layout/on_boarding_bottom_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
