@@ -41,7 +41,10 @@ class EntryFragment : Fragment(), View.OnClickListener {
     }
 
     private fun onSignUpClicked() {
-        //todo handle on signup clicked
+        Navigation.findNavController(binding.root)
+            .navigate(
+                R.id.action_entryFragment_to_signUpFragment
+            )
     }
 
     private fun onLoginClicked() {

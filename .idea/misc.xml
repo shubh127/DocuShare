@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.2682051282051282" />
         <entry key="app/src/main/res/drawable/button_background_round_corners.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/button_round_edges_background.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1235" />
@@ -13,7 +14,12 @@
         <entry key="app/src/main/res/layout/fragment_b.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_c.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_entry.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_single_question.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/on_boading_bottom_view.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/on_boarding_top_view.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/onboarding_top_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.24583333333333332" />
       </map>
     </option>

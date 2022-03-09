@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentLoginBinding
+
 
 class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentLoginBinding
@@ -26,13 +28,24 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setUpListeners() {
-        binding.tvCancel.setOnClickListener(this)
+        binding.clOnBoardingTopLayout.tvBack.setOnClickListener(this)
+        binding.clOnBoardingTopLayout.tvSignup.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
-        if (view?.id == binding.tvCancel.id) {
+        if (view?.id == binding.clOnBoardingTopLayout.tvBack.id) {
             Navigation.findNavController(binding.root).navigateUp()
+        } else if (view?.id == binding.clOnBoardingTopLayout.tvSignup.id) {
+            onSignUpClicked()
         }
     }
 
+    private fun onSignUpClicked() {
+        Navigation.findNavController(binding.root).popBackStack(
+            R.id.entryFragment,
+            false
+        )
+        Navigation.findNavController(binding.root)
+            .navigate(R.id.action_entryFragment_to_signUpFragment)
+    }
 }

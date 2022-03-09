@@ -8,10 +8,17 @@
     <fragment
         android:id="@+id/entryFragment"
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.EntryFragment"
-        android:label="SoftNotes" >
+        android:label="SoftNotes">
         <action
             android:id="@+id/action_entryFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_entryFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -22,4 +29,8 @@
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.rapidchidori_mad5254_project.ui.fragments.SignUpFragment"
+        android:label="SignUp" />
 </navigation>

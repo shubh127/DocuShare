@@ -9,39 +9,9 @@
     android:focusableInTouchMode="true"
     tools:context=".ui.fragments.LoginFragment">
 
-    <TextView
-        android:id="@+id/tv_cancel"
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_10"
-        android:text="@string/cancel"
-        android:textColor="@color/primary4"
-        android:textSize="@dimen/sp_16"
-        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_logo" />
-
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="?android:attr/actionBarSize"
-        android:importantForAccessibility="no"
-        android:src="@drawable/icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_signup"
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:text="@string/signup"
-        android:textColor="@color/primary4"
-        android:textSize="@dimen/sp_16"
-        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_logo" />
+    <include
+        android:id="@+id/cl_on_boarding_top_layout"
+        layout="@layout/on_boarding_top_view" />
 
     <TextView
         android:id="@+id/tv_login_head"
@@ -52,18 +22,19 @@
         android:textColor="@color/black"
         android:textSize="@dimen/sp_22"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_cancel"
-        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+        app:layout_constraintStart_toStartOf="@id/cl_on_boarding_top_layout"
+        app:layout_constraintTop_toBottomOf="@id/cl_on_boarding_top_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_alias_name"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_40"
         android:hint="@string/alias_name"
         app:boxBackgroundColor="@null"
-        app:layout_constraintEnd_toStartOf="@id/tv_signup"
-        app:layout_constraintStart_toStartOf="@id/tv_cancel"
+        app:layout_constraintEnd_toEndOf="@id/cl_on_boarding_top_layout"
+        app:layout_constraintStart_toStartOf="@id/cl_on_boarding_top_layout"
         app:layout_constraintTop_toBottomOf="@id/tv_login_head">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -80,10 +51,11 @@
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_40"
         android:hint="@string/password"
         app:boxBackgroundColor="@null"
-        app:layout_constraintEnd_toStartOf="@id/tv_signup"
-        app:layout_constraintStart_toStartOf="@id/tv_cancel"
+        app:layout_constraintEnd_toEndOf="@id/cl_on_boarding_top_layout"
+        app:layout_constraintStart_toStartOf="@id/cl_on_boarding_top_layout"
         app:layout_constraintTop_toBottomOf="@id/til_alias_name"
         app:passwordToggleEnabled="true">
 
@@ -96,47 +68,8 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <View
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="@dimen/dp_1"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_forgot_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/forgot_password"
-        app:layout_constraintBottom_toBottomOf="@id/btn_login"
-        app:layout_constraintStart_toStartOf="@id/tv_cancel"
-        app:layout_constraintTop_toTopOf="@id/btn_login" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_background_round_corners"
-        android:text="@string/login"
-        android:textAllCaps="false"
-        android:textColor="@color/primary1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tv_signup" />
-
-    <CirclesLoading
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:circleRadius="8dp"
-        app:circleMargin="8dp"
-        app:animDistance="10dp"
-        app:animDuration="500"
-        app:animDelay="150"
-        app:animInterpolator="accelerateDecelerate"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
+    <include
+        android:id="@+id/cl_on_boarding_bottom_layout"
+        layout="@layout/on_boarding_bottom_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
