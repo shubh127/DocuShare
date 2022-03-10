@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -38,7 +39,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def core_version = "1.7.0"
     def app_compat_version = "1.4.1"
     def material_design_version = "1.5.0"
@@ -46,6 +46,7 @@ dependencies {
     def nav_version = "2.4.1"
     def room_version = "2.4.2"
     def hilt_version = "2.38.1"
+    def legacy_support_version = "1.0.0"
 
     implementation "androidx.core:core-ktx:$core_version"
     implementation "androidx.appcompat:appcompat:$app_compat_version"
@@ -66,5 +67,5 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    apply plugin: 'org.jetbrains.kotlin.android.extensions'
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support_version"
 }

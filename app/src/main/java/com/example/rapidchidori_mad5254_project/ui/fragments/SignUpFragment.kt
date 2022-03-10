@@ -1,10 +1,13 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -147,10 +150,21 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
 
     private fun handleNextClick(isLastQuestion: Boolean) {
         if (isLastQuestion) {
-            //todo save data to server
-            Toast.makeText(context, "Chla ja!!!", Toast.LENGTH_SHORT).show()
+            showLoader()
         } else {
             binding.vpQuestions.currentItem = binding.vpQuestions.currentItem + 1
+        }
+    }
+
+    private fun showLoader() {
+        val dialog = Dialog(requireActivity())
+        dialog.apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+            setContentView(R.layout.view_loading_dialog)
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+            show()
         }
     }
 
@@ -195,7 +209,7 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
                     .show()
                 false
             }
-            password.length < 7 -> {
+            password.length < 6 -> {
                 Toast.makeText(
                     context,
                     getString(R.string.small_password),
