@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "107374175913",
+    "project_id": "rapidchidori-softnotes",
+    "storage_bucket": "rapidchidori-softnotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107374175913:android:2ad17db8c7ae930054ebb8",
+        "android_client_info": {
+          "package_name": "com.example.rapidchidori_mad5254_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107374175913-i8m45qennm8e01tr0if3en1v3hh5m4lb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlU16xgLhEHjRYCeZqkTkkKOLHt901Wic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107374175913-i8m45qennm8e01tr0if3en1v3hh5m4lb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
