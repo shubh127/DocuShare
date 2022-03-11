@@ -17,4 +17,6 @@
     <string name="invalid_email">Invalid email!!!</string>
     <string name="space">\" \"</string>
     <string name="password_mismatch_error">Password doesn\'t match with the previous one!!!</string>
+    <string name="check_internet_msg">Please check your internet connectivity!!!</string>
+    <string name="generic_error_msg">Oops!!! Something went wrong. Please try again latter.</string>
 </resources>

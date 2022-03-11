@@ -2,7 +2,7 @@ package com.example.rapidchidori_mad5254_project.ui.viewmodels
 
 import android.text.InputType
 import androidx.lifecycle.ViewModel
-import com.example.rapidchidori_mad5254_project.data.models.SignUpQuestionsInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants.ALIAS_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.ALIAS_NAME_QUES
 import com.example.rapidchidori_mad5254_project.helper.Constants.CONFIRM_PASSWORD
@@ -50,5 +50,4 @@ class SignUpViewModel : ViewModel() {
         )
         return questionsList
     }
-
 }

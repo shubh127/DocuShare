@@ -13,17 +13,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.rapidchidori_mad5254_project.R
-import com.example.rapidchidori_mad5254_project.data.models.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentSignUpBinding
+import com.example.rapidchidori_mad5254_project.helper.AppUtils
 import com.example.rapidchidori_mad5254_project.helper.Constants.ALIAS_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.CONFIRM_PASSWORD
 import com.example.rapidchidori_mad5254_project.helper.Constants.EMAIL
 import com.example.rapidchidori_mad5254_project.helper.Constants.FULL_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.PASSWORD
+import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.ui.adapters.QuestionsAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.QuestionNextListener
 import com.example.rapidchidori_mad5254_project.ui.viewmodels.SignUpViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
@@ -31,6 +36,17 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
     private lateinit var questionsAdapter: QuestionsAdapter
     private val viewModel: SignUpViewModel by viewModels()
     private val userDetail = UserDetailInfo()
+    private lateinit var auth: FirebaseAuth
+    private var databaseReference: DatabaseReference? = null
+    private var database: FirebaseDatabase? = null
+    private lateinit var dialog: Dialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance()
+        databaseReference = database?.reference?.child(USER_INFO_TABLE_NAME)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -150,14 +166,52 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
 
     private fun handleNextClick(isLastQuestion: Boolean) {
         if (isLastQuestion) {
-            showLoader()
+            if (AppUtils.isNetworkAvailable(requireContext())) {
+                showLoader()
+                registerUser()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.check_internet_msg),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             binding.vpQuestions.currentItem = binding.vpQuestions.currentItem + 1
         }
     }
 
+    //todo this should be moved to repository layer somehow
+    private fun registerUser() {
+        auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
+            .addOnCompleteListener {
+                if (dialog.isShowing) {
+                    dialog.dismiss()
+                }
+                if (it.isSuccessful) {
+                    val user = auth.currentUser
+                    val currentUserDb = databaseReference?.child(user!!.uid)
+                    currentUserDb?.child("name")?.setValue(userDetail.name)
+                    currentUserDb?.child("aliasName")?.setValue(userDetail.aliasName)
+
+                    //todo take user to main dashboard
+                    Toast.makeText(
+                        requireContext(),
+                        "Registration successful...!!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.generic_error_msg),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
     private fun showLoader() {
-        val dialog = Dialog(requireActivity())
+        dialog = Dialog(requireActivity())
         dialog.apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))

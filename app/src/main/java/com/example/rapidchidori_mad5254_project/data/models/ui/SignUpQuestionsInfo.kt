@@ -1,4 +1,4 @@
-package com.example.rapidchidori_mad5254_project.data.models
+package com.example.rapidchidori_mad5254_project.data.models.ui
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

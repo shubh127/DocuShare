@@ -15,4 +15,6 @@ object Constants {
     const val CONFIRM_PASSWORD_QUES = "Please retype your password"
     const val ALIAS_NAME_QUES = "Enter your preferred alias name"
     const val FULL_NAME_QUES = "What is your name?"
+
+    const val USER_INFO_TABLE_NAME = "UserInfo"
 }

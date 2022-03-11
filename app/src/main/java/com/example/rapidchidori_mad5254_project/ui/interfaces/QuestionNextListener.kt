@@ -1,6 +1,6 @@
 package com.example.rapidchidori_mad5254_project.ui.interfaces
 
-import com.example.rapidchidori_mad5254_project.data.models.SignUpQuestionsInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 
 interface QuestionNextListener {
 

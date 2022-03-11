@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.rapidchidori_mad5254_project.R
-import com.example.rapidchidori_mad5254_project.data.models.SignUpQuestionsInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentSingleQuestionBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants.IS_LAST_QUESTION
 import com.example.rapidchidori_mad5254_project.helper.Constants.QUESTION_INFO
