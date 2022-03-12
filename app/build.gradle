@@ -48,9 +48,17 @@ dependencies {
     def room_version = "2.4.2"
     def hilt_version = "2.38.1"
     def legacy_support_version = "1.0.0"
+    def firebase_version = "29.1.0"
+    def firebase_database_version = "20.0.4"
+    def circle_image_view_version = "3.1.0"
 
+    //androidx code library
     implementation "androidx.core:core-ktx:$core_version"
+
+    //app compat
     implementation "androidx.appcompat:appcompat:$app_compat_version"
+
+    //google material design library
     implementation "com.google.android.material:material:$material_design_version"
 
     //android constraint layout
@@ -68,12 +76,15 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
+    //legacy code support library
     implementation "androidx.legacy:legacy-support-v4:$legacy_support_version"
 
-    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    //firebase and its products
+    implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.firebase:firebase-database:20.0.4'
+    implementation "com.google.firebase:firebase-database:$firebase_database_version"
 
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    //circular image view library
+    implementation "de.hdodenhof:circleimageview:$circle_image_view_version"
 }
