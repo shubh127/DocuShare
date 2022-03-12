@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_6"
+    android:clickable="true"
+    android:clipToPadding="true"
+    android:elevation="@dimen/dp_6"
+    android:focusable="true"
+    app:cardCornerRadius="@dimen/dp_8"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_display_picture"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_70"
+            android:src="@drawable/placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            android:typeface="sans"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/civ_display_picture"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Full Name" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@id/tv_name"
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            tools:text="example@domain.com" />
+
+        <TextView
+            android:id="@+id/tv_uploads_count"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/primary4"
+            android:textSize="@dimen/sp_12"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_email"
+            app:layout_constraintStart_toStartOf="@id/tv_email"
+            tools:text="No. of uploads- 10" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

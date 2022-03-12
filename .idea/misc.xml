@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable/loading_dialog_bg.xml" value="0.147" />
+        <entry key="app/src/main/res/drawable/search_background.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.147" />
         <entry key="app/src/main/res/font/font_family.xml" value="0.2717948717948718" />
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.19610507246376813" />
@@ -32,6 +33,7 @@
         <entry key="app/src/main/res/layout/on_boarding_bottom_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/on_boarding_top_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/onboarding_top_view.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/search_list_child_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/uploads_child_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/view_loading_dialog.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/wall_uploads_child_view.xml" value="0.19610507246376813" />
