@@ -41,6 +41,7 @@
             android:id="@+id/tiet_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:maxLines="1" />
 
@@ -63,6 +64,7 @@
             android:id="@+id/tiet_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLines="1" />
 
