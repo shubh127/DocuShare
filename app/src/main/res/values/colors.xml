@@ -16,4 +16,5 @@
     <color name="view_bg">#00000000</color>
     <color name="shadow">#25808080</color>
     <color name="dialog_bg">#00000000</color>
+    <color name="edit_button_background">#EDEEEE</color>
 </resources>

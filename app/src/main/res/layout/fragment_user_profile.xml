@@ -1,14 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.UserProfileFragment">
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_forty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_seventy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <View
+        android:id="@+id/toolbar_view"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="?android:actionBarSize"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/white"
+        android:elevation="@dimen/dp_3"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="profile pragment" />
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginStart="@dimen/dp_10"
+        android:elevation="@dimen/dp_4"
+        android:paddingVertical="@dimen/dp_6"
+        android:text="@string/softnotes"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_30"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_view" />
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/ib_menu"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@null"
+        android:elevation="@dimen/dp_4"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_view" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_display_picture"
+        android:layout_width="@dimen/dp_110"
+        android:layout_height="@dimen/dp_110"
+        android:layout_marginTop="@dimen/dp_10"
+        android:src="@drawable/placeholder"
+        app:layout_constraintEnd_toStartOf="@id/guideline_forty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_6"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_edit_profile"
+        app:layout_constraintEnd_toStartOf="@id/guideline_forty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_edit_profile"
+        tools:text="Shubham Behal" />
+
+    <TextView
+        android:id="@+id/tv_followers_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center"
+        android:text="@string/zero"
+        android:textSize="@dimen/sp_22"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline_seventy"
+        app:layout_constraintStart_toEndOf="@id/guideline_forty"
+        app:layout_constraintTop_toTopOf="@id/civ_display_picture" />
+
+    <TextView
+        android:id="@+id/tv_followers_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center"
+        android:text="@string/followers"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toStartOf="@id/guideline_seventy"
+        app:layout_constraintStart_toEndOf="@id/guideline_forty"
+        app:layout_constraintTop_toBottomOf="@id/tv_followers_count" />
+
+    <TextView
+        android:id="@+id/tv_following_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center"
+        android:text="@string/zero"
+        android:textSize="@dimen/sp_22"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_seventy"
+        app:layout_constraintTop_toTopOf="@id/civ_display_picture" />
+
+    <TextView
+        android:id="@+id/tv_following_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center"
+        android:text="@string/following"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_seventy"
+        app:layout_constraintTop_toBottomOf="@id/tv_following_count" />
+
+    <View
+        android:id="@+id/separator_vertical"
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginVertical="@dimen/dp_6"
+        android:background="@color/shadow"
+        app:layout_constraintBottom_toBottomOf="@id/civ_display_picture"
+        app:layout_constraintEnd_toEndOf="@id/guideline_seventy"
+        app:layout_constraintStart_toStartOf="@id/guideline_seventy"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
+
+    <TextView
+        android:id="@+id/btn_edit_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_6"
+        android:background="@color/edit_button_background"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="@string/edit_your_profile"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_forty"
+        app:layout_constraintTop_toBottomOf="@id/separator_vertical" />
+
+    <View
+        android:id="@+id/separator_horizontal"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginHorizontal="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_edit_profile" />
+
+    <TextView
+        android:id="@+id/tv_uploads_head"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/uploads"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_22"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator_horizontal" />
+
+    <TextView
+        android:id="@+id/tv_uploads_count"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:gravity="center_vertical"
+        android:text="@string/zero"
+        android:textSize="@dimen/sp_22"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_uploads_head" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_margin="@dimen/dp_10"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_uploads_head"
+        tools:itemCount="1"
+        tools:listitem="@layout/uploads_child_view" />
+
+    <TextView
+        android:id="@+id/tv_no_uploads"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
+        android:text="@string/no_uploads"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="italic"
+        android:typeface="serif"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_uploads_head" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
