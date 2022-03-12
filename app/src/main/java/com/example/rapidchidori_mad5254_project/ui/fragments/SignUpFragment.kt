@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,37 +17,20 @@ import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailIn
 import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentSignUpBinding
 import com.example.rapidchidori_mad5254_project.helper.AppUtils
-import com.example.rapidchidori_mad5254_project.helper.Constants.CONFIRM_PASSWORD
-import com.example.rapidchidori_mad5254_project.helper.Constants.EMAIL
-import com.example.rapidchidori_mad5254_project.helper.Constants.FIRST_NAME
-import com.example.rapidchidori_mad5254_project.helper.Constants.LAST_NAME
-import com.example.rapidchidori_mad5254_project.helper.Constants.PASSWORD
-import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.ui.activities.DashBoardActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.QuestionsAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.QuestionNextListener
-import com.example.rapidchidori_mad5254_project.ui.viewmodels.SignUpViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.example.rapidchidori_mad5254_project.viewmodels.SignUpViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var questionsAdapter: QuestionsAdapter
     private val viewModel: SignUpViewModel by viewModels()
     private val userDetail = UserDetailInfo()
-    private lateinit var auth: FirebaseAuth
-    private var databaseReference: DatabaseReference? = null
-    private var database: FirebaseDatabase? = null
-    private lateinit var dialog: Dialog
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance()
-        databaseReference = database?.reference?.child(USER_INFO_TABLE_NAME)
-    }
+    private lateinit var dialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,6 +61,20 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
     private fun setUpListeners() {
         binding.clOnBoardingTopLayout.tvBack.setOnClickListener(this)
         binding.clOnBoardingTopLayout.tvSignup.setOnClickListener(this)
+
+        viewModel.getIsSuccessLiveData().observe(viewLifecycleOwner) {
+            openDashBoard(it)
+        }
+    }
+
+    private fun openDashBoard(isSuccess: Boolean) {
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+        if (isSuccess) {
+            startActivity(Intent(requireContext(), DashBoardActivity::class.java))
+            requireActivity().finish()
+        }
     }
 
     override fun onClick(view: View?) {
@@ -111,20 +107,20 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
         input: String
     ) {
         val isValid: Boolean = when (questionInfo?.hintTxt) {
-            EMAIL -> {
-                checkEmailValidity(input)
+            getString(R.string.email) -> {
+                viewModel.checkEmailValidity(input)
             }
-            PASSWORD -> {
-                checkPasswordValidity(input)
+            getString(R.string.password) -> {
+                viewModel.checkPasswordValidity(input)
             }
-            CONFIRM_PASSWORD -> {
-                checkConfirmPasswordValidity(input)
+            getString(R.string.confirm_password) -> {
+                viewModel.checkConfirmPasswordValidity(input)
             }
-            LAST_NAME -> {
-                checkLastNameValidity(input)
+            getString(R.string.last_name) -> {
+                viewModel.checkLastNameValidity(input)
             }
-            FIRST_NAME -> {
-                checkNameValidity(input)
+            getString(R.string.first_name) -> {
+                viewModel.checkNameValidity(input)
             }
             else -> {
                 false
@@ -135,42 +131,11 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
         }
     }
 
-    private fun checkConfirmPasswordValidity(input: String): Boolean {
-        val password = input.trim()
-        return when {
-            password.isEmpty() -> {
-                Toast.makeText(context, getString(R.string.empty_password), Toast.LENGTH_SHORT)
-                    .show()
-                false
-            }
-            password.length < 6 -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.small_password),
-                    Toast.LENGTH_SHORT
-                ).show()
-                false
-
-            }
-            password != userDetail.password -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.password_mismatch_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                false
-            }
-            else -> {
-                true
-            }
-        }
-    }
-
     private fun handleNextClick(isLastQuestion: Boolean) {
         if (isLastQuestion) {
             if (AppUtils.isNetworkAvailable(requireContext())) {
                 showLoader()
-                registerUser()
+                viewModel.registerUser(userDetail)
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -183,31 +148,6 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
         }
     }
 
-    //todo this should be moved to repository layer somehow
-    private fun registerUser() {
-        auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
-            .addOnCompleteListener {
-                if (dialog.isShowing) {
-                    dialog.dismiss()
-                }
-                if (it.isSuccessful) {
-                    val user = auth.currentUser
-                    val currentUserDb = databaseReference?.child(user!!.uid)
-                    currentUserDb?.child("firstName")?.setValue(userDetail.firstName)
-                    currentUserDb?.child("lastName")?.setValue(userDetail.lastName)
-
-                    startActivity(Intent(requireContext(), DashBoardActivity::class.java))
-                    requireActivity().finish()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        it.exception?.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-    }
-
     private fun showLoader() {
         dialog = Dialog(requireActivity())
         dialog.apply {
@@ -218,83 +158,5 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
             setCanceledOnTouchOutside(false)
             show()
         }
-    }
-
-    private fun checkNameValidity(input: String): Boolean {
-        val firstName = input.trim()
-        when {
-            firstName.isEmpty() -> {
-                Toast.makeText(context, getString(R.string.empty_name), Toast.LENGTH_SHORT).show()
-            }
-            firstName.contains(getString(R.string.space)) -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.space_error_first_name),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-            else -> {
-                userDetail.firstName = firstName
-            }
-        }
-        return firstName.isNotEmpty()
-    }
-
-    private fun checkLastNameValidity(input: String): Boolean {
-        val lastName = input.trim()
-        return when {
-            lastName.isEmpty() -> {
-                Toast.makeText(context, getString(R.string.empty_last_name), Toast.LENGTH_SHORT)
-                    .show()
-                false
-            }
-            lastName.contains(getString(R.string.space)) -> {
-                Toast.makeText(
-                    context, getString(R.string.space_error_last_name),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                false
-            }
-            else -> {
-                userDetail.lastName = lastName
-                true
-            }
-        }
-    }
-
-    private fun checkPasswordValidity(input: String): Boolean {
-        val password = input.trim()
-        return when {
-            password.isEmpty() -> {
-                Toast.makeText(context, getString(R.string.empty_password), Toast.LENGTH_SHORT)
-                    .show()
-                false
-            }
-            password.length < 6 -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.small_password),
-                    Toast.LENGTH_SHORT
-                ).show()
-                false
-            }
-            else -> {
-                userDetail.password = password
-                true
-            }
-        }
-    }
-
-    private fun checkEmailValidity(input: String): Boolean {
-        val valid = input.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(input).matches()
-        if (valid) {
-            userDetail.email = input.trim()
-        } else {
-            Toast.makeText(context, getString(R.string.invalid_email), Toast.LENGTH_SHORT)
-                .show()
-        }
-        return valid
     }
 }

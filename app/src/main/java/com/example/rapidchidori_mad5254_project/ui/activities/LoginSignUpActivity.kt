@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rapidchidori_mad5254_project.databinding.ActivityLoginSignupBinding
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginSignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginSignupBinding

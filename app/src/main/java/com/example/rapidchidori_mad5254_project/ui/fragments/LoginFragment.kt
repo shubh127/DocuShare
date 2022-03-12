@@ -11,31 +11,22 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentLoginBinding
 import com.example.rapidchidori_mad5254_project.helper.AppUtils
-import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.ui.activities.DashBoardActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.example.rapidchidori_mad5254_project.viewmodels.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class LoginFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var auth: FirebaseAuth
     private lateinit var dialog: Dialog
-    private var database: FirebaseDatabase? = null
-    private var databaseReference: DatabaseReference? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance()
-        databaseReference = database?.reference?.child(Constants.USER_INFO_TABLE_NAME)
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +46,20 @@ class LoginFragment : Fragment(), View.OnClickListener {
         binding.clOnBoardingTopLayout.tvBack.setOnClickListener(this)
         binding.clOnBoardingTopLayout.tvSignup.setOnClickListener(this)
         binding.clOnBoardingBottomLayout.btnLogin.setOnClickListener(this)
+
+        viewModel.getIsSuccess().observe(viewLifecycleOwner) {
+            onResponse(it)
+        }
+    }
+
+    private fun onResponse(isSuccess: Boolean?) {
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+        if (isSuccess == true) {
+            startActivity(Intent(requireContext(), DashBoardActivity::class.java))
+            requireActivity().finish()
+        }
     }
 
     override fun onClick(view: View?) {
@@ -89,7 +94,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun loginUser() {
         if (AppUtils.isNetworkAvailable(requireContext())) {
             showLoader()
-            doLogin()
+            viewModel.doLogin(
+                binding.tietEmail.text.toString().trim(),
+                binding.tietPassword.text.toString().trim()
+            )
         } else {
             Toast.makeText(
                 requireContext(),
@@ -108,46 +116,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
             setCancelable(false)
             setCanceledOnTouchOutside(false)
             show()
-        }
-    }
-
-    //todo this should be moved to repository layer somehow
-    private fun doLogin() {
-        auth.signInWithEmailAndPassword(
-            binding.tietEmail.text?.toString()?.trim()!!,
-            binding.tietPassword.text?.toString()?.trim()!!
-        ).addOnCompleteListener {
-            if (dialog.isShowing) {
-                dialog.dismiss()
-            }
-            if (it.isSuccessful) {
-                //todo take user to main dashboard
-                //get user profile data
-//                val user = auth.currentUser
-//                val userReference = databaseReference?.child(user?.uid!!)
-//                userReference?.addValueEventListener(object : ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            snapshot.child("name").value.toString(),
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//
-//                    override fun onCancelled(error: DatabaseError) {
-//                        //no op
-//                    }
-//
-//                })
-                startActivity(Intent(requireContext(), DashBoardActivity::class.java))
-                requireActivity().finish()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    it.exception?.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
         }
     }
 

@@ -13,7 +13,9 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.IS_LAST_QUESTIO
 import com.example.rapidchidori_mad5254_project.helper.Constants.QUESTION_INFO
 import com.example.rapidchidori_mad5254_project.ui.interfaces.QuestionNextListener
 import com.google.android.material.textfield.TextInputLayout
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SingleQuestionFragment(
     private val listener: QuestionNextListener,
 ) : Fragment() {

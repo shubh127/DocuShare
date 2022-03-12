@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentEntryBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EntryFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentEntryBinding
 
