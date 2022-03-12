@@ -1,6 +1,7 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Patterns
@@ -17,12 +18,13 @@ import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailIn
 import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentSignUpBinding
 import com.example.rapidchidori_mad5254_project.helper.AppUtils
-import com.example.rapidchidori_mad5254_project.helper.Constants.ALIAS_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.CONFIRM_PASSWORD
 import com.example.rapidchidori_mad5254_project.helper.Constants.EMAIL
-import com.example.rapidchidori_mad5254_project.helper.Constants.FULL_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.FIRST_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.LAST_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.PASSWORD
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
+import com.example.rapidchidori_mad5254_project.ui.activities.DashBoardActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.QuestionsAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.QuestionNextListener
 import com.example.rapidchidori_mad5254_project.ui.viewmodels.SignUpViewModel
@@ -118,10 +120,10 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
             CONFIRM_PASSWORD -> {
                 checkConfirmPasswordValidity(input)
             }
-            ALIAS_NAME -> {
-                checkAliasNameValidity(input)
+            LAST_NAME -> {
+                checkLastNameValidity(input)
             }
-            FULL_NAME -> {
+            FIRST_NAME -> {
                 checkNameValidity(input)
             }
             else -> {
@@ -141,7 +143,7 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
                     .show()
                 false
             }
-            password.length < 7 -> {
+            password.length < 6 -> {
                 Toast.makeText(
                     context,
                     getString(R.string.small_password),
@@ -191,19 +193,15 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
                 if (it.isSuccessful) {
                     val user = auth.currentUser
                     val currentUserDb = databaseReference?.child(user!!.uid)
-                    currentUserDb?.child("name")?.setValue(userDetail.name)
-                    currentUserDb?.child("aliasName")?.setValue(userDetail.aliasName)
+                    currentUserDb?.child("firstName")?.setValue(userDetail.firstName)
+                    currentUserDb?.child("lastName")?.setValue(userDetail.lastName)
 
-                    //todo take user to main dashboard
-                    Toast.makeText(
-                        requireContext(),
-                        "Registration successful...!!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    startActivity(Intent(requireContext(), DashBoardActivity::class.java))
+                    requireActivity().finish()
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        getString(R.string.generic_error_msg),
+                        it.exception?.message,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -223,33 +221,44 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
     }
 
     private fun checkNameValidity(input: String): Boolean {
-        val name = input.trim()
-        if (name.isEmpty()) {
-            Toast.makeText(context, getString(R.string.empty_name), Toast.LENGTH_SHORT).show()
-        } else {
-            userDetail.name = name
+        val firstName = input.trim()
+        when {
+            firstName.isEmpty() -> {
+                Toast.makeText(context, getString(R.string.empty_name), Toast.LENGTH_SHORT).show()
+            }
+            firstName.contains(getString(R.string.space)) -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.space_error_first_name),
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+            else -> {
+                userDetail.firstName = firstName
+            }
         }
-        return name.isNotEmpty()
+        return firstName.isNotEmpty()
     }
 
-    private fun checkAliasNameValidity(input: String): Boolean {
-        val aliasName = input.trim()
+    private fun checkLastNameValidity(input: String): Boolean {
+        val lastName = input.trim()
         return when {
-            aliasName.isEmpty() -> {
-                Toast.makeText(context, getString(R.string.empty_alias), Toast.LENGTH_SHORT)
+            lastName.isEmpty() -> {
+                Toast.makeText(context, getString(R.string.empty_last_name), Toast.LENGTH_SHORT)
                     .show()
                 false
             }
-            aliasName.contains(getString(R.string.space)) -> {
+            lastName.contains(getString(R.string.space)) -> {
                 Toast.makeText(
-                    context, getString(R.string.space_error_alias),
+                    context, getString(R.string.space_error_last_name),
                     Toast.LENGTH_SHORT
                 )
                     .show()
                 false
             }
             else -> {
-                userDetail.aliasName = aliasName
+                userDetail.lastName = lastName
                 true
             }
         }

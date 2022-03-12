@@ -26,7 +26,6 @@
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_40"
-        android:hint="@string/alias_name"
         app:boxBackgroundColor="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

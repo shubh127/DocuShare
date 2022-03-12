@@ -4,14 +4,14 @@
     <string name="signup">SignUp</string>
     <string name="login">Login</string>
     <string name="login_to_softnotes">Login to SoftNotes</string>
-    <string name="alias_name">Alias Name</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
-    <string name="empty_name">Name cannot be empty!!!</string>
-    <string name="empty_alias">Alias Name cannot be empty!!!</string>
-    <string name="space_error_alias">No spaces allowed in Alias name!!!</string>
+    <string name="empty_name">First name cannot be empty!!!</string>
+    <string name="space_error_first_name">No spaces allowed in First name!!!</string>
+    <string name="empty_last_name">Last Name cannot be empty!!!</string>
+    <string name="space_error_last_name">No spaces allowed in Last name!!!</string>
     <string name="empty_password">Password cannot be empty!!!</string>
     <string name="small_password">Password should be at least 6 digits long!!!</string>
     <string name="invalid_email">Invalid email!!!</string>
@@ -19,4 +19,6 @@
     <string name="password_mismatch_error">Password doesn\'t match with the previous one!!!</string>
     <string name="check_internet_msg">Please check your internet connectivity!!!</string>
     <string name="generic_error_msg">Oops!!! Something went wrong. Please try again latter.</string>
+    <string name="login_fields_empty">Email or Password cannot be empty!!!</string>
+    <string name="email">Email</string>
 </resources>
