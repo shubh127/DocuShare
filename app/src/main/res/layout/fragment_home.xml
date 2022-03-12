@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <View
         android:id="@+id/toolbar_view"
         android:layout_width="@dimen/dp_0"
@@ -46,7 +45,6 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_view"
         tools:itemCount="5"
         tools:listitem="@layout/wall_uploads_child_view" />
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_file_manager"
@@ -93,7 +91,6 @@
         app:pressedTranslationZ="@dimen/dp_12"
         app:tint="@color/white" />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_choose_file"
         android:layout_width="wrap_content"
@@ -107,6 +104,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:pressedTranslationZ="@dimen/dp_12"
         app:tint="@color/white" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
