@@ -29,7 +29,6 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
     private lateinit var questionsAdapter: QuestionsAdapter
     private val viewModel: SignUpViewModel by viewModels()
     private val userDetail = UserDetailInfo()
-
     private lateinit var dialog: Dialog
 
     override fun onCreateView(

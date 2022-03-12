@@ -27,6 +27,9 @@
     <string name="last_name_question">What is your family/last name?</string>
     <string name="email_question">Please provide a valid Email</string>
     <string name="password_question">You will need a secure password</string>
-    <string name="confirm_password_question">Plase Re-enter password to confirm</string>
+    <string name="confirm_password_question">Please Re-enter password to confirm</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="find_account">Find your account at SoftNotes</string>
+    <string name="submit">Submit</string>
+    <string name="pass_reset_email_success">Email sent successfully!!! Please check your inbox to reset password.</string>
 </resources>

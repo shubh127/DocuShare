@@ -12,7 +12,6 @@ import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentLoginBinding
@@ -38,7 +37,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setUpListeners()
     }
 
@@ -46,6 +44,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         binding.clOnBoardingTopLayout.tvBack.setOnClickListener(this)
         binding.clOnBoardingTopLayout.tvSignup.setOnClickListener(this)
         binding.clOnBoardingBottomLayout.btnLogin.setOnClickListener(this)
+        binding.clOnBoardingBottomLayout.tvForgotPassword.setOnClickListener(this)
 
         viewModel.getIsSuccess().observe(viewLifecycleOwner) {
             onResponse(it)
@@ -73,7 +72,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
             binding.clOnBoardingBottomLayout.btnLogin.id -> {
                 validateInputAndLogin()
             }
+            binding.clOnBoardingBottomLayout.tvForgotPassword.id -> {
+                openForgotPasswordFlow()
+            }
         }
+    }
+
+    private fun openForgotPasswordFlow() {
+        Navigation.findNavController(binding.root)
+            .navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
     }
 
     private fun validateInputAndLogin() {

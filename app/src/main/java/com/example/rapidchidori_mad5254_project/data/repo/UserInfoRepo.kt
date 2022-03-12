@@ -19,6 +19,7 @@ class UserInfoRepo @Inject constructor(
     private val databaseReference = database.reference.child(USER_INFO_TABLE_NAME)
     private val isRegisterSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val isLoginSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    private val isPasswordRestSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -45,6 +46,10 @@ class UserInfoRepo @Inject constructor(
         return isLoginSuccess
     }
 
+    fun getIsPasswordRestLiveData(): SingleLiveEvent<Boolean> {
+        return isPasswordRestSuccess
+    }
+
     fun doLogin(email: String, password: String) {
         auth.signInWithEmailAndPassword(
             email, password
@@ -60,4 +65,17 @@ class UserInfoRepo @Inject constructor(
         }
     }
 
+    fun sendPasswordResetEmail(input: String) {
+        auth.sendPasswordResetEmail(input)
+            .addOnCompleteListener {
+                isPasswordRestSuccess.value = it.isSuccessful
+                if (!it.isSuccessful) {
+                    Toast.makeText(
+                        application,
+                        it.exception?.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
 }
