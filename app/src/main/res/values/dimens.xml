@@ -16,4 +16,11 @@
     <dimen name="dp_1">1dp</dimen>
     <dimen name="dp_50">50dp</dimen>
     <dimen name="sp_16">16sp</dimen>
+    <dimen name="dp_3">3dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="sp_30">30sp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_36">36dp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="dp_16">16dp</dimen>
 </resources>

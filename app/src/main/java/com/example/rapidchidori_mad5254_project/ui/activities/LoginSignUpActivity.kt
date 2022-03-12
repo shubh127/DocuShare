@@ -17,14 +17,20 @@ class LoginSignUpActivity : AppCompatActivity() {
         binding = ActivityLoginSignupBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         configViews()
+        checkIfAlreadyLoggedIn()
+    }
 
+    private fun checkIfAlreadyLoggedIn() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
-            startActivity(Intent(baseContext, DashBoardActivity::class.java))
-            finish()
+            goToDashboard()
         }
+    }
+
+    private fun goToDashboard() {
+        startActivity(Intent(baseContext, DashBoardActivity::class.java))
+        finish()
     }
 
     private fun configViews() {

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:id="@+id/toolbar_view"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="?android:actionBarSize"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/white"
+        android:elevation="@dimen/dp_3"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginStart="@dimen/dp_10"
+        android:elevation="@dimen/dp_4"
+        android:paddingVertical="@dimen/dp_6"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_30"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_view"
+        tools:text="Shubham Behal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_uploads"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_margin="@dimen/dp_10"
+        android:divider="@color/black_transparent"
+        android:dividerHeight="@dimen/dp_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view"
+        tools:itemCount="5"
+        tools:listitem="@layout/wall_uploads_child_view" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_file_manager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_folder"
+        android:visibility="invisible"
+        android:backgroundTint="@color/color_fab_3"
+        app:layout_constraintBottom_toTopOf="@id/fab_gallery"
+        app:layout_constraintEnd_toEndOf="@id/fab_gallery"
+        app:layout_constraintStart_toStartOf="@id/fab_gallery"
+        app:pressedTranslationZ="12dp"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_gallery"
+        android:visibility="invisible"
+        android:backgroundTint="@color/color_fab_2"
+        app:layout_constraintBottom_toTopOf="@id/fab_camera"
+        app:layout_constraintEnd_toEndOf="@id/fab_camera"
+        app:layout_constraintStart_toStartOf="@id/fab_camera"
+        app:pressedTranslationZ="@dimen/dp_12"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_camera"
+        android:visibility="invisible"
+        android:backgroundTint="@color/color_fab_1"
+        app:layout_constraintBottom_toTopOf="@id/fab_choose_file"
+        app:layout_constraintEnd_toEndOf="@id/fab_choose_file"
+        app:layout_constraintStart_toStartOf="@id/fab_choose_file"
+        app:pressedTranslationZ="@dimen/dp_12"
+        app:tint="@color/white" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_choose_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_16"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/primary2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:pressedTranslationZ="@dimen/dp_12"
+        app:tint="@color/white" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

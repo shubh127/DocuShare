@@ -4,8 +4,11 @@
     <color name="primary2">#F68989</color>
     <color name="primary3">#C65D7B</color>
     <color name="primary4">#874356</color>
-
+    <color name="color_fab_1">#2196F3</color>
+    <color name="color_fab_2">#E040FB</color>
+    <color name="color_fab_3">#72d572</color>
     <color name="black">#FF000000</color>
+    <color name="black_transparent">#00000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="triangle">#aa72d572</color>
     <color name="circle">#aa738ffe</color>
