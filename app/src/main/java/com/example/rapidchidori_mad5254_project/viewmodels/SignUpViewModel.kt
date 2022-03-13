@@ -1,59 +1,56 @@
 package com.example.rapidchidori_mad5254_project.viewmodels
 
-import android.app.Application
 import android.text.InputType
 import android.util.Patterns
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
 import com.example.rapidchidori_mad5254_project.data.models.ui.SignUpQuestionsInfo
 import com.example.rapidchidori_mad5254_project.data.repo.UserInfoRepo
+import com.example.rapidchidori_mad5254_project.helper.Constants.VALID_INPUT_ID
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val repo: UserInfoRepo,
-    private val application: Application
+    private val repo: UserInfoRepo
 ) : ViewModel() {
-    private val userDetail = UserDetailInfo()
 
     fun getSignUpQuestionsData(): MutableList<SignUpQuestionsInfo> {
         val questionsList = mutableListOf<SignUpQuestionsInfo>()
         questionsList.add(
             SignUpQuestionsInfo(
-                application.getString(R.string.first_name_question),
-                application.getString(R.string.first_name),
+                R.string.first_name_question,
+                R.string.first_name,
                 InputType.TYPE_CLASS_TEXT
             )
         )
         questionsList.add(
             SignUpQuestionsInfo(
-                application.getString(R.string.last_name_question),
-                application.getString(R.string.last_name),
+                R.string.last_name_question,
+                R.string.last_name,
                 InputType.TYPE_CLASS_TEXT
             )
         )
         questionsList.add(
             SignUpQuestionsInfo(
-                application.getString(R.string.email_question),
-                application.getString(R.string.email),
+                R.string.email_question,
+                R.string.email,
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             )
         )
         questionsList.add(
             SignUpQuestionsInfo(
-                application.getString(R.string.password_question),
-                application.getString(R.string.password),
+                R.string.password_question,
+                R.string.password,
                 InputType.TYPE_TEXT_VARIATION_PASSWORD
             )
         )
         questionsList.add(
             SignUpQuestionsInfo(
-                application.getString(R.string.confirm_password_question),
-                application.getString(R.string.confirm_password),
+                R.string.confirm_password_question,
+                R.string.confirm_password,
                 InputType.TYPE_TEXT_VARIATION_PASSWORD
             )
         )
@@ -68,131 +65,78 @@ class SignUpViewModel @Inject constructor(
         return repo.getIsRegisterSuccessLiveData()
     }
 
-    fun checkEmailValidity(input: String): Boolean {
-        val valid = input.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(input).matches()
-        if (valid) {
-            userDetail.email = input.trim()
+    fun getRegisterException(): SingleLiveEvent<String> {
+        return repo.getRegisterException()
+    }
+
+    fun checkEmailValidity(input: String): Int {
+        return if (input.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(input).matches()) {
+            VALID_INPUT_ID
         } else {
-            Toast.makeText(
-                application,
-                application.getString(R.string.invalid_email),
-                Toast.LENGTH_SHORT
-            ).show()
+            R.string.invalid_email
         }
-        return valid
     }
 
-    fun checkPasswordValidity(input: String): Boolean {
+    fun checkPasswordValidity(input: String): Int {
         val password = input.trim()
         return when {
             password.isEmpty() -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.empty_password),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                false
+                R.string.empty_password
             }
             password.length < 6 -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.small_password),
-                    Toast.LENGTH_SHORT
-                ).show()
-                false
+                R.string.small_password
             }
             else -> {
-                userDetail.password = password
-                true
+                VALID_INPUT_ID
             }
         }
     }
 
-    fun checkConfirmPasswordValidity(input: String): Boolean {
+    fun checkConfirmPasswordValidity(input: String, oldPass: String?): Int {
         val password = input.trim()
         return when {
             password.isEmpty() -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.empty_password),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                false
+                R.string.empty_password
             }
             password.length < 6 -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.small_password),
-                    Toast.LENGTH_SHORT
-                ).show()
-                false
-
+                R.string.small_password
             }
-            password != userDetail.password -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.password_mismatch_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                false
+            password != oldPass -> {
+                R.string.password_mismatch_error
             }
             else -> {
-                true
+                VALID_INPUT_ID
             }
         }
     }
 
-    fun checkLastNameValidity(input: String): Boolean {
+    fun checkLastNameValidity(input: String): Int {
         val lastName = input.trim()
         return when {
             lastName.isEmpty() -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.empty_last_name),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                false
+                R.string.empty_last_name
             }
-            lastName.contains(application.getString(R.string.space)) -> {
-                Toast.makeText(
-                    application, application.getString(R.string.space_error_last_name),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-                false
+            lastName.contains(" ") -> {
+                R.string.space_error_last_name
             }
             else -> {
-                userDetail.lastName = lastName
-                true
+                VALID_INPUT_ID
             }
         }
     }
 
-    fun checkNameValidity(input: String): Boolean {
+    fun checkNameValidity(input: String): Int {
         val firstName = input.trim()
-        when {
+        return when {
             firstName.isEmpty() -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.empty_name),
-                    Toast.LENGTH_SHORT
-                ).show()
+                R.string.empty_name
             }
-            firstName.contains(application.getString(R.string.space)) -> {
-                Toast.makeText(
-                    application,
-                    application.getString(R.string.space_error_first_name),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+            firstName.contains(" ") -> {
+                R.string.space_error_first_name
             }
             else -> {
-                userDetail.firstName = firstName
+                VALID_INPUT_ID
             }
         }
-        return firstName.isNotEmpty()
     }
 }

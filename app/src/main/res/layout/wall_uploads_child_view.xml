@@ -55,16 +55,16 @@
             android:layout_height="@dimen/dp_40"
             android:importantForAccessibility="no"
             android:src="@drawable/unknown"
-            app:layout_constraintStart_toStartOf="@id/tv_time"
             app:layout_constraintBottom_toTopOf="@id/tv_time"
             app:layout_constraintEnd_toEndOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="@id/tv_time"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_time"
-            android:layout_marginEnd="@dimen/dp_10"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/sp_10"
             android:textStyle="italic"

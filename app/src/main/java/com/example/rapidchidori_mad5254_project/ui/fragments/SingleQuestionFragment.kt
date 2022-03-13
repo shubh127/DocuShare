@@ -43,8 +43,8 @@ class SingleQuestionFragment(
     }
 
     private fun configViews() {
-        binding.tvQuestionHead.text = questionInfo?.questionTxt
-        binding.tilInput.hint = questionInfo?.hintTxt
+        binding.tvQuestionHead.text = getString(questionInfo?.questionTxt!!)
+        binding.tilInput.hint = getString(questionInfo?.hintTxt!!)
         binding.tietInput.inputType = questionInfo?.contentType!!
         binding.clOnBoardingBottomLayout.tvForgotPassword.visibility = View.GONE
 

@@ -51,6 +51,10 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener {
             showToastAndLoginPage(it)
             Navigation.findNavController(binding.root).navigateUp()
         }
+
+        viewModel.getPasswordResetException().observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showToastAndLoginPage(isSuccess: Boolean?) {
@@ -81,6 +85,8 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener {
         if (viewModel.checkEmailValidity(binding.tietInput.text.toString().trim())) {
             showLoader()
             viewModel.sendPasswordResetEmail(binding.tietInput.text.toString().trim())
+        } else {
+            Toast.makeText(context, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show()
         }
     }
 

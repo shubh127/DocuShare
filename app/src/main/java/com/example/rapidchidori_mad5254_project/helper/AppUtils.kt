@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 
 
 class AppUtils {
-    companion object{
+    companion object {
         fun isNetworkAvailable(context: Context) =
             (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
                 getNetworkCapabilities(activeNetwork)?.run {

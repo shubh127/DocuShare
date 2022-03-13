@@ -49,6 +49,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
         viewModel.getIsSuccess().observe(viewLifecycleOwner) {
             onResponse(it)
         }
+
+        viewModel.getLoginException().observe(viewLifecycleOwner) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onResponse(isSuccess: Boolean?) {

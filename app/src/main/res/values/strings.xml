@@ -15,10 +15,8 @@
     <string name="empty_password">Password cannot be empty!!!</string>
     <string name="small_password">Password should be at least 6 digits long!!!</string>
     <string name="invalid_email">Invalid email!!!</string>
-    <string name="space">\" \"</string>
     <string name="password_mismatch_error">Password doesn\'t match with the previous one!!!</string>
     <string name="check_internet_msg">Please check your internet connectivity!!!</string>
-    <string name="generic_error_msg">Oops!!! Something went wrong. Please try again latter.</string>
     <string name="login_fields_empty">Email or Password cannot be empty!!!</string>
     <string name="email">Email</string>
     <string name="first_name_question">What is your first name?</string>

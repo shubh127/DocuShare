@@ -64,6 +64,10 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
         viewModel.getIsSuccessLiveData().observe(viewLifecycleOwner) {
             openDashBoard(it)
         }
+
+        viewModel.getRegisterException().observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun openDashBoard(isSuccess: Boolean) {
@@ -106,20 +110,24 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
         input: String
     ) {
         val isValid: Boolean = when (questionInfo?.hintTxt) {
-            getString(R.string.email) -> {
-                viewModel.checkEmailValidity(input)
+            R.string.email -> {
+                handleValidity(input, viewModel.checkEmailValidity(input), R.string.email)
             }
-            getString(R.string.password) -> {
-                viewModel.checkPasswordValidity(input)
+            R.string.password -> {
+                handleValidity(input, viewModel.checkPasswordValidity(input), R.string.password)
             }
-            getString(R.string.confirm_password) -> {
-                viewModel.checkConfirmPasswordValidity(input)
+            R.string.confirm_password -> {
+                handleValidity(
+                    input,
+                    viewModel.checkConfirmPasswordValidity(input, userDetail.password),
+                    R.string.confirm_password
+                )
             }
-            getString(R.string.last_name) -> {
-                viewModel.checkLastNameValidity(input)
+            R.string.last_name -> {
+                handleValidity(input, viewModel.checkLastNameValidity(input), R.string.last_name)
             }
-            getString(R.string.first_name) -> {
-                viewModel.checkNameValidity(input)
+            R.string.first_name -> {
+                handleValidity(input, viewModel.checkNameValidity(input), R.string.first_name)
             }
             else -> {
                 false
@@ -127,6 +135,32 @@ class SignUpFragment : Fragment(), View.OnClickListener, QuestionNextListener {
         }
         if (isValid) {
             handleNextClick(isLastQuestion)
+        }
+    }
+
+    private fun handleValidity(input: String, stringId: Int, type: Int): Boolean {
+        return if (stringId == -99) {
+            when (type) {
+                R.string.email -> {
+                    userDetail.email = input
+                }
+                R.string.password -> {
+                    userDetail.password = input
+                }
+                R.string.confirm_password -> {
+                    userDetail.password = input
+                }
+                R.string.last_name -> {
+                    userDetail.lastName = input
+                }
+                R.string.first_name -> {
+                    userDetail.firstName = input
+                }
+            }
+            true
+        } else {
+            Toast.makeText(context, getString(stringId), Toast.LENGTH_SHORT).show()
+            false
         }
     }
 

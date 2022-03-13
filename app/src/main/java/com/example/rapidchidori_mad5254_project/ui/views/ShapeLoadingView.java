@@ -16,24 +16,24 @@ public class ShapeLoadingView extends View {
 
     private static final float genhao3 = 1.7320508075689f;
     private static final float mTriangle2Circle = 0.25555555f;
-
-    private Shape mShape = Shape.SHAPE_CIRCLE;
     private final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
-
+    public boolean mIsLoading = false;
+    private Shape mShape = Shape.SHAPE_CIRCLE;
     private int mTriangleColor;
     private int mCircleColor;
     private int mRectColor;
-
+    private Paint mPaint;
+    private float mControlX = 0;
+    private float mControlY = 0;
+    private float mAnimPercent;
     public ShapeLoadingView(Context context) {
         super(context);
         init();
     }
-
     public ShapeLoadingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
-
     public ShapeLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -48,13 +48,6 @@ public class ShapeLoadingView extends View {
         mCircleColor = getResources().getColor(R.color.circle);
         mRectColor = getResources().getColor(R.color.triangle);
     }
-
-    public boolean mIsLoading = false;
-    private Paint mPaint;
-    private float mControlX = 0;
-    private float mControlY = 0;
-    private float mAnimPercent;
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -239,11 +232,6 @@ public class ShapeLoadingView extends View {
         invalidate();
     }
 
-    public enum Shape {
-        SHAPE_TRIANGLE, SHAPE_RECT, SHAPE_CIRCLE
-    }
-
-
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
@@ -255,5 +243,9 @@ public class ShapeLoadingView extends View {
 
     public Shape getShape() {
         return mShape;
+    }
+
+    public enum Shape {
+        SHAPE_TRIANGLE, SHAPE_RECT, SHAPE_CIRCLE
     }
 }

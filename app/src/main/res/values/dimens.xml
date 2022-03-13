@@ -20,10 +20,8 @@
     <dimen name="dp_4">4dp</dimen>
     <dimen name="sp_30">30sp</dimen>
     <dimen name="dp_8">8dp</dimen>
-    <dimen name="dp_36">36dp</dimen>
     <dimen name="sp_10">10sp</dimen>
     <dimen name="dp_16">16dp</dimen>
-    <dimen name="dp_100">100dp</dimen>
     <dimen name="dp_60">60dp</dimen>
     <dimen name="dp_110">110dp</dimen>
     <dimen name="dp_70">70dp</dimen>

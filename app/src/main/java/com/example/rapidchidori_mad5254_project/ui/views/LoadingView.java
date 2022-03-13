@@ -28,17 +28,17 @@ public class LoadingView extends FrameLayout {
     private static final int ANIMATION_DURATION = 500;
 
     private static float mDistance = 200;
-
+    public float factor = 1.2f;
     private ShapeLoadingView mShapeLoadingView;
-
     private ImageView mIndicationIm;
-
     private TextView mLoadTextView;
     private int mTextAppearance;
-
     private String mLoadText;
     private AnimatorSet mUpAnimatorSet;
     private AnimatorSet mDownAnimatorSet;
+    private final Runnable mFreeFallRunnable = this::freeFall;
+    private AnimatorSet mAnimatorSet = null;
+
 
     public LoadingView(Context context) {
         super(context);
@@ -48,6 +48,12 @@ public class LoadingView extends FrameLayout {
         super(context, attrs, 0);
         init(context, attrs);
 
+    }
+
+
+    public LoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -60,17 +66,10 @@ public class LoadingView extends FrameLayout {
         typedArray.recycle();
     }
 
-
-    public LoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs);
-    }
-
     public int dip2px(float dipValue) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
-
 
     @Override
     protected void onFinishInflate() {
@@ -99,11 +98,6 @@ public class LoadingView extends FrameLayout {
 
         startLoading(900);
     }
-
-
-    private AnimatorSet mAnimatorSet = null;
-
-    private final Runnable mFreeFallRunnable = this::freeFall;
 
     private void startLoading(long delay) {
         if (mDownAnimatorSet != null && mDownAnimatorSet.isRunning()) {
@@ -174,7 +168,6 @@ public class LoadingView extends FrameLayout {
         mLoadTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
     }
 
-
     public void upThrow() {
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mShapeLoadingView, "translationY", mDistance, 0);
@@ -235,8 +228,6 @@ public class LoadingView extends FrameLayout {
 
 
     }
-
-    public float factor = 1.2f;
 
     public void freeFall() {
 

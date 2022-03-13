@@ -19,4 +19,7 @@ class LoginViewModel @Inject constructor(
         return repo.getIsLoginSuccessLiveData()
     }
 
+    fun getLoginException(): SingleLiveEvent<String> {
+        return repo.getLoginException()
+    }
 }

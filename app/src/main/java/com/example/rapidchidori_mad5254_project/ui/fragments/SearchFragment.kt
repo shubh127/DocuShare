@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentSearchBinding
-import com.example.rapidchidori_mad5254_project.databinding.FragmentUserProfileBinding
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding

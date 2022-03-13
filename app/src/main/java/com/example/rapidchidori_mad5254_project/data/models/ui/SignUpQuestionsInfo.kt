@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SignUpQuestionsInfo(
-    val questionTxt: String,
-    val hintTxt: String,
+    val questionTxt: Int,
+    val hintTxt: Int,
     val contentType: Int
 ) : Parcelable
