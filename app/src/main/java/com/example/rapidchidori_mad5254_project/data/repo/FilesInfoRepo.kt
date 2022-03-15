@@ -3,8 +3,6 @@ package com.example.rapidchidori_mad5254_project.data.repo
 import android.net.Uri
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.DELAY_2_SEC
-import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_TYPE_IMAGE
-import com.example.rapidchidori_mad5254_project.helper.Constants.IMAGE_PATH
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -14,6 +12,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.schedule
 
+
 class FilesInfoRepo @Inject constructor() {
     private val exceptionInfo: SingleLiveEvent<String> = SingleLiveEvent()
     private val isUploadSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
@@ -21,10 +20,10 @@ class FilesInfoRepo @Inject constructor() {
     private val database = FirebaseDatabase.getInstance()
     private val databaseReference = database.reference.child(Constants.FILE_INFO_TABLE_NAME)
 
-    fun uploadImageToFirebase(uri: Uri?) {
+    fun uploadFileToDB(uri: Uri?, ext: String?) {
         val storageReference =
             FirebaseStorage.getInstance().getReference(
-                IMAGE_PATH +
+                ext + "/" +
                         Calendar.getInstance().timeInMillis
             )
         uri?.let {
@@ -33,20 +32,20 @@ class FilesInfoRepo @Inject constructor() {
             }.addOnSuccessListener { task ->
                 val downloadUri: Task<Uri> = task.storage.downloadUrl
                 Timer().schedule(DELAY_2_SEC) {
-                    updateDB(downloadUri)
+                    updateDB(downloadUri, ext)
                 }
                 isUploadSuccess.value = true
             }
         }
     }
 
-    private fun updateDB(downloadUri: Task<Uri>) {
+    private fun updateDB(downloadUri: Task<Uri>, fileExt: String?) {
         if (downloadUri.isSuccessful) {
             val user = auth.currentUser
             val fileDb =
                 databaseReference.child(Calendar.getInstance().timeInMillis.toString())
             fileDb.child(Constants.USER_ID).setValue(user?.uid)
-            fileDb.child(Constants.FILE_TYPE).setValue(FILE_TYPE_IMAGE)
+            fileDb.child(Constants.FILE_TYPE).setValue(fileExt)
             fileDb.child(Constants.URL).setValue(downloadUri.result.toString())
         }
     }

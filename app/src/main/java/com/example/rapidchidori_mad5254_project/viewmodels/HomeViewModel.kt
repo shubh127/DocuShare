@@ -1,6 +1,5 @@
 package com.example.rapidchidori_mad5254_project.viewmodels
 
-import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.rapidchidori_mad5254_project.data.repo.FilesInfoRepo
@@ -13,8 +12,8 @@ class HomeViewModel @Inject constructor(
     private val repo: FilesInfoRepo,
 ) : ViewModel() {
 
-    fun onImageSelect(data: Uri?) {
-        repo.uploadImageToFirebase(data)
+    fun onFileSelect(data: Uri?, mimeType: String?) {
+        repo.uploadFileToDB(data, mimeType)
     }
 
     fun getExceptionInfo(): SingleLiveEvent<String> {

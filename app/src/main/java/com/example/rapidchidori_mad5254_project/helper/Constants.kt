@@ -6,8 +6,6 @@ object Constants {
     const val VALID_INPUT_ID = -99
     const val DELAY_2_SEC : Long = 2000
 
-
-
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_FIRST_NAME = "firstName"
     const val COLUMN_LAST_NAME = "lastName"
@@ -17,10 +15,7 @@ object Constants {
     const val FILE_TYPE = "fileType"
     const val URL = "url"
 
-    const val FILE_TYPE_IMAGE = "image"
-
     const val IMAGE_TYPE = "image/*"
-    const val IMAGE_PATH = "images/"
 
     const val CAMERA_IMAGE_NAME = "SoftNote.jpg"
     const val PROVIDER_NAME = ".provider"

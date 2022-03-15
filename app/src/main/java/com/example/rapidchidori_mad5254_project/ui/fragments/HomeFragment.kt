@@ -3,6 +3,7 @@ package com.example.rapidchidori_mad5254_project.ui.fragments
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -16,6 +17,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -44,6 +46,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var animBackward: Animation
     private var isFabOpen = false
     private lateinit var imageSelectorLauncher: ActivityResultLauncher<Intent>
+    private lateinit var fileSelectorLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var dialog: Dialog
@@ -108,7 +111,26 @@ class HomeFragment : Fragment(), View.OnClickListener {
         ) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 showLoader()
-                viewModel.onImageSelect(result.data?.data)
+                result.data?.data?.let {
+                    viewModel.onFileSelect(
+                        it,
+                        it.getFileExtension(requireContext())
+                    )
+                }
+            }
+        }
+
+        fileSelectorLauncher = registerForActivityResult(
+            StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                showLoader()
+                result.data?.data?.let {
+                    viewModel.onFileSelect(
+                        it,
+                        it.getFileExtension(requireContext())
+                    )
+                }
             }
         }
 
@@ -138,7 +160,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         requireContext().packageName.toString() + PROVIDER_NAME,
                         file
                     )
-                    viewModel.onImageSelect(uri)
+                    viewModel.onFileSelect(
+                        uri,
+                        uri.getFileExtension(requireContext())
+                    )
                 }
 
             }
@@ -158,7 +183,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 handleOnCameraClick()
                 binding.fabChooseFile.callOnClick()
             }
+            binding.fabFileManager.id -> {
+                handleOnFileManagerClick()
+                binding.fabChooseFile.callOnClick()
+            }
         }
+    }
+
+    private fun handleOnFileManagerClick() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        fileSelectorLauncher.launch(intent)
     }
 
     private fun handleOnCameraClick() {
@@ -235,5 +271,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         if (dialog.isShowing) {
             dialog.dismiss()
         }
+    }
+
+    private fun Uri.getFileExtension(context: Context): String? {
+        return MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(context.contentResolver.getType(this))
     }
 }
