@@ -1,13 +1,15 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,18 +19,21 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentHomeBinding
+import com.example.rapidchidori_mad5254_project.helper.Constants.CAMERA_IMAGE_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.IMAGE_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.PROVIDER_NAME
 import com.example.rapidchidori_mad5254_project.viewmodels.HomeViewModel
-import com.google.android.gms.tasks.Task
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.io.File
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener {
@@ -39,8 +44,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var animBackward: Animation
     private var isFabOpen = false
     private lateinit var imageSelectorLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var dialog: Dialog
-    private val viewModel : HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +92,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         viewModel.isUploadSuccess().observe(viewLifecycleOwner) {
-            if(it){
+            if (it) {
                 hideLoader()
-                Toast.makeText(requireContext(), "Image Uploaded Successfully ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(), getString(R.string.image_upload_successfull),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -98,17 +108,86 @@ class HomeFragment : Fragment(), View.OnClickListener {
         ) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 showLoader()
-                viewModel.onImageSelect(result.data)
+                viewModel.onImageSelect(result.data?.data)
+            }
+        }
+
+        cameraPermissionLauncher =
+            registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
+                if (isGranted) {
+                    handleOnCameraClick()
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.permission_denied), Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+
+        cameraLauncher = registerForActivityResult(
+            StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let {
+                    showLoader()
+                    val file =
+                        File(requireContext().externalCacheDir!!.absolutePath, CAMERA_IMAGE_NAME)
+                    val uri: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        requireContext().packageName.toString() + PROVIDER_NAME,
+                        file
+                    )
+                    viewModel.onImageSelect(uri)
+                }
+
             }
         }
     }
 
     override fun onClick(view: View) {
-        if (view.id == binding.fabChooseFile.id) {
-            animateFAB()
-        } else if (view.id == binding.fabCamera.id) {
-            openImagePicker()
+        when (view.id) {
+            binding.fabChooseFile.id -> {
+                animateFAB()
+            }
+            binding.fabGallery.id -> {
+                openImagePicker()
+                binding.fabChooseFile.callOnClick()
+            }
+            binding.fabCamera.id -> {
+                handleOnCameraClick()
+                binding.fabChooseFile.callOnClick()
+            }
         }
+    }
+
+    private fun handleOnCameraClick() {
+        if (hasCameraPermissions()) {
+            openCamera()
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val file = File(
+            requireContext().externalCacheDir!!.absolutePath, CAMERA_IMAGE_NAME
+        )
+        val uri = FileProvider.getUriForFile(
+            requireContext(),
+            requireContext().packageName.toString() + PROVIDER_NAME,
+            file
+        )
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+        cameraLauncher.launch(cameraIntent)
+    }
+
+    private fun hasCameraPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireActivity(),
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun openImagePicker() {

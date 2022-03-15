@@ -1,6 +1,5 @@
 package com.example.rapidchidori_mad5254_project.data.repo
 
-import android.content.Intent
 import android.net.Uri
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.DELAY_2_SEC
@@ -21,18 +20,14 @@ class FilesInfoRepo @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance()
     private val databaseReference = database.reference.child(Constants.FILE_INFO_TABLE_NAME)
-    private var storageReference =
-        FirebaseStorage.getInstance().getReference(
-            IMAGE_PATH +
-                    Calendar.getInstance().timeInMillis
-        )
 
-    fun uploadImageToFirebase(data: Intent?) {
-        var imageURI: Uri? = null
-        data?.data?.let {
-            imageURI = it
-        }
-        imageURI?.let {
+    fun uploadImageToFirebase(uri: Uri?) {
+        val storageReference =
+            FirebaseStorage.getInstance().getReference(
+                IMAGE_PATH +
+                        Calendar.getInstance().timeInMillis
+            )
+        uri?.let {
             storageReference.putFile(it).addOnFailureListener { exception ->
                 exceptionInfo.value = exception.message
             }.addOnSuccessListener { task ->

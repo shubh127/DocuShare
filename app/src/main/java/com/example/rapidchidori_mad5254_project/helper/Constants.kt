@@ -21,4 +21,7 @@ object Constants {
 
     const val IMAGE_TYPE = "image/*"
     const val IMAGE_PATH = "images/"
+
+    const val CAMERA_IMAGE_NAME = "SoftNote.jpg"
+    const val PROVIDER_NAME = ".provider"
 }

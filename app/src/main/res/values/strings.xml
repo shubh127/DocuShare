@@ -40,4 +40,6 @@
     <string name="edit_your_profile">EDIT YOUR PROFILE</string>
     <string name="uploads">Uploads</string>
     <string name="no_uploads">You haven\'t uploaded anything yet...!!!\nNothing to show...!!!</string>
+    <string name="image_upload_successfull">Image Uploaded Successfully</string>
+    <string name="permission_denied">Need permission to proceed further!!!</string>
 </resources>
