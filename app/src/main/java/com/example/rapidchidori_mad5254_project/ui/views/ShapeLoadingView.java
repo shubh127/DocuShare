@@ -26,14 +26,17 @@ public class ShapeLoadingView extends View {
     private float mControlX = 0;
     private float mControlY = 0;
     private float mAnimPercent;
+
     public ShapeLoadingView(Context context) {
         super(context);
         init();
     }
+
     public ShapeLoadingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
+
     public ShapeLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }

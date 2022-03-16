@@ -6,7 +6,10 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_LAST_NAM
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import javax.inject.Inject
 
 class UserInfoRepo @Inject constructor() {
@@ -19,6 +22,7 @@ class UserInfoRepo @Inject constructor() {
     private val loginException: SingleLiveEvent<String> = SingleLiveEvent()
     private val isPasswordRestSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val passwordResetException: SingleLiveEvent<String> = SingleLiveEvent()
+    private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -78,5 +82,23 @@ class UserInfoRepo @Inject constructor() {
                     passwordResetException.value = it.exception?.message
                 }
             }
+    }
+
+    fun getFullName(): SingleLiveEvent<String> {
+        val user = auth.currentUser
+        val userReference = databaseReference.child(user?.uid!!)
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                fullName.value = """${snapshot.child(COLUMN_FIRST_NAME).value.toString()} ${
+                    snapshot.child(COLUMN_LAST_NAME).value.toString()
+                }"""
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //no op
+            }
+        })
+        return fullName
     }
 }

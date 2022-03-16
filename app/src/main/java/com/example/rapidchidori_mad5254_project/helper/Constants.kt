@@ -4,7 +4,7 @@ object Constants {
     const val QUESTION_INFO = "question_info"
     const val IS_LAST_QUESTION = "is_last_question"
     const val VALID_INPUT_ID = -99
-    const val DELAY_2_SEC : Long = 2000
+    const val DELAY_2_SEC: Long = 2000
 
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_FIRST_NAME = "firstName"
@@ -19,4 +19,5 @@ object Constants {
 
     const val CAMERA_IMAGE_NAME = "SoftNote.jpg"
     const val PROVIDER_NAME = ".provider"
+    const val FONT_NAME = "quickhand.ttf"
 }
