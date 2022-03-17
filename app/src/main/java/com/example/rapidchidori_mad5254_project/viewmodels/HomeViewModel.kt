@@ -12,8 +12,8 @@ class HomeViewModel @Inject constructor(
     private val repo: FilesInfoRepo,
 ) : ViewModel() {
 
-    fun onFileSelect(data: Uri?, mimeType: String?) {
-        repo.uploadFileToDB(data, mimeType)
+    fun onFileSelect(data: Uri?, mimeType: String?, title: String) {
+        repo.uploadFileToDB(data, mimeType, title)
     }
 
     fun getExceptionInfo(): SingleLiveEvent<String> {

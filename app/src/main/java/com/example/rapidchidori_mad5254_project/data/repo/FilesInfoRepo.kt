@@ -26,7 +26,7 @@ class FilesInfoRepo @Inject constructor() {
     private val databaseReference = database.reference.child(FILE_INFO_TABLE_NAME)
     private val uploadsData: SingleLiveEvent<List<UploadInfo>> = SingleLiveEvent()
 
-    fun uploadFileToDB(uri: Uri?, ext: String?) {
+    fun uploadFileToDB(uri: Uri?, ext: String?, title: String) {
         val storageReference =
             FirebaseStorage.getInstance().getReference(
                 ext + "/" +
@@ -38,20 +38,22 @@ class FilesInfoRepo @Inject constructor() {
             }.addOnSuccessListener { task ->
                 val downloadUri: Task<Uri> = task.storage.downloadUrl
                 Timer().schedule(DELAY_2_SEC) {
-                    updateDB(downloadUri, ext)
+                    updateDB(downloadUri, ext, title)
                 }
                 isUploadSuccess.value = true
             }
         }
     }
 
-    private fun updateDB(downloadUri: Task<Uri>, fileExt: String?) {
+    private fun updateDB(downloadUri: Task<Uri>, fileExt: String?, title: String) {
         if (downloadUri.isSuccessful) {
             val user = auth.currentUser
             val fileDb =
                 databaseReference.child(Calendar.getInstance().timeInMillis.toString())
+            fileDb.child(Constants.FILE_ID).setValue(Calendar.getInstance().timeInMillis.toString())
             fileDb.child(Constants.USER_ID).setValue(user?.uid)
-            fileDb.child(Constants.FILE_TYPE).setValue(fileExt)
+            fileDb.child(Constants.FILE_TYPE).setValue(fileExt?.replace("/",""))
+            fileDb.child(Constants.TITLE).setValue(title)
             fileDb.child(Constants.URL).setValue(downloadUri.result.toString())
         }
     }

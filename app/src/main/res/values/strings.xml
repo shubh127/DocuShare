@@ -42,4 +42,7 @@
     <string name="no_uploads">You haven\'t uploaded anything yet...!!!\nNothing to show...!!!</string>
     <string name="image_upload_successfull">Image Uploaded Successfully</string>
     <string name="permission_denied">Need permission to proceed further!!!</string>
+    <string name="title">Title</string>
+    <string name="get_title_head">Add Title To Your Upload</string>
+    <string name="empty_title_error">Title cannot be empty!!!</string>
 </resources>

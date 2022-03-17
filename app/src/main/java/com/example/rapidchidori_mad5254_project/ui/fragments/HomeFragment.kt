@@ -2,6 +2,7 @@ package com.example.rapidchidori_mad5254_project.ui.fragments
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -18,6 +19,7 @@ import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.MimeTypeMap
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -45,7 +47,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var animForward: Animation
     private lateinit var animBackward: Animation
     private var isFabOpen = false
-    private lateinit var imageSelectorLauncher: ActivityResultLauncher<Intent>
     private lateinit var fileSelectorLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
@@ -106,31 +107,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setUpLaunchers() {
-        imageSelectorLauncher = registerForActivityResult(
-            StartActivityForResult()
-        ) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                showLoader()
-                result.data?.data?.let {
-                    viewModel.onFileSelect(
-                        it,
-                        it.getFileExtension(requireContext())
-                    )
-                }
-            }
-        }
 
         fileSelectorLauncher = registerForActivityResult(
             StartActivityForResult()
         ) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                showLoader()
-                result.data?.data?.let {
-                    viewModel.onFileSelect(
-                        it,
-                        it.getFileExtension(requireContext())
-                    )
-                }
+                result.data?.data?.let { getFileName(it) }
             }
         }
 
@@ -152,7 +134,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         ) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.let {
-                    showLoader()
                     val file =
                         File(requireContext().externalCacheDir!!.absolutePath, CAMERA_IMAGE_NAME)
                     val uri: Uri = FileProvider.getUriForFile(
@@ -160,13 +141,51 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         requireContext().packageName.toString() + PROVIDER_NAME,
                         file
                     )
-                    viewModel.onFileSelect(
-                        uri,
-                        uri.getFileExtension(requireContext())
-                    )
+                    getFileName(uri)
                 }
 
             }
+        }
+    }
+
+    private fun getFileName(data: Uri) {
+        val view: View = LayoutInflater.from(context).inflate(R.layout.upload_title_view, null)
+        val alDialog: AlertDialog = AlertDialog.Builder(context)
+            .setView(view)
+            .setCancelable(false)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+
+        alDialog.setOnShowListener {
+            alDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val i = view.findViewById<EditText>(R.id.et_title).text.toString().trim()
+                if (i == " ") {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.empty_title_error),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                } else {
+                    uploadFileToFirebase(data, i)
+                    alDialog.dismiss()
+                }
+            }
+
+            alDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+                alDialog.dismiss()
+            }
+        }
+        alDialog.show()
+    }
+
+    private fun uploadFileToFirebase(data: Uri, title: String) {
+        showLoader()
+        data.let {
+            viewModel.onFileSelect(
+                it, it.getFileExtension(requireContext()), title
+            )
         }
     }
 
@@ -230,7 +249,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
         galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         galleryIntent.type = IMAGE_TYPE
-        imageSelectorLauncher.launch(galleryIntent)
+        fileSelectorLauncher.launch(galleryIntent)
     }
 
     private fun animateFAB() {
