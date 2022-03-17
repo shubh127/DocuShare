@@ -7,7 +7,9 @@ import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.ActivitySecondaryBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SecondaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySecondaryBinding
 
