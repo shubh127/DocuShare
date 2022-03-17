@@ -38,7 +38,6 @@ import com.example.rapidchidori_mad5254_project.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
-
 @AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentHomeBinding
@@ -91,19 +90,19 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.fabGallery.setOnClickListener(this)
 
         viewModel.getExceptionInfo().observe(viewLifecycleOwner) {
-            hideLoader()
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            onUpload(it)
         }
 
         viewModel.isUploadSuccess().observe(viewLifecycleOwner) {
             if (it) {
-                hideLoader()
-                Toast.makeText(
-                    requireContext(), getString(R.string.image_upload_successfull),
-                    Toast.LENGTH_SHORT
-                ).show()
+                onUpload(getString(R.string.image_upload_successfull))
             }
         }
+    }
+
+    private fun onUpload(msg: String) {
+        hideLoader()
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun setUpLaunchers() {
@@ -158,7 +157,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
             .create()
 
         alDialog.setOnShowListener {
-            alDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val btnPositive = alDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            btnPositive.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary3
+                )
+            )
+
+            btnPositive.setOnClickListener {
                 val i = view.findViewById<EditText>(R.id.et_title).text.toString().trim()
                 if (i == " ") {
                     Toast.makeText(
@@ -172,8 +179,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     alDialog.dismiss()
                 }
             }
-
-            alDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+            val btnNegative = alDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            btnNegative.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary3))
+            btnNegative.setOnClickListener {
                 alDialog.dismiss()
             }
         }
