@@ -32,4 +32,7 @@ object Constants {
     const val FILE_TYPE_XLS = "xls"
     const val FILE_TYPE_JPG = "jpg"
     const val FILE_TYPE_PNG = "png"
+
+    const val FRAGMENT_TYPE = "fragmentType"
+    const val FRAGMENT_TYPE_EDIT_PROFILE = "editProfile"
 }

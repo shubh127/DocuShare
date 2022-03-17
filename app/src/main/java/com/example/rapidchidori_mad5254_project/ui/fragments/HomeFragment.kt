@@ -95,7 +95,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         viewModel.isUploadSuccess().observe(viewLifecycleOwner) {
             if (it) {
-                onUpload(getString(R.string.image_upload_successfull))
+                onUpload(getString(R.string.image_upload_successful))
             }
         }
     }

@@ -52,7 +52,7 @@ class FilesInfoRepo @Inject constructor() {
                 databaseReference.child(Calendar.getInstance().timeInMillis.toString())
             fileDb.child(Constants.FILE_ID).setValue(Calendar.getInstance().timeInMillis.toString())
             fileDb.child(Constants.USER_ID).setValue(user?.uid)
-            fileDb.child(Constants.FILE_TYPE).setValue(fileExt?.replace("/",""))
+            fileDb.child(Constants.FILE_TYPE).setValue(fileExt?.replace("/", ""))
             fileDb.child(Constants.TITLE).setValue(title)
             fileDb.child(Constants.URL).setValue(downloadUri.result.toString())
         }

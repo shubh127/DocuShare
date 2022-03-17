@@ -1,5 +1,6 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,12 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentUserProfileBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
+import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.UploadsListAdapter
 import com.example.rapidchidori_mad5254_project.viewmodels.UserProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
-class UserProfileFragment : Fragment() {
+class UserProfileFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUserProfileBinding
     private val viewModel: UserProfileViewModel by viewModels()
     private lateinit var mAdapter: UploadsListAdapter
@@ -54,6 +59,8 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun setUpListeners() {
+        binding.btnEditProfile.setOnClickListener(this)
+
         viewModel.getFullName().observe(viewLifecycleOwner) {
             binding.tvName.text = it
         }
@@ -73,5 +80,19 @@ class UserProfileFragment : Fragment() {
             binding.rvUploads.visibility = View.VISIBLE
             mAdapter.setUploadsData(data)
         }
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            binding.btnEditProfile.id -> {
+                openEditProfileScreen()
+            }
+        }
+    }
+
+    private fun openEditProfileScreen() {
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(FRAGMENT_TYPE, FRAGMENT_TYPE_EDIT_PROFILE)
+        startActivity(i)
     }
 }
