@@ -1,7 +1,10 @@
 package com.example.rapidchidori_mad5254_project.data.repo
 
+import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
+import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_COLLEGE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_PICTURE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DOB
@@ -11,12 +14,16 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_GENDER
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_PHONE
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import java.util.*
 import javax.inject.Inject
+import kotlin.concurrent.schedule
 
 class UserInfoRepo @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
@@ -31,6 +38,8 @@ class UserInfoRepo @Inject constructor() {
     private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
     private val userInfoData: SingleLiveEvent<UserInfo> = SingleLiveEvent()
     private val isUpdateSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    private val exceptionInfo: SingleLiveEvent<String> = SingleLiveEvent()
+    private val displayPictureURL: MutableLiveData<String> = MutableLiveData()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -94,21 +103,6 @@ class UserInfoRepo @Inject constructor() {
             }
     }
 
-    fun getFullName(): SingleLiveEvent<String> {
-        val user = auth.currentUser
-        val userReference = databaseReference.child(user?.uid!!)
-        userReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                fullName.value = snapshot.child(COLUMN_FULL_NAME).value.toString()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                //no op
-            }
-        })
-        return fullName
-    }
-
     fun getUserInfoFromFirebase(): SingleLiveEvent<UserInfo> {
         val user = auth.currentUser
         val userReference = databaseReference.child(user?.uid!!)
@@ -150,5 +144,31 @@ class UserInfoRepo @Inject constructor() {
 
     fun isUpdateSuccess(): SingleLiveEvent<Boolean> {
         return isUpdateSuccess
+    }
+
+    fun uploadImageToServer(uri: Uri) {
+        val storageReference =
+            FirebaseStorage.getInstance().getReference(
+                "dps/" +
+                        Calendar.getInstance().timeInMillis
+            )
+        storageReference.putFile(uri).addOnFailureListener {
+            exceptionInfo.value = it.message
+        }.addOnSuccessListener { task ->
+            val downloadUri: Task<Uri> = task.storage.downloadUrl
+            Timer().schedule(Constants.DELAY_2_SEC) {
+                if (downloadUri.isSuccessful) {
+                    displayPictureURL.postValue(downloadUri.result.toString())
+                }
+            }
+        }
+    }
+
+    fun getException(): SingleLiveEvent<String> {
+        return exceptionInfo
+    }
+
+    fun getDisplayPictureURL(): MutableLiveData<String> {
+        return displayPictureURL
     }
 }

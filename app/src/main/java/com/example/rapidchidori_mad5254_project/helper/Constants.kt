@@ -8,6 +8,7 @@ object Constants {
     const val NULL = "null"
     const val MALE = "male"
     const val FEMALE = "female"
+    const val DAT_FORMAT_DD_MM_YYYY = "dd/MM/yyyy"
 
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_DISPLAY_PICTURE = "displayPicture"

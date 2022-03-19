@@ -1,6 +1,8 @@
 package com.example.rapidchidori_mad5254_project.viewmodels
 
+import android.net.Uri
 import android.telephony.PhoneNumberUtils
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.data.repo.UserInfoRepo
@@ -27,5 +29,17 @@ class EditProfileViewModel @Inject constructor(
 
     fun isUpdateSuccess(): SingleLiveEvent<Boolean> {
         return repo.isUpdateSuccess()
+    }
+
+    fun uploadImageToServer(uri: Uri) {
+        repo.uploadImageToServer(uri)
+    }
+
+    fun getDisplayPictureURL(): MutableLiveData<String> {
+        return repo.getDisplayPictureURL()
+    }
+
+    fun getException(): SingleLiveEvent<String> {
+        return repo.getException()
     }
 }

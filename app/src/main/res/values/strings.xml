@@ -59,5 +59,10 @@
     <string name="enter_college_name">Enter college name</string>
     <string name="phone_number_error">Invalid Phone Number</string>
     <string name="data_update_success">Data updated successfully</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_library">Choose from Library</string>
+    <string name="remove_photo">Remove Photo</string>
+    <string name="cancel">Cancel</string>
+    <string name="cahneg_photo_head">Change Photo!!!</string>
 
 </resources>
