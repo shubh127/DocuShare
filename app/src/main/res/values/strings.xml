@@ -67,4 +67,13 @@
     <string name="are_you_sure">You sure? You want to delete this ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="share_using">Share Using</string>
+    <string name="share_msg_body">Tired of copying notes the old way ? Download SoftNotes here: ***link*** and share notes over internet</string>
+    <string name="share_subject">SoftNotes Invitation</string>
+    <string name="opening_market">Opening market</string>
+    <string name="help_msg">Sorry !!! Cannot help you at the movement...!!!</string>
+    <string name="mailto">mailto:</string>
+    <string name="mail_subject">This was sent from App</string>
+    <string name="extra_text_mail">\"Type your queries here...!!! We\'ll get back to you as soon as we can...!!!THANKS !!! \"</string>
+    <string name="email_via">Send Email Via</string>
 </resources>

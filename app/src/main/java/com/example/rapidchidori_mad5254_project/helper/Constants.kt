@@ -12,6 +12,11 @@ object Constants {
     const val FILE_DATA = "fileData"
     const val UTF_8 = "UTF-8"
     const val BASE_URL = "http://drive.google.com/viewerng/viewer?embedded=true&url="
+    const val TEXT_PLAIN_CONTENT = "text/plain"
+    const val PLAY_STORE_URL = "market://details?id=dolphin.developers.com"
+    const val EMAIL = " shubh.behal76@gmail.com"
+    const val INTENT_TYPE_MAIL = "message/rfc822"
+
 
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_DISPLAY_PICTURE = "displayPicture"

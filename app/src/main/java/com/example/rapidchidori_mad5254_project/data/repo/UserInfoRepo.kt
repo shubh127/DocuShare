@@ -35,11 +35,11 @@ class UserInfoRepo @Inject constructor() {
     private val loginException: SingleLiveEvent<String> = SingleLiveEvent()
     private val isPasswordRestSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val passwordResetException: SingleLiveEvent<String> = SingleLiveEvent()
-    private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
     private val userInfoData: SingleLiveEvent<UserInfo> = SingleLiveEvent()
     private val isUpdateSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val exceptionInfo: SingleLiveEvent<String> = SingleLiveEvent()
     private val displayPictureURL: MutableLiveData<String> = MutableLiveData()
+    private val logoutSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -170,5 +170,14 @@ class UserInfoRepo @Inject constructor() {
 
     fun getDisplayPictureURL(): MutableLiveData<String> {
         return displayPictureURL
+    }
+
+    fun logout() {
+        auth.signOut()
+        logoutSuccess.value = true
+    }
+
+    fun isLogoutSuccess(): SingleLiveEvent<Boolean> {
+        return logoutSuccess
     }
 }

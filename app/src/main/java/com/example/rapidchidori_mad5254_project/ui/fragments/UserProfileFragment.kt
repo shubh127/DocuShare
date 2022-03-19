@@ -7,11 +7,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -25,17 +27,23 @@ import com.example.rapidchidori_mad5254_project.databinding.FragmentUserProfileB
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_PICTURE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.EMAIL
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_DATA
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_PROFILE_PICTURE
+import com.example.rapidchidori_mad5254_project.helper.Constants.INTENT_TYPE_MAIL
+import com.example.rapidchidori_mad5254_project.helper.Constants.PLAY_STORE_URL
+import com.example.rapidchidori_mad5254_project.helper.Constants.TEXT_PLAIN_CONTENT
+import com.example.rapidchidori_mad5254_project.ui.activities.LoginSignUpActivity
 import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.UploadsListAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.UploadsClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.UserProfileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListener {
@@ -79,6 +87,7 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
     private fun setUpListeners() {
         binding.btnEditProfile.setOnClickListener(this)
         binding.civDisplayPicture.setOnClickListener(this)
+        binding.ibMenu.setOnClickListener(this)
 
         viewModel.getUserInfoFromFirebase().observe(viewLifecycleOwner) {
             setDataToViews(it)
@@ -93,6 +102,13 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
             if (it) {
                 Toast.makeText(context, getString(R.string.removal_success), Toast.LENGTH_SHORT)
                     .show()
+            }
+        }
+
+        viewModel.isLogoutSuccess().observe(viewLifecycleOwner) {
+            if (it) {
+                startActivity(Intent(context, LoginSignUpActivity::class.java))
+                requireActivity().finish()
             }
         }
     }
@@ -139,7 +155,74 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
             binding.civDisplayPicture.id -> {
                 openProfilePicture()
             }
+            binding.ibMenu.id -> {
+                openMenu()
+            }
         }
+    }
+
+    private fun openMenu() {
+        val popupMenu = PopupMenu(context, binding.ibMenu)
+        popupMenu.menuInflater.inflate(R.menu.user_profile_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.share_with_friends -> {
+                    share()
+                }
+                R.id.rate_us -> {
+                    rateUs()
+                }
+
+                R.id.help -> {
+                    Toast.makeText(context, getString(R.string.help_msg), Toast.LENGTH_SHORT).show()
+                }
+                R.id.write_to_us -> {
+                    writeToUs()
+                }
+
+                R.id.logout -> {
+                    showLoader()
+                    viewModel.logout()
+                }
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun writeToUs() {
+        val mailIntent = Intent(Intent.ACTION_SEND)
+        mailIntent.data = Uri.parse(getString(R.string.mailto))
+        val to = arrayOf(EMAIL)
+        mailIntent.putExtra(Intent.EXTRA_EMAIL, to)
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
+        mailIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            getString(R.string.extra_text_mail)
+        )
+        mailIntent.type = INTENT_TYPE_MAIL
+        val chooser = Intent.createChooser(mailIntent, getString(R.string.email_via))
+        startActivity(chooser)
+    }
+
+    private fun rateUs() {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(PLAY_STORE_URL)
+        val chooser = Intent.createChooser(i, getString(R.string.opening_market))
+        startActivity(chooser)
+    }
+
+    private fun share() {
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = TEXT_PLAIN_CONTENT
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg_body))
+        startActivity(
+            Intent.createChooser(
+                sharingIntent,
+                resources.getString(R.string.share_using)
+            )
+        )
     }
 
     private fun openProfilePicture() {

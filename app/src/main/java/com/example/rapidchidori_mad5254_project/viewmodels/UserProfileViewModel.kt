@@ -31,4 +31,12 @@ class UserProfileViewModel @Inject constructor(
         return filesInfoRepo.onDataRemoved()
     }
 
+    fun logout() {
+        userInfoRepo.logout()
+    }
+
+    fun isLogoutSuccess(): SingleLiveEvent<Boolean> {
+        return userInfoRepo.isLogoutSuccess()
+    }
+
 }
