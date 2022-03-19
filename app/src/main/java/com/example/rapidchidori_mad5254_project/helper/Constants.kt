@@ -22,7 +22,7 @@ object Constants {
 
     const val FILE_INFO_TABLE_NAME = "FileInfo"
     const val USER_ID = "userID"
-    const val FILE_ID = "fileID"
+    const val FILE_ID = "fileId"
     const val FILE_TYPE = "fileType"
     const val TITLE = "title"
     const val URL = "url"

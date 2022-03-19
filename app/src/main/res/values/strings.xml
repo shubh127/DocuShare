@@ -64,4 +64,8 @@
     <string name="remove_photo">Remove Photo</string>
     <string name="cancel">Cancel</string>
     <string name="change_photo_head">Change Photo!!!</string>
+    <string name="removal_success">Item Removed Successfully!!!</string>
+    <string name="are_you_sure">You sure? You want to delete this ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

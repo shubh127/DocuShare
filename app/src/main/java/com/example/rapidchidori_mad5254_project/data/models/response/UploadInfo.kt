@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class UploadInfo(
     var url: String = "",
     var fileType: String = "",
-    var title: String = ""
+    var title: String = "",
+    var fileId: String = ""
 ) : Parcelable

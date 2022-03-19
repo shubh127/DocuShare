@@ -23,4 +23,12 @@ class UserProfileViewModel @Inject constructor(
         return filesInfoRepo.getUploads()
     }
 
+    fun removeItemFromDataBase(fileId: String) {
+        filesInfoRepo.removeItemFromDatabase(fileId)
+    }
+
+    fun onDataRemoved(): SingleLiveEvent<Boolean> {
+        return filesInfoRepo.onDataRemoved()
+    }
+
 }

@@ -29,6 +29,7 @@ class FilesInfoRepo @Inject constructor() {
     private val database = FirebaseDatabase.getInstance()
     private val databaseReference = database.reference.child(FILE_INFO_TABLE_NAME)
     private val uploadsData: SingleLiveEvent<List<UploadInfo>> = SingleLiveEvent()
+    private val onDataRemoved: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun uploadFileToDB(uri: Uri?, ext: String?, title: String) {
         val storageReference =
@@ -94,4 +95,21 @@ class FilesInfoRepo @Inject constructor() {
         return uploadsData
     }
 
+    fun removeItemFromDatabase(fileId: String) {
+        databaseReference.orderByChild(FILE_ID).equalTo(fileId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        data.ref.removeValue()
+                    }
+                    onDataRemoved.value = true
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+    }
+
+    fun onDataRemoved(): SingleLiveEvent<Boolean> {
+        return onDataRemoved
+    }
 }
