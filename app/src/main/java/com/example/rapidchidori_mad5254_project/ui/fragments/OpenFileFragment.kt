@@ -11,9 +11,9 @@ import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentOpenFileBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_DATA
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OpenFileFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentOpenFileBinding
 
@@ -52,7 +52,7 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
     private fun setDataToViews(data: UploadInfo?) {
         binding.tvFileName.text = data?.title
         data?.url?.let {
-          //todo get a solution for this
+            //todo get a solution for this
         }
     }
 

@@ -23,10 +23,13 @@ import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentUserProfileBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_PICTURE
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_DATA
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_PROFILE_PICTURE
 import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.UploadsListAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.UploadsClickListener
@@ -34,13 +37,13 @@ import com.example.rapidchidori_mad5254_project.viewmodels.UserProfileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListener {
     private lateinit var binding: FragmentUserProfileBinding
     private val viewModel: UserProfileViewModel by viewModels()
     private lateinit var mAdapter: UploadsListAdapter
     private lateinit var dialog: Dialog
+    private var url = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +78,7 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
 
     private fun setUpListeners() {
         binding.btnEditProfile.setOnClickListener(this)
+        binding.civDisplayPicture.setOnClickListener(this)
 
         viewModel.getUserInfoFromFirebase().observe(viewLifecycleOwner) {
             setDataToViews(it)
@@ -101,9 +105,10 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
 
     private fun setDataToViews(userInfo: UserInfo) {
         binding.tvName.text = userInfo.fullName
-        if (userInfo.displayPicture.isNotEmpty()) {
+        url = userInfo.displayPicture
+        if (url.isNotEmpty()) {
             Picasso.get()
-                .load(userInfo.displayPicture)
+                .load(url)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(binding.civDisplayPicture)
@@ -131,7 +136,18 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
             binding.btnEditProfile.id -> {
                 openEditProfileScreen()
             }
+            binding.civDisplayPicture.id -> {
+                openProfilePicture()
+            }
         }
+    }
+
+    private fun openProfilePicture() {
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(COLUMN_FULL_NAME, binding.tvName.text.toString())
+        i.putExtra(COLUMN_DISPLAY_PICTURE, url)
+        i.putExtra(FRAGMENT_TYPE, FRAGMENT_TYPE_PROFILE_PICTURE)
+        startActivity(i)
     }
 
     private fun openEditProfileScreen() {

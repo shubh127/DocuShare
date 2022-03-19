@@ -19,7 +19,7 @@ class UploadsListViewHolder(private val binding: UploadsChildViewBinding) :
             listener.onItemClick(data)
         }
 
-        binding.ivDelete.setOnClickListener{
+        binding.ivDelete.setOnClickListener {
             listener.removeItem(data.fileId)
         }
     }

@@ -13,4 +13,8 @@
         android:id="@+id/openFileFragment"
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.OpenFileFragment"
         android:label="Open file" />
+    <fragment
+        android:id="@+id/profilePictureFragment"
+        android:name="com.example.rapidchidori_mad5254_project.ui.fragments.ProfilePictureFragment"
+        android:label="ProfilePictureFragment" />
 </navigation>
