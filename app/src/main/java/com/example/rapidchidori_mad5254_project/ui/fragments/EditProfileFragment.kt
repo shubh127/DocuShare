@@ -236,7 +236,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                 getString(R.string.cancel)
             )
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.cahneg_photo_head))
+        builder.setTitle(getString(R.string.change_photo_head))
         builder.setItems(items) { dialog, which ->
             when {
                 items[which] === getString(R.string.take_photo) -> {

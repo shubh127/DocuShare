@@ -15,17 +15,20 @@ import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentUserProfileBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_DATA
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
 import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.UploadsListAdapter
+import com.example.rapidchidori_mad5254_project.ui.interfaces.UploadsClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.UserProfileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class UserProfileFragment : Fragment(), View.OnClickListener {
+class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListener {
     private lateinit var binding: FragmentUserProfileBinding
     private val viewModel: UserProfileViewModel by viewModels()
     private lateinit var mAdapter: UploadsListAdapter
@@ -49,7 +52,7 @@ class UserProfileFragment : Fragment(), View.OnClickListener {
         binding.tvAppName.typeface =
             Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
 
-        mAdapter = UploadsListAdapter(mutableListOf())
+        mAdapter = UploadsListAdapter(mutableListOf(), this)
         binding.rvUploads.apply {
             adapter = mAdapter
             layoutManager = GridLayoutManager(
@@ -111,6 +114,13 @@ class UserProfileFragment : Fragment(), View.OnClickListener {
     private fun openEditProfileScreen() {
         val i = Intent(requireActivity(), SecondaryActivity::class.java)
         i.putExtra(FRAGMENT_TYPE, FRAGMENT_TYPE_EDIT_PROFILE)
+        startActivity(i)
+    }
+
+    override fun onItemClick(data: UploadInfo) {
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(FILE_DATA, data)
+        i.putExtra(FRAGMENT_TYPE, FRAGMENT_TYPE_OPEN_FILE)
         startActivity(i)
     }
 }

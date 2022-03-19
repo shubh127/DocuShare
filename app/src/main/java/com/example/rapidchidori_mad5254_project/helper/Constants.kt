@@ -9,6 +9,7 @@ object Constants {
     const val MALE = "male"
     const val FEMALE = "female"
     const val DAT_FORMAT_DD_MM_YYYY = "dd/MM/yyyy"
+    const val FILE_DATA = "fileData"
 
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_DISPLAY_PICTURE = "displayPicture"
@@ -44,4 +45,5 @@ object Constants {
 
     const val FRAGMENT_TYPE = "fragmentType"
     const val FRAGMENT_TYPE_EDIT_PROFILE = "editProfile"
+    const val FRAGMENT_TYPE_OPEN_FILE = "openFile"
 }

@@ -40,7 +40,7 @@
     <string name="edit_your_profile">EDIT YOUR PROFILE</string>
     <string name="uploads">Uploads</string>
     <string name="no_uploads">You haven\'t uploaded anything yet…!!!\nNothing to show…!!!</string>
-    <string name="image_upload_successful">Image Uploaded Successfully</string>
+    <string name="document_upload_successful">Document Uploaded Successfully</string>
     <string name="permission_denied">Need permission to proceed further!!!</string>
     <string name="title">Title</string>
     <string name="get_title_head">Add Title To Your Upload</string>
@@ -63,6 +63,5 @@
     <string name="choose_from_library">Choose from Library</string>
     <string name="remove_photo">Remove Photo</string>
     <string name="cancel">Cancel</string>
-    <string name="cahneg_photo_head">Change Photo!!!</string>
-
+    <string name="change_photo_head">Change Photo!!!</string>
 </resources>

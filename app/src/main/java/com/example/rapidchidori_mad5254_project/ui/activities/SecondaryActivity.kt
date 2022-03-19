@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.ActivitySecondaryBinding
+import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,10 +37,17 @@ class SecondaryActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        val inflater = navController.navInflater
+        val graph = inflater.inflate(R.navigation.secondary_nav_graph)
 
         when (fragmentType) {
+            FRAGMENT_TYPE_OPEN_FILE -> {
+                graph.setStartDestination(R.id.openFileFragment)
+                navHostFragment.navController.setGraph(graph,intent?.extras)
+            }
             FRAGMENT_TYPE_EDIT_PROFILE -> {
-                navController.graph.setStartDestination(R.id.editProfileFragment)
+                graph.setStartDestination(R.id.editProfileFragment)
+                navHostFragment.navController.graph = graph
             }
         }
     }
