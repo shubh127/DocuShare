@@ -1,8 +1,14 @@
 package com.example.rapidchidori_mad5254_project.data.repo
 
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
-import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FIRST_NAME
-import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_LAST_NAME
+import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_COLLEGE
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_PICTURE
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DOB
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_EMAIL
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_GENDER
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_PHONE
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +29,8 @@ class UserInfoRepo @Inject constructor() {
     private val isPasswordRestSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val passwordResetException: SingleLiveEvent<String> = SingleLiveEvent()
     private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
+    private val userInfoData: SingleLiveEvent<UserInfo> = SingleLiveEvent()
+    private val isUpdateSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -31,8 +39,10 @@ class UserInfoRepo @Inject constructor() {
                 if (it.isSuccessful) {
                     val user = auth.currentUser
                     val currentUserDb = databaseReference.child(user!!.uid)
-                    currentUserDb.child(COLUMN_FIRST_NAME).setValue(userDetail.firstName)
-                    currentUserDb.child(COLUMN_LAST_NAME).setValue(userDetail.lastName)
+                    currentUserDb.child(COLUMN_FULL_NAME)
+                        .setValue(userDetail.firstName + " " + userDetail.lastName)
+                    currentUserDb.child(COLUMN_EMAIL)
+                        .setValue(userDetail.email)
                 } else {
                     registerException.value = it.exception?.message
                 }
@@ -89,10 +99,7 @@ class UserInfoRepo @Inject constructor() {
         val userReference = databaseReference.child(user?.uid!!)
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                fullName.value = """${snapshot.child(COLUMN_FIRST_NAME).value.toString()} ${
-                    snapshot.child(COLUMN_LAST_NAME).value.toString()
-                }"""
-
+                fullName.value = snapshot.child(COLUMN_FULL_NAME).value.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -100,5 +107,48 @@ class UserInfoRepo @Inject constructor() {
             }
         })
         return fullName
+    }
+
+    fun getUserInfoFromFirebase(): SingleLiveEvent<UserInfo> {
+        val user = auth.currentUser
+        val userReference = databaseReference.child(user?.uid!!)
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val info = UserInfo()
+                    info.displayPicture = snapshot.child(COLUMN_DISPLAY_PICTURE).value.toString()
+                    info.fullName = snapshot.child(COLUMN_FULL_NAME).value.toString()
+                    info.gender = snapshot.child(COLUMN_GENDER).value.toString()
+                    info.dob = snapshot.child(COLUMN_DOB).value.toString()
+                    info.college = snapshot.child(COLUMN_COLLEGE).value.toString()
+                    info.phoneNo = snapshot.child(COLUMN_PHONE).value.toString()
+                    info.email = snapshot.child(COLUMN_EMAIL).value.toString()
+                    userInfoData.value = info
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //no op
+            }
+        })
+        return userInfoData
+    }
+
+    fun updateDataOnFirebase(info: UserInfo) {
+        val user = auth.currentUser
+        val fileDb =
+            databaseReference.child(user!!.uid)
+        fileDb.child(COLUMN_DISPLAY_PICTURE).setValue(info.displayPicture)
+        fileDb.child(COLUMN_FULL_NAME).setValue(info.fullName)
+        fileDb.child(COLUMN_GENDER).setValue(info.gender)
+        fileDb.child(COLUMN_DOB).setValue(info.dob)
+        fileDb.child(COLUMN_COLLEGE).setValue(info.college)
+        fileDb.child(COLUMN_PHONE).setValue(info.phoneNo)
+        fileDb.child(COLUMN_EMAIL).setValue(info.email)
+        isUpdateSuccess.value = true
+    }
+
+    fun isUpdateSuccess(): SingleLiveEvent<Boolean> {
+        return isUpdateSuccess
     }
 }

@@ -46,5 +46,18 @@
     <string name="get_title_head">Add Title To Your Upload</string>
     <string name="empty_title_error">Title cannot be empty!!!</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="change_image">Change Image</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="full_name">Full name</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="dob_default">DD/MM/YYYY</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="phone_number">Enter phone number</string>
+    <string name="enter_college_name">Enter college name</string>
+    <string name="phone_number_error">Invalid Phone Number</string>
+    <string name="data_update_success">Data updated successfully</string>
 
 </resources>

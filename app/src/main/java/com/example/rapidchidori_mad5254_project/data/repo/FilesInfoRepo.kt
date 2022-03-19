@@ -2,9 +2,13 @@ package com.example.rapidchidori_mad5254_project.data.repo
 
 import android.net.Uri
 import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
-import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.DELAY_2_SEC
+import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_ID
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_INFO_TABLE_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.TITLE
+import com.example.rapidchidori_mad5254_project.helper.Constants.URL
+import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -50,11 +54,11 @@ class FilesInfoRepo @Inject constructor() {
             val user = auth.currentUser
             val fileDb =
                 databaseReference.child(Calendar.getInstance().timeInMillis.toString())
-            fileDb.child(Constants.FILE_ID).setValue(Calendar.getInstance().timeInMillis.toString())
-            fileDb.child(Constants.USER_ID).setValue(user?.uid)
-            fileDb.child(Constants.FILE_TYPE).setValue(fileExt?.replace("/", ""))
-            fileDb.child(Constants.TITLE).setValue(title)
-            fileDb.child(Constants.URL).setValue(downloadUri.result.toString())
+            fileDb.child(FILE_ID).setValue(Calendar.getInstance().timeInMillis.toString())
+            fileDb.child(USER_ID).setValue(user?.uid)
+            fileDb.child(FILE_TYPE).setValue(fileExt?.replace("/", ""))
+            fileDb.child(TITLE).setValue(title)
+            fileDb.child(URL).setValue(downloadUri.result.toString())
         }
     }
 
@@ -69,7 +73,7 @@ class FilesInfoRepo @Inject constructor() {
     fun getUploads(): SingleLiveEvent<List<UploadInfo>> {
         val user = auth.currentUser
         FirebaseDatabase.getInstance().getReference(FILE_INFO_TABLE_NAME)
-            .orderByChild("userID")
+            .orderByChild(USER_ID)
             .equalTo(user?.uid).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val uploads = mutableListOf<UploadInfo>()
