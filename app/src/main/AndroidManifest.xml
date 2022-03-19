@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RapidChidori_MAD5254_Project">
+        android:theme="@style/Theme.RapidChidori_MAD5254_Project"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activities.SecondaryActivity"
             android:exported="false" />

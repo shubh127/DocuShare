@@ -10,6 +10,8 @@ object Constants {
     const val FEMALE = "female"
     const val DAT_FORMAT_DD_MM_YYYY = "dd/MM/yyyy"
     const val FILE_DATA = "fileData"
+    const val UTF_8 = "UTF-8"
+    const val BASE_URL = "http://drive.google.com/viewerng/viewer?embedded=true&url="
 
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_DISPLAY_PICTURE = "displayPicture"
