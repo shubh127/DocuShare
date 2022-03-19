@@ -1,8 +1,12 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
 import android.annotation.SuppressLint
+import android.app.DownloadManager
+import android.content.Context
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +30,7 @@ import java.net.URLEncoder
 @AndroidEntryPoint
 class OpenFileFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentOpenFileBinding
+    private var data: UploadInfo? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,13 +47,13 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun configViews() {
-        val data = arguments?.getParcelable<UploadInfo>(FILE_DATA)
+        data = arguments?.getParcelable<UploadInfo>(FILE_DATA)
         binding.tvFileName.apply {
             text = data?.title
             typeface = Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
         }
         if (data?.fileType == FILE_TYPE_JPG || data?.fileType == FILE_TYPE_PNG) {
-            showImageData(data.url)
+            showImageData(data!!.url)
         } else {
             showFileData(data!!.url)
         }
@@ -84,6 +89,7 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
 
     private fun setUpListeners() {
         binding.ibBack.setOnClickListener(this)
+        binding.ibDownload.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -91,6 +97,27 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
             binding.ibBack.id -> {
                 requireActivity().finish()
             }
+            binding.ibDownload.id -> {
+                startDownload()
+            }
         }
+    }
+
+    private fun startDownload() {
+        val request: DownloadManager.Request =
+            DownloadManager.Request(Uri.parse(data!!.url)).apply {
+                setTitle(data?.title)
+                setNotificationVisibility(
+                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+                )
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, data?.title)
+                setAllowedNetworkTypes(
+                    DownloadManager.Request.NETWORK_MOBILE
+                            or DownloadManager.Request.NETWORK_WIFI
+                )
+            }
+        val downloadManager =
+            requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
     }
 }
