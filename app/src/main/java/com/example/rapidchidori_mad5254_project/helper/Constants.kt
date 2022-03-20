@@ -21,6 +21,7 @@ object Constants {
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_DISPLAY_PICTURE = "displayPicture"
     const val COLUMN_FULL_NAME = "fullName"
+    const val COLUMN_FULL_NAME_LOWER_CASE = "fullNameLowerCase"
     const val COLUMN_GENDER = "gender"
     const val COLUMN_EMAIL = "email"
     const val COLUMN_DOB = "dateOfBirth"

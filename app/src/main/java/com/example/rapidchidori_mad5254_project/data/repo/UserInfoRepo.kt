@@ -10,6 +10,7 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DOB
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_EMAIL
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME_LOWER_CASE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_GENDER
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_PHONE
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
@@ -40,6 +41,7 @@ class UserInfoRepo @Inject constructor() {
     private val exceptionInfo: SingleLiveEvent<String> = SingleLiveEvent()
     private val displayPictureURL: MutableLiveData<String> = MutableLiveData()
     private val logoutSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    private val profiles: SingleLiveEvent<List<UserInfo>> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -52,6 +54,8 @@ class UserInfoRepo @Inject constructor() {
                         .setValue(userDetail.firstName + " " + userDetail.lastName)
                     currentUserDb.child(COLUMN_EMAIL)
                         .setValue(userDetail.email)
+                    currentUserDb.child(COLUMN_FULL_NAME_LOWER_CASE)
+                        .setValue((userDetail.firstName + " " + userDetail.lastName).lowercase())
                 } else {
                     registerException.value = it.exception?.message
                 }
@@ -134,6 +138,7 @@ class UserInfoRepo @Inject constructor() {
             databaseReference.child(user!!.uid)
         fileDb.child(COLUMN_DISPLAY_PICTURE).setValue(info.displayPicture)
         fileDb.child(COLUMN_FULL_NAME).setValue(info.fullName)
+        fileDb.child(COLUMN_FULL_NAME_LOWER_CASE).setValue(info.fullName.lowercase())
         fileDb.child(COLUMN_GENDER).setValue(info.gender)
         fileDb.child(COLUMN_DOB).setValue(info.dob)
         fileDb.child(COLUMN_COLLEGE).setValue(info.college)
@@ -179,5 +184,36 @@ class UserInfoRepo @Inject constructor() {
 
     fun isLogoutSuccess(): SingleLiveEvent<Boolean> {
         return logoutSuccess
+    }
+
+    fun getProfiles(input: String) {
+        val user = auth.currentUser
+        FirebaseDatabase.getInstance().getReference(USER_INFO_TABLE_NAME)
+            .orderByChild(COLUMN_FULL_NAME_LOWER_CASE)
+            .startAt(input.lowercase()).endAt((input + "\uf8ff").lowercase())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val profilesList = mutableListOf<UserInfo>()
+                    if (snapshot.exists()) {
+                        for (child in snapshot.children) {
+                            val userInfo = child.getValue(UserInfo::class.java)
+                            if (userInfo?.email != user?.email) {
+                                userInfo?.let { profilesList.add(it) }
+                            }
+                        }
+                    }
+                    Timer().schedule(Constants.DELAY_2_SEC) {
+                        profiles.postValue(profilesList)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    //no op
+                }
+            })
+    }
+
+    fun getProfilesLiveData(): SingleLiveEvent<List<UserInfo>> {
+        return profiles
     }
 }

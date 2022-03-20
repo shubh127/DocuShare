@@ -27,7 +27,7 @@ class UploadsListAdapter(var data: List<UploadInfo>, private val listener: Uploa
 
     @SuppressLint("NotifyDataSetChanged")
     fun setUploadsData(data: List<UploadInfo>) {
-        this.data = data
+        this.data = data.reversed()
         notifyDataSetChanged()
     }
 }

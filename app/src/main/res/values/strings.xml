@@ -76,4 +76,8 @@
     <string name="mail_subject">This was sent from App</string>
     <string name="extra_text_mail">\"Type your queries here...!!! We\'ll get back to you as soon as we can...!!!THANKS !!! \"</string>
     <string name="email_via">Send Email Via</string>
+    <string name="enter_at_least_3_characters_to_get_search_results">Enter at least 3 characters to get search results!!!</string>
+    <string name="no_results">There are no results matching to your search!!!</string>
+    <string name="college_name">College/School name : </string>
+    <string name="na">NA</string>
 </resources>

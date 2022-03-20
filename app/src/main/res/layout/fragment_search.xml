@@ -13,10 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/search_background"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Enter text to search here" />
+        app:queryHint="Enter Name to search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_profile_list"
@@ -25,11 +26,26 @@
         android:layout_marginTop="@dimen/dp_10"
         android:divider="@color/black_transparent"
         android:dividerHeight="@dimen/dp_8"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sv_search"
         tools:itemCount="5"
         tools:listitem="@layout/search_list_child_view" />
+
+    <TextView
+        android:id="@+id/tv_msg"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dp_30"
+        android:text="@string/enter_at_least_3_characters_to_get_search_results"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
