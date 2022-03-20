@@ -92,11 +92,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_2"
-        android:layout_marginTop="@dimen/dp_8"
         android:gravity="center"
         android:text="@string/zero"
-        android:textSize="@dimen/sp_22"
+        android:textSize="@dimen/sp_30"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_followers_txt"
         app:layout_constraintEnd_toStartOf="@id/guideline_two"
         app:layout_constraintStart_toEndOf="@id/guideline_one"
         app:layout_constraintTop_toTopOf="@id/civ_display_picture" />
@@ -106,14 +106,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_2"
-        android:layout_marginTop="@dimen/dp_8"
         android:gravity="center"
         android:text="@string/followers"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="@id/civ_display_picture"
         app:layout_constraintEnd_toStartOf="@id/guideline_two"
         app:layout_constraintStart_toEndOf="@id/guideline_one"
-        app:layout_constraintTop_toBottomOf="@id/tv_followers_count" />
+        app:layout_constraintTop_toBottomOf="@id/tv_followers_count"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/tv_following_count"
@@ -123,8 +124,9 @@
         android:layout_marginTop="@dimen/dp_8"
         android:gravity="center"
         android:text="@string/zero"
-        android:textSize="@dimen/sp_22"
+        android:textSize="@dimen/sp_30"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_following_txt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline_two"
         app:layout_constraintTop_toTopOf="@id/civ_display_picture" />
@@ -134,11 +136,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_2"
-        android:layout_marginTop="@dimen/dp_8"
         android:gravity="center"
         android:text="@string/following"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="@id/civ_display_picture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline_two"
         app:layout_constraintTop_toBottomOf="@id/tv_following_count" />
@@ -147,19 +149,17 @@
         android:id="@+id/separator_vertical"
         android:layout_width="@dimen/dp_1"
         android:layout_height="@dimen/dp_0"
-        android:layout_marginVertical="@dimen/dp_6"
         android:background="@color/shadow"
-        app:layout_constraintBottom_toBottomOf="@id/civ_display_picture"
+        app:layout_constraintBottom_toBottomOf="@id/tv_followers_txt"
         app:layout_constraintEnd_toEndOf="@id/guideline_two"
         app:layout_constraintStart_toStartOf="@id/guideline_two"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
+        app:layout_constraintTop_toTopOf="@id/civ_display_picture" />
 
     <TextView
         android:id="@+id/btn_edit_profile"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_6"
         android:background="@color/edit_button_background"
         android:gravity="center"
         android:padding="@dimen/dp_10"
@@ -168,7 +168,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline_one"
-        app:layout_constraintTop_toBottomOf="@id/separator_vertical" />
+        app:layout_constraintTop_toBottomOf="@id/civ_display_picture" />
 
     <View
         android:id="@+id/separator_horizontal"
