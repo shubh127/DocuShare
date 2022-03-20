@@ -54,7 +54,7 @@ class ProfilePictureFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             binding.ibClose.id -> {
-                requireActivity().finish()
+                requireActivity().onBackPressed()
             }
         }
     }

@@ -95,7 +95,7 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             binding.ibBack.id -> {
-                requireActivity().finish()
+                requireActivity().onBackPressed()
             }
             binding.ibDownload.id -> {
                 startDownload()

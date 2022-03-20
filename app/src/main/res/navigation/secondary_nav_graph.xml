@@ -20,5 +20,12 @@
     <fragment
         android:id="@+id/othersProfileFragment"
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.OthersProfileFragment"
-        android:label="Other Profile" />
+        android:label="Other Profile" >
+        <action
+            android:id="@+id/action_othersProfileFragment_to_openFileFragment"
+            app:destination="@id/openFileFragment" />
+        <action
+            android:id="@+id/action_othersProfileFragment_to_profilePictureFragment"
+            app:destination="@id/profilePictureFragment" />
+    </fragment>
 </navigation>

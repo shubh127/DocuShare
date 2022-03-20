@@ -13,6 +13,7 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAM
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME_LOWER_CASE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_GENDER
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_PHONE
+import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.android.gms.tasks.Task
@@ -50,10 +51,11 @@ class UserInfoRepo @Inject constructor() {
                 if (it.isSuccessful) {
                     val user = auth.currentUser
                     val currentUserDb = databaseReference.child(user!!.uid)
+                    currentUserDb.child(USER_ID).setValue(user.uid)
                     currentUserDb.child(COLUMN_FULL_NAME)
                         .setValue(userDetail.firstName + " " + userDetail.lastName)
                     currentUserDb.child(COLUMN_EMAIL)
-                        .setValue(userDetail.email)
+                        .setValue(userDetail.email!!.lowercase())
                     currentUserDb.child(COLUMN_FULL_NAME_LOWER_CASE)
                         .setValue((userDetail.firstName + " " + userDetail.lastName).lowercase())
                 } else {
@@ -88,7 +90,7 @@ class UserInfoRepo @Inject constructor() {
 
     fun doLogin(email: String, password: String) {
         auth.signInWithEmailAndPassword(
-            email, password
+            email.lowercase(), password
         ).addOnCompleteListener {
             isLoginSuccess.value = it.isSuccessful
             if (!it.isSuccessful) {
@@ -114,6 +116,7 @@ class UserInfoRepo @Inject constructor() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val info = UserInfo()
+                    info.userID = snapshot.child(USER_ID).value.toString()
                     info.displayPicture = snapshot.child(COLUMN_DISPLAY_PICTURE).value.toString()
                     info.fullName = snapshot.child(COLUMN_FULL_NAME).value.toString()
                     info.gender = snapshot.child(COLUMN_GENDER).value.toString()
@@ -136,6 +139,7 @@ class UserInfoRepo @Inject constructor() {
         val user = auth.currentUser
         val fileDb =
             databaseReference.child(user!!.uid)
+        fileDb.child(USER_ID).setValue(user.uid)
         fileDb.child(COLUMN_DISPLAY_PICTURE).setValue(info.displayPicture)
         fileDb.child(COLUMN_FULL_NAME).setValue(info.fullName)
         fileDb.child(COLUMN_FULL_NAME_LOWER_CASE).setValue(info.fullName.lowercase())

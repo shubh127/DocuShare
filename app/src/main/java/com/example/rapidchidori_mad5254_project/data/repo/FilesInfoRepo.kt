@@ -71,11 +71,15 @@ class FilesInfoRepo @Inject constructor() {
         return isUploadSuccess
     }
 
-    fun getUploads(): SingleLiveEvent<List<UploadInfo>> {
+    fun getUploads(id: String = ""): SingleLiveEvent<List<UploadInfo>> {
+        var userId = id
         val user = auth.currentUser
+        if (id.isEmpty()) {
+            userId= user!!.uid
+        }
         FirebaseDatabase.getInstance().getReference(FILE_INFO_TABLE_NAME)
             .orderByChild(USER_ID)
-            .equalTo(user?.uid).addValueEventListener(object : ValueEventListener {
+            .equalTo(userId).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val uploads = mutableListOf<UploadInfo>()
                     if (snapshot.exists()) {
@@ -92,6 +96,10 @@ class FilesInfoRepo @Inject constructor() {
                 }
             })
 
+        return uploadsData
+    }
+
+    fun getUploadsLiveData(): SingleLiveEvent<List<UploadInfo>> {
         return uploadsData
     }
 

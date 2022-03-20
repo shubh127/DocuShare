@@ -347,6 +347,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
 
     private fun updateDataOnFirebase(imageURL: String) {
         val info = UserInfo(
+            "",
             imageURL,
             binding.tvFullName.text.toString(),
             getGender(),
