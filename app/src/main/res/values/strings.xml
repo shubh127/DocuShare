@@ -71,13 +71,24 @@
     <string name="share_msg_body">Tired of copying notes the old way ? Download SoftNotes here: ***link*** and share notes over internet</string>
     <string name="share_subject">SoftNotes Invitation</string>
     <string name="opening_market">Opening market</string>
-    <string name="help_msg">Sorry !!! Cannot help you at the movement...!!!</string>
+    <string name="help_msg">Sorry !!! Cannot help you at the movement…!!!</string>
     <string name="mailto">mailto:</string>
     <string name="mail_subject">This was sent from App</string>
-    <string name="extra_text_mail">\"Type your queries here...!!! We\'ll get back to you as soon as we can...!!!THANKS !!! \"</string>
+    <string name="extra_text_mail">\"Type your queries here…!!! We\'ll get back to you as soon as we can…!!!THANKS !!! \"</string>
     <string name="email_via">Send Email Via</string>
     <string name="enter_at_least_3_characters_to_get_search_results">Enter at least 3 characters to get search results!!!</string>
     <string name="no_results">There are no results matching to your search!!!</string>
     <string name="college_name">College/School name : </string>
-    <string name="na">NA</string>
+    <string name="follow">Follow</string>
+    <string name="date_of_birth">Date of birth -</string>
+    <string name="gender_">Gender -</string>
+    <string name="college">College -</string>
+    <string name="phone_number_">Phone No -</string>
+    <string name="share_with_friends">Share with friends</string>
+    <string name="rate_us">Rate us</string>
+    <string name="help">Help</string>
+    <string name="write_to_us">Write to us</string>
+    <string name="logout">Logout</string>
+    <string name="no_uploads_other">The Person hasnot uploaded anything yet!!!\n Please check back later</string>
+    <string name="not_mentioned">Not Mentioned</string>
 </resources>

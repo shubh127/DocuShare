@@ -8,6 +8,7 @@ import com.example.rapidchidori_mad5254_project.databinding.ActivitySecondaryBin
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OTHER_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_PROFILE_PICTURE
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,20 +40,20 @@ class SecondaryActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val inflater = navController.navInflater
         val graph = inflater.inflate(R.navigation.secondary_nav_graph)
-
         when (fragmentType) {
             FRAGMENT_TYPE_OPEN_FILE -> {
                 graph.setStartDestination(R.id.openFileFragment)
-                navHostFragment.navController.setGraph(graph, intent?.extras)
             }
             FRAGMENT_TYPE_PROFILE_PICTURE -> {
                 graph.setStartDestination(R.id.profilePictureFragment)
-                navHostFragment.navController.setGraph(graph, intent?.extras)
             }
             FRAGMENT_TYPE_EDIT_PROFILE -> {
                 graph.setStartDestination(R.id.editProfileFragment)
-                navHostFragment.navController.graph = graph
+            }
+            FRAGMENT_TYPE_OTHER_PROFILE -> {
+                graph.setStartDestination(R.id.othersProfileFragment)
             }
         }
+        navHostFragment.navController.setGraph(graph, intent?.extras)
     }
 }

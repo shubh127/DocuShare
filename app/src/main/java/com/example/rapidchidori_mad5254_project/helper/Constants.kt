@@ -55,4 +55,5 @@ object Constants {
     const val FRAGMENT_TYPE_EDIT_PROFILE = "editProfile"
     const val FRAGMENT_TYPE_PROFILE_PICTURE = "profilePicture"
     const val FRAGMENT_TYPE_OPEN_FILE = "openFile"
+    const val FRAGMENT_TYPE_OTHER_PROFILE = "otherProfle"
 }

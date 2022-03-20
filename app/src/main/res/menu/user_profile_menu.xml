@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/share_with_friends"
-        android:title="Share with friends"
+        android:title="@string/share_with_friends"
         app:showAsAction="never" />
     <item
         android:id="@+id/rate_us"
-        android:title="Rate us"
+        android:title="@string/rate_us"
         app:showAsAction="never" />
     <item
         android:id="@+id/help"
-        android:title="Help"
+        android:title="@string/help"
         app:showAsAction="never" />
     <item
         android:id="@+id/write_to_us"
-        android:title="Write to us"
+        android:title="@string/write_to_us"
         app:showAsAction="never" />
     <item
         android:id="@+id/logout"
-        android:title="Logout"
+        android:title="@string/logout"
         app:showAsAction="never" />
 </menu>

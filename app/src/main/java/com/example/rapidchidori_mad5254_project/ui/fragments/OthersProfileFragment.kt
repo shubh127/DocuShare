@@ -1,60 +1,60 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
+import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.rapidchidori_mad5254_project.R
+import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
+import com.example.rapidchidori_mad5254_project.databinding.FragmentOthersProfileBinding
+import com.example.rapidchidori_mad5254_project.helper.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [OthersProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class OthersProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding: FragmentOthersProfileBinding
+    private var data: UserInfo? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_others_profile, container, false)
+    ): View {
+        binding = FragmentOthersProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment OthersProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OthersProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configViews()
+    }
+
+    private fun configViews() {
+        data = arguments?.getParcelable(Constants.USER_INFO_TABLE_NAME)
+
+        binding.tvUserName.apply {
+            text = data?.fullName
+            typeface = Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
+        }
+        binding.tvName.text = data?.fullName
+        binding.tvEmail.text = data?.email
+        data?.dob?.let { checkNullAndSetDataToView(binding.tvDobValue, it) }
+        data?.college?.let { checkNullAndSetDataToView(binding.tvCollegeValue, it) }
+        data?.phoneNo?.let { checkNullAndSetDataToView(binding.tvPhoneValue, it) }
+        data?.gender?.let { checkNullAndSetDataToView(binding.tvGenderValue, it) }
+    }
+
+    private fun checkNullAndSetDataToView(view: View, value: String) {
+        var txt = value
+        if (value.isEmpty() || value == Constants.NULL) {
+            txt = getString(R.string.not_mentioned)
+        }
+        if (view is TextView) {
+            view.text = txt
+        } else if (view is EditText) {
+            view.setText(txt)
+        }
     }
 }

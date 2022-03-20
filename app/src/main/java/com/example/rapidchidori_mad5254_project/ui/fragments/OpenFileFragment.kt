@@ -47,7 +47,7 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun configViews() {
-        data = arguments?.getParcelable<UploadInfo>(FILE_DATA)
+        data = arguments?.getParcelable(FILE_DATA)
         binding.tvFileName.apply {
             text = data?.title
             typeface = Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)

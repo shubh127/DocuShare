@@ -18,7 +18,7 @@ class UserProfilesViewHolder(private val binding: SearchListChildViewBinding) :
         binding.tvName.text = data.fullName
         binding.tvEmail.text = data.email
         if (data.college.isEmpty()) {
-            data.college = binding.tvCollege.context.getString(R.string.na)
+            data.college = binding.tvCollege.context.getString(R.string.not_mentioned)
         }
         binding.tvCollege.text =
             binding.tvCollege.context.getString(R.string.college_name) + data.college

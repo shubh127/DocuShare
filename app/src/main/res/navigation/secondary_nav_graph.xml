@@ -17,4 +17,8 @@
         android:id="@+id/profilePictureFragment"
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.ProfilePictureFragment"
         android:label="ProfilePictureFragment" />
+    <fragment
+        android:id="@+id/othersProfileFragment"
+        android:name="com.example.rapidchidori_mad5254_project.ui.fragments.OthersProfileFragment"
+        android:label="Other Profile" />
 </navigation>

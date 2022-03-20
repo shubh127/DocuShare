@@ -1,6 +1,7 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentSearchBinding
+import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.UserProfilesAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.UserProfileClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.SearchViewModel
@@ -114,6 +117,9 @@ class SearchFragment : Fragment(), UserProfileClickListener {
     }
 
     override fun onProfileClick(info: UserInfo) {
-        //todo open user Profile
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(Constants.USER_INFO_TABLE_NAME, info)
+        i.putExtra(Constants.FRAGMENT_TYPE, Constants.FRAGMENT_TYPE_OTHER_PROFILE)
+        startActivity(i)
     }
 }
