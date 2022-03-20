@@ -91,4 +91,15 @@
     <string name="logout">Logout</string>
     <string name="no_uploads_other">The Person hasnot uploaded anything yet!!!\n Please check back later</string>
     <string name="not_mentioned">Not Mentioned</string>
+    <string name="change_password">Change password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm">Confirm</string>
+    <string name="old_password_error">Old password cannot be empty or less than 6 digits!!!</string>
+    <string name="new_password_error">New password cannot be empty or less than 6 digits!!!</string>
+    <string name="confirm_password_error">Confirm password field cannot be empty or less than 6 digits!!!</string>
+    <string name="password_doesnot_match_error">New Passwords doesn\'t match!!! Please check</string>
+    <string name="password_updated_success">Password updated successfully</string>
+    <string name="password_updated_error">Password wasn\'t updated!!! Please try again later</string>
+    <string name="password_updated_error_login">Email Id or password was incorrect!!!</string>
 </resources>

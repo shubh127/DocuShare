@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentEditProfileBinding
@@ -83,6 +84,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
         binding.ibDone.setOnClickListener(this)
         binding.tvDobValue.setOnClickListener(this)
         binding.tvChangeImage.setOnClickListener(this)
+        binding.tvChangePassword.setOnClickListener(this)
 
         viewModel.getUserInfoFromFirebase().observe(viewLifecycleOwner) {
             hideLoader()
@@ -224,7 +226,20 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
             binding.tvDobValue.id -> {
                 openDatePicker()
             }
+            binding.tvChangePassword.id -> {
+                openChangePassWordScreen()
+            }
         }
+    }
+
+    private fun openChangePassWordScreen() {
+        val bundle = Bundle()
+        bundle.putString(Constants.EMAIL, binding.tvEmail.text.toString())
+        Navigation.findNavController(binding.root)
+            .navigate(
+                R.id.action_editProfileFragment_to_changePasswordFragment2,
+                bundle
+            )
     }
 
     private fun onImageChangeClick() {

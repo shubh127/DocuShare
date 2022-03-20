@@ -2,6 +2,7 @@ package com.example.rapidchidori_mad5254_project.data.repo
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
+import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants
@@ -17,7 +18,10 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -43,6 +47,7 @@ class UserInfoRepo @Inject constructor() {
     private val displayPictureURL: MutableLiveData<String> = MutableLiveData()
     private val logoutSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val profiles: SingleLiveEvent<List<UserInfo>> = SingleLiveEvent()
+    private val passUpdateLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -219,5 +224,30 @@ class UserInfoRepo @Inject constructor() {
 
     fun getProfilesLiveData(): SingleLiveEvent<List<UserInfo>> {
         return profiles
+    }
+
+    fun changePassword(email: String?, oldPass: String, newPass: String) {
+        val user: FirebaseUser = auth.currentUser!!
+        val credential: AuthCredential = EmailAuthProvider
+            .getCredential(email!!, oldPass)
+        user.reauthenticate(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    user.updatePassword(newPass)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                passUpdateLiveData.value = R.string.password_updated_success
+                            } else {
+                                passUpdateLiveData.value = R.string.password_updated_error
+                            }
+                        }
+                } else {
+                    passUpdateLiveData.value = R.string.password_updated_error_login
+                }
+            }
+    }
+
+    fun getPassUpdateLiveData(){
+        return passUpdateLiveData
     }
 }
