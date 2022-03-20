@@ -247,7 +247,7 @@ class UserInfoRepo @Inject constructor() {
             }
     }
 
-    fun getPassUpdateLiveData(){
+    fun getPassUpdateLiveData(): SingleLiveEvent<Int> {
         return passUpdateLiveData
     }
 }

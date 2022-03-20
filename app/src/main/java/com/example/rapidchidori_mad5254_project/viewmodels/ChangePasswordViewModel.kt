@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.repo.UserInfoRepo
 import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -29,5 +30,9 @@ class ChangePasswordViewModel @Inject constructor(
 
     fun changePassword(email: String?, oldPass: String, newPass: String) {
         repo.changePassword(email,oldPass,newPass)
+    }
+
+    fun getPassUpdateLiveData(): SingleLiveEvent<Int> {
+        return repo.getPassUpdateLiveData()
     }
 }
