@@ -80,4 +80,15 @@
     <string name="no_results">There are no results matching to your search!!!</string>
     <string name="college_name">College/School name : </string>
     <string name="na">NA</string>
+    <string name="follow">Follow</string>
+    <string name="date_of_birth">Date of birth -</string>
+    <string name="gender_">Gender -</string>
+    <string name="college">College -</string>
+    <string name="phone_number_">Phone No -</string>
+    <string name="share_with_friends">Share with friends</string>
+    <string name="rate_us">Rate us</string>
+    <string name="help">Help</string>
+    <string name="write_to_us">Write to us</string>
+    <string name="logout">Logout</string>
+    <string name="no_uploads_other">The Person hasnot uploaded anything yet!!!\n Please check back later</string>
 </resources>

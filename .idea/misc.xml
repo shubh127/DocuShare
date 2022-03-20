@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_open_file.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_others_profile.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_profile_picture.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.19610507246376813" />
@@ -45,6 +46,7 @@
         <entry key="app/src/main/res/layout/wall_uploads_child_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/menu/user_profile_menu.xml" value="0.23148148148148148" />
       </map>
     </option>
   </component>
