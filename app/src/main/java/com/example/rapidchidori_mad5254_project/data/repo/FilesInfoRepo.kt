@@ -75,7 +75,7 @@ class FilesInfoRepo @Inject constructor() {
         var userId = id
         val user = auth.currentUser
         if (id.isEmpty()) {
-            userId= user!!.uid
+            userId = user!!.uid
         }
         FirebaseDatabase.getInstance().getReference(FILE_INFO_TABLE_NAME)
             .orderByChild(USER_ID)

@@ -102,4 +102,5 @@
     <string name="password_updated_success">Password updated successfully</string>
     <string name="password_updated_error">Password wasn\'t updated!!! Please try again later</string>
     <string name="password_updated_error_login">Email Id or password was incorrect!!!</string>
+    <string name="unFollow">Unfollow</string>
 </resources>

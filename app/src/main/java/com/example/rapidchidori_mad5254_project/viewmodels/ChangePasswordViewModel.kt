@@ -29,7 +29,7 @@ class ChangePasswordViewModel @Inject constructor(
     }
 
     fun changePassword(email: String?, oldPass: String, newPass: String) {
-        repo.changePassword(email,oldPass,newPass)
+        repo.changePassword(email, oldPass, newPass)
     }
 
     fun getPassUpdateLiveData(): SingleLiveEvent<Int> {

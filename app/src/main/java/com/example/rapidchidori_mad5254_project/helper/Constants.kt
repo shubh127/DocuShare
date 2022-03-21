@@ -35,6 +35,12 @@ object Constants {
     const val TITLE = "title"
     const val URL = "url"
 
+    const val CONNECTION_INFO_TABLE_NAME = "ConnectionInfo"
+    const val C_ID = "cID"
+    const val FOLLOWER_ID = "followerID"
+    const val FOLLOWING_ID = "followingID"
+
+
     const val IMAGE_TYPE = "image/*"
 
     const val CAMERA_IMAGE_NAME = "SoftNote.jpg"

@@ -29,6 +29,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
     private val viewModel: OtherProfileViewModel by viewModels()
     private lateinit var mAdapter: UploadsListAdapter
     private var url = ""
+    private var uID = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,12 +66,25 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
 
     fun setUpListeners() {
         binding.civDisplayPicture.setOnClickListener(this)
+        binding.btnFollow.setOnClickListener(this)
+        viewModel.isFollowing().observe(viewLifecycleOwner) {
+            handleFollowBtn(it)
+        }
         viewModel.getUploadsData().observe(viewLifecycleOwner) {
             populateUploadList(it)
         }
     }
 
+    private fun handleFollowBtn(isFollowing: Boolean?) {
+        if (isFollowing == true) {
+            binding.btnFollow.text = getString(R.string.unFollow)
+        } else {
+            binding.btnFollow.text = getString(R.string.follow)
+        }
+    }
+
     private fun setDataToViews(userInfo: UserInfo) {
+        uID = userInfo.userID
         binding.tvUserName.apply {
             text = userInfo.fullName
             typeface = Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
@@ -82,6 +96,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
         checkNullAndSetDataToView(binding.tvPhoneValue, userInfo.phoneNo)
         checkNullAndSetDataToView(binding.tvGenderValue, userInfo.gender)
         showDisplayPicture(userInfo.displayPicture)
+        viewModel.getIsFollowing(userInfo.userID)
         viewModel.getUserUploads(userInfo.userID)
     }
 
@@ -143,7 +158,18 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
             binding.civDisplayPicture.id -> {
                 openProfilePicture()
             }
+            binding.btnFollow.id -> {
+                onFollowUnfollowClick()
+            }
         }
+    }
+
+    private fun onFollowUnfollowClick() {
+        viewModel.updateConnection(
+            binding.btnFollow.text == getString(R.string.follow),
+            uID
+        )
+        handleFollowBtn(binding.btnFollow.text == getString(R.string.follow))
     }
 
     private fun openProfilePicture() {
