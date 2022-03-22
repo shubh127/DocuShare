@@ -31,7 +31,7 @@ class WallListAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(data: List<WallListInfo>) {
         this.data = data
-        this.data.sortedBy { it.uploadTime }.asReversed()
+        this.data.sortedWith(compareByDescending { it.uploadTime })
         notifyDataSetChanged()
     }
 }
