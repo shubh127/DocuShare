@@ -37,4 +37,20 @@ class OtherProfileViewModel @Inject constructor(
     fun isFollowing(): SingleLiveEvent<Boolean> {
         return connectionRepo.isFollowing()
     }
+
+    fun getFollowingCount() {
+        connectionRepo.getFollowingCount()
+    }
+
+    fun getFollowingCountLiveData(): SingleLiveEvent<Int> {
+        return connectionRepo.getFollowingCountLiveData()
+    }
+
+    fun getFollowersCount() {
+        connectionRepo.getFollowersCount()
+    }
+
+    fun getFollowersCountLiveData(): SingleLiveEvent<Int> {
+        return connectionRepo.getFollowersCountLiveData()
+    }
 }

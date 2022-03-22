@@ -82,6 +82,8 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
                 false
             )
         }
+        showLoader()
+        viewModel.getUserInfoFromFirebase()
     }
 
     private fun setUpListeners() {
@@ -89,12 +91,20 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
         binding.civDisplayPicture.setOnClickListener(this)
         binding.ibMenu.setOnClickListener(this)
 
-        viewModel.getUserInfoFromFirebase().observe(viewLifecycleOwner) {
+        viewModel.getUserInfoLiveData().observe(viewLifecycleOwner) {
             setDataToViews(it)
         }
 
-        viewModel.getUploads().observe(viewLifecycleOwner) {
+        viewModel.getUploadsLiveData().observe(viewLifecycleOwner) {
             populateUploadList(it)
+        }
+
+        viewModel.getFollowingCountLiveData().observe(viewLifecycleOwner) {
+            updateFollowingCount(it)
+        }
+
+        viewModel.getFollowersCountLiveData().observe(viewLifecycleOwner) {
+            updateFollowersCount(it)
         }
 
         viewModel.onDataRemoved().observe(viewLifecycleOwner) {
@@ -111,6 +121,16 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
                 requireActivity().finish()
             }
         }
+    }
+
+    private fun updateFollowersCount(count: Int) {
+        binding.tvFollowersCount.text = count.toString()
+        hideLoader()
+    }
+
+    private fun updateFollowingCount(count: Int) {
+        binding.tvFollowingCount.text = count.toString()
+        viewModel.getFollowersCount()
     }
 
     private fun hideLoader() {
@@ -133,6 +153,7 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
                 .load(R.drawable.placeholder)
                 .into(binding.civDisplayPicture)
         }
+        viewModel.getUploads()
     }
 
     private fun populateUploadList(data: List<UploadInfo>) {
@@ -145,6 +166,7 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
             binding.rvUploads.visibility = View.VISIBLE
             mAdapter.setUploadsData(data)
         }
+        viewModel.getFollowingCount()
     }
 
     override fun onClick(view: View?) {

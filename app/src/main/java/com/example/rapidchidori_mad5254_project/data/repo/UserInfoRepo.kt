@@ -114,7 +114,7 @@ class UserInfoRepo @Inject constructor() {
             }
     }
 
-    fun getUserInfoFromFirebase(): SingleLiveEvent<UserInfo> {
+    fun getUserInfoFromFirebase(){
         val user = auth.currentUser
         val userReference = databaseReference.child(user?.uid!!)
         userReference.addValueEventListener(object : ValueEventListener {
@@ -137,7 +137,6 @@ class UserInfoRepo @Inject constructor() {
                 //no op
             }
         })
-        return userInfoData
     }
 
     fun updateDataOnFirebase(info: UserInfo) {
@@ -197,7 +196,7 @@ class UserInfoRepo @Inject constructor() {
 
     fun getProfiles(input: String) {
         val user = auth.currentUser
-        FirebaseDatabase.getInstance().getReference(USER_INFO_TABLE_NAME)
+        databaseReference
             .orderByChild(COLUMN_FULL_NAME_LOWER_CASE)
             .startAt(input.lowercase()).endAt((input + "\uf8ff").lowercase())
             .addValueEventListener(object : ValueEventListener {
@@ -249,5 +248,9 @@ class UserInfoRepo @Inject constructor() {
 
     fun getPassUpdateLiveData(): SingleLiveEvent<Int> {
         return passUpdateLiveData
+    }
+
+    fun getUserInfoLiveData(): SingleLiveEvent<UserInfo> {
+        return userInfoData
     }
 }

@@ -15,8 +15,12 @@ class EditProfileViewModel @Inject constructor(
     private val repo: UserInfoRepo,
 ) : ViewModel() {
 
-    fun getUserInfoFromFirebase(): SingleLiveEvent<UserInfo> {
-        return repo.getUserInfoFromFirebase()
+    fun getUserInfoFromFirebase() {
+        repo.getUserInfoFromFirebase()
+    }
+
+    fun getUserInfoLiveData(): SingleLiveEvent<UserInfo> {
+        return repo.getUserInfoLiveData()
     }
 
     fun updateDataOnFirebase(info: UserInfo) {

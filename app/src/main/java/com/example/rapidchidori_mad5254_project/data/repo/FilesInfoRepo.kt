@@ -71,7 +71,7 @@ class FilesInfoRepo @Inject constructor() {
         return isUploadSuccess
     }
 
-    fun getUploads(id: String = ""): SingleLiveEvent<List<UploadInfo>> {
+    fun getUploads(id: String = "") {
         var userId = id
         val user = auth.currentUser
         if (id.isEmpty()) {
@@ -95,8 +95,6 @@ class FilesInfoRepo @Inject constructor() {
                     //no op
                 }
             })
-
-        return uploadsData
     }
 
     fun getUploadsLiveData(): SingleLiveEvent<List<UploadInfo>> {

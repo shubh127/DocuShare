@@ -70,13 +70,14 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configViews()
-        showLoader()
         setUpListeners()
     }
 
     private fun configViews() {
         binding.tvEditProfileHead.typeface =
             Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
+        showLoader()
+        viewModel.getUserInfoFromFirebase()
     }
 
     private fun setUpListeners() {
@@ -86,7 +87,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
         binding.tvChangeImage.setOnClickListener(this)
         binding.tvChangePassword.setOnClickListener(this)
 
-        viewModel.getUserInfoFromFirebase().observe(viewLifecycleOwner) {
+        viewModel.getUserInfoLiveData().observe(viewLifecycleOwner) {
             hideLoader()
             setDataToViews(it)
         }

@@ -15,6 +15,8 @@ class ConnectionRepo @Inject constructor() {
     private val database = FirebaseDatabase.getInstance()
     private val databaseReference = database.reference.child(Constants.CONNECTION_INFO_TABLE_NAME)
     private val isFollowing: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    private val followingCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
+    private val followersCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
 
     fun addConnection(uID: String) {
         val cid = Calendar.getInstance().timeInMillis.toString()
@@ -54,5 +56,61 @@ class ConnectionRepo @Inject constructor() {
 
     fun isFollowing(): SingleLiveEvent<Boolean> {
         return isFollowing
+    }
+
+    fun getFollowingCount(userID: String = "") {
+        var uId = userID
+        if (uId.isEmpty()) {
+            val user = auth.currentUser
+            uId = user!!.uid
+        }
+        databaseReference
+            .orderByChild(Constants.FOLLOWER_ID)
+            .startAt(uId).endAt((uId + "\uf8ff"))
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var followingCount = 0
+                    if (snapshot.exists()) {
+                        for (child in snapshot.children) {
+                            followingCount++
+                        }
+                    }
+                    followingCountLiveData.value = followingCount
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    //no op
+                }
+            })
+    }
+
+    fun getFollowingCountLiveData(): SingleLiveEvent<Int> {
+        return followingCountLiveData
+    }
+
+    fun getFollowersCount() {
+        val user = auth.currentUser
+        databaseReference
+            .orderByChild(Constants.FOLLOWING_ID)
+            .startAt(user!!.uid).endAt((user.uid + "\uf8ff"))
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var followersCount = 0
+                    if (snapshot.exists()) {
+                        for (child in snapshot.children) {
+                            followersCount++
+                        }
+                    }
+                    followersCountLiveData.value = followersCount
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    //no op
+                }
+            })
+    }
+
+    fun getFollowersCountLiveData(): SingleLiveEvent<Int> {
+        return followersCountLiveData
     }
 }
