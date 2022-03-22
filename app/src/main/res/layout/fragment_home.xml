@@ -22,15 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_0"
         android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
         android:elevation="@dimen/dp_4"
         android:paddingVertical="@dimen/dp_6"
+        android:text="@string/softnotes"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_30"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/toolbar_view"
-        tools:text="Shubham Behal" />
+        app:layout_constraintTop_toTopOf="@id/toolbar_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_uploads"
@@ -39,12 +40,28 @@
         android:layout_margin="@dimen/dp_10"
         android:divider="@color/black_transparent"
         android:dividerHeight="@dimen/dp_8"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_view"
         tools:itemCount="5"
         tools:listitem="@layout/wall_uploads_child_view" />
+
+    <TextView
+        android:id="@+id/tv_no_uploads"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
+        android:text="@string/no_activity"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="italic"
+        android:typeface="serif"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_file_manager"

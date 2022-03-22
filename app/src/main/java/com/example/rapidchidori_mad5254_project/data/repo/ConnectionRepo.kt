@@ -1,5 +1,6 @@
-package com.example.rapidchidori_mad5254_project.data.models.response
+package com.example.rapidchidori_mad5254_project.data.repo
 
+import com.example.rapidchidori_mad5254_project.data.models.response.ConnectionInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,7 @@ class ConnectionRepo @Inject constructor() {
     private val isFollowing: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val followingCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     private val followersCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
+    private val followingIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
 
     fun addConnection(uID: String) {
         val cid = Calendar.getInstance().timeInMillis.toString()
@@ -112,5 +114,32 @@ class ConnectionRepo @Inject constructor() {
 
     fun getFollowersCountLiveData(): SingleLiveEvent<Int> {
         return followersCountLiveData
+    }
+
+    fun getAllFollowingIDs() {
+        val user = auth.currentUser
+        databaseReference
+            .orderByChild(Constants.FOLLOWER_ID)
+            .equalTo(user!!.uid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val followingIdsList = mutableListOf<String>()
+                    if (snapshot.exists()) {
+                        for (child in snapshot.children) {
+                            val userInfo = child.getValue(ConnectionInfo::class.java)
+                            followingIdsList.add(userInfo?.followingID!!)
+                        }
+                    }
+                    followingIdLiveData.value = followingIdsList
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    //no op
+                }
+            })
+    }
+
+    fun getFollowingIdLiveData(): SingleLiveEvent<List<String>> {
+        return followingIdLiveData
     }
 }

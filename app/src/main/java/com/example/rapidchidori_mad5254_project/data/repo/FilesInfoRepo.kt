@@ -2,6 +2,7 @@ package com.example.rapidchidori_mad5254_project.data.repo
 
 import android.net.Uri
 import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.WallListInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants.DELAY_2_SEC
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_ID
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_INFO_TABLE_NAME
@@ -29,6 +30,7 @@ class FilesInfoRepo @Inject constructor() {
     private val database = FirebaseDatabase.getInstance()
     private val databaseReference = database.reference.child(FILE_INFO_TABLE_NAME)
     private val uploadsData: SingleLiveEvent<List<UploadInfo>> = SingleLiveEvent()
+    private val wallListData: SingleLiveEvent<List<WallListInfo>> = SingleLiveEvent()
     private val onDataRemoved: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun uploadFileToDB(uri: Uri?, ext: String?, title: String) {
@@ -117,5 +119,38 @@ class FilesInfoRepo @Inject constructor() {
 
     fun onDataRemoved(): SingleLiveEvent<Boolean> {
         return onDataRemoved
+    }
+
+    fun getConnectionsUploadData(ids: List<String>) {
+        val data = mutableListOf<WallListInfo>()
+        for (id in ids) {
+            databaseReference.orderByChild(USER_ID).equalTo(id)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (child in dataSnapshot.children) {
+                                val uploadInfo = child.getValue(UploadInfo::class.java)
+                                if (uploadInfo != null) {
+                                    val wallInfo = WallListInfo()
+                                    wallInfo.userId = id
+                                    wallInfo.fileId = uploadInfo.fileId
+                                    wallInfo.fileType = uploadInfo.fileType
+                                    wallInfo.title = uploadInfo.title
+                                    wallInfo.url = uploadInfo.url
+                                    wallInfo.uploadTime = uploadInfo.fileId
+                                    data.add(wallInfo)
+                                }
+                            }
+                            wallListData.value = data
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
+    }
+
+    fun getWallListData(): SingleLiveEvent<List<WallListInfo>> {
+        return wallListData
     }
 }

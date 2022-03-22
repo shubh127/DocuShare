@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -29,17 +30,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rapidchidori_mad5254_project.R
+import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.WallListInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentHomeBinding
+import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.CAMERA_IMAGE_NAME
 import com.example.rapidchidori_mad5254_project.helper.Constants.IMAGE_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.PROVIDER_NAME
+import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
+import com.example.rapidchidori_mad5254_project.ui.adapters.WallListAdapter
+import com.example.rapidchidori_mad5254_project.ui.interfaces.WallListClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var animOpen: Animation
     private lateinit var animClose: Animation
@@ -51,6 +59,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var dialog: Dialog
     private val viewModel: HomeViewModel by viewModels()
+    private lateinit var mAdapter: WallListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +77,21 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configViews()
+        showLoader()
         setUpListeners()
     }
 
 
     private fun configViews() {
+        binding.tvAppName.typeface =
+            Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
+        mAdapter = WallListAdapter(mutableListOf(), this)
+        binding.rvUploads.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
         setUpAnimations()
+        viewModel.getUserName()
     }
 
     private fun setUpAnimations() {
@@ -89,6 +107,31 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.fabChooseFile.setOnClickListener(this)
         binding.fabGallery.setOnClickListener(this)
 
+        viewModel.getFullNameLiveData().observe(viewLifecycleOwner) {
+            binding.tvAppName.text = it
+            viewModel.getAllFollowingIDs()
+        }
+
+        viewModel.getFollowingIdLiveData().observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                showHideUploadsList(null)
+            } else {
+                viewModel.getConnectionsUploadData(it)
+            }
+        }
+
+        viewModel.getWallListData().observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                showHideUploadsList(null)
+            } else {
+                viewModel.adduserInfoToList(it)
+            }
+        }
+
+        viewModel.getWallListLiveData().observe(viewLifecycleOwner) {
+            showHideUploadsList(it)
+        }
+
         viewModel.getExceptionInfo().observe(viewLifecycleOwner) {
             onUpload(it)
         }
@@ -97,6 +140,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
             if (it) {
                 onUpload(getString(R.string.document_upload_successful))
             }
+        }
+    }
+
+    private fun showHideUploadsList(list: List<WallListInfo>?) {
+        hideLoader()
+        if (list.isNullOrEmpty()) {
+            binding.tvNoUploads.visibility = View.VISIBLE
+            binding.rvUploads.visibility = View.GONE
+        } else {
+            binding.tvNoUploads.visibility = View.GONE
+            binding.rvUploads.visibility = View.VISIBLE
+            mAdapter.updateData(list)
         }
     }
 
@@ -303,5 +358,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun Uri.getFileExtension(context: Context): String? {
         return MimeTypeMap.getSingleton()
             .getExtensionFromMimeType(context.contentResolver.getType(this))
+    }
+
+    override fun onItemClick(data: WallListInfo) {
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(
+            Constants.FILE_DATA,
+            UploadInfo(data.url, data.fileType, data.title, data.fileId)
+        )
+        i.putExtra(Constants.FRAGMENT_TYPE, Constants.FRAGMENT_TYPE_OPEN_FILE)
+        startActivity(i)
     }
 }

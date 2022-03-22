@@ -30,6 +30,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_4"
             android:textSize="@dimen/sp_14"
             android:textStyle="italic|bold"
             app:layout_constraintEnd_toStartOf="@id/tv_time"
@@ -38,10 +39,11 @@
             tools:text="Shubham Behal uploaded a file recently" />
 
         <TextView
-            android:id="@+id/tv_file_nAme"
+            android:id="@+id/tv_file_name"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_2"
+            android:layout_marginEnd="@dimen/dp_4"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toStartOf="@id/tv_time"
@@ -64,6 +66,7 @@
             android:id="@+id/tv_time"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
             android:layout_marginEnd="@dimen/dp_10"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/sp_10"

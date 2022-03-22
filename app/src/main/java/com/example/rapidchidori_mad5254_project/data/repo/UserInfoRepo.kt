@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.WallListInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_COLLEGE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_PICTURE
@@ -48,6 +49,8 @@ class UserInfoRepo @Inject constructor() {
     private val logoutSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val profiles: SingleLiveEvent<List<UserInfo>> = SingleLiveEvent()
     private val passUpdateLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
+    private val wallList: SingleLiveEvent<List<WallListInfo>> = SingleLiveEvent()
+    private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -114,7 +117,7 @@ class UserInfoRepo @Inject constructor() {
             }
     }
 
-    fun getUserInfoFromFirebase(){
+    fun getUserInfoFromFirebase() {
         val user = auth.currentUser
         val userReference = databaseReference.child(user?.uid!!)
         userReference.addValueEventListener(object : ValueEventListener {
@@ -252,5 +255,50 @@ class UserInfoRepo @Inject constructor() {
 
     fun getUserInfoLiveData(): SingleLiveEvent<UserInfo> {
         return userInfoData
+    }
+
+    fun adduserInfoToList(list: List<WallListInfo>) {
+        for (wallListInfo in list) {
+            databaseReference.orderByChild(USER_ID).equalTo(wallListInfo.userId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (child in dataSnapshot.children) {
+                                val userInfo = child.getValue(UserInfo::class.java)
+                                if (userInfo != null) {
+                                    wallListInfo.userName = userInfo.fullName
+                                    wallListInfo.userImageUrl = userInfo.displayPicture
+                                }
+                            }
+                            wallList.value = list
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
+    }
+
+    fun getWallListData(): SingleLiveEvent<List<WallListInfo>> {
+        return wallList
+    }
+
+    fun getUserName() {
+        val user = auth.currentUser
+        val userReference = databaseReference.child(user?.uid!!)
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    fullName.value = snapshot.child(COLUMN_FULL_NAME).value.toString()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                //no op
+            }
+        })
+    }
+
+    fun getFullNameLiveData(): SingleLiveEvent<String> {
+        return fullName
     }
 }
