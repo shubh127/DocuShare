@@ -268,11 +268,11 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
         startActivity(i)
     }
 
-    override fun removeItem(fileId: String) {
+    override fun removeItem(fileId: Double) {
         showAlertDialog(fileId)
     }
 
-    private fun showAlertDialog(fileId: String) {
+    private fun showAlertDialog(fileId: Double) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
         builder.setTitle(getString(R.string.are_you_sure))
             .setCancelable(false)

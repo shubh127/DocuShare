@@ -174,7 +174,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
             )
     }
 
-    override fun removeItem(fileId: String) {
+    override fun removeItem(fileId: Double) {
         //no op
     }
 

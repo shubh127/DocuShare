@@ -103,7 +103,7 @@ class FilesInfoRepo @Inject constructor() {
         return uploadsData
     }
 
-    fun removeItemFromDatabase(fileId: String) {
+    fun removeItemFromDatabase(fileId: Double) {
         databaseReference.orderByChild(FILE_ID).equalTo(fileId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

@@ -33,7 +33,7 @@ class UserProfileViewModel @Inject constructor(
         return filesInfoRepo.getUploadsLiveData()
     }
 
-    fun removeItemFromDataBase(fileId: String) {
+    fun removeItemFromDataBase(fileId: Double) {
         filesInfoRepo.removeItemFromDatabase(fileId)
     }
 
