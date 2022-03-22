@@ -77,7 +77,6 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configViews()
-        showLoader()
         setUpListeners()
     }
 
@@ -91,6 +90,7 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
             layoutManager = LinearLayoutManager(context)
         }
         setUpAnimations()
+        showLoader()
         viewModel.getUserName()
     }
 
@@ -364,7 +364,7 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
         val i = Intent(requireActivity(), SecondaryActivity::class.java)
         i.putExtra(
             Constants.FILE_DATA,
-            UploadInfo(data.url, data.fileType, data.title, data.fileId)
+            UploadInfo(data.url, data.fileType, data.title, data.uploadTime)
         )
         i.putExtra(Constants.FRAGMENT_TYPE, Constants.FRAGMENT_TYPE_OPEN_FILE)
         startActivity(i)

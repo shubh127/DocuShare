@@ -8,5 +8,5 @@ data class UploadInfo(
     var url: String = "",
     var fileType: String = "",
     var title: String = "",
-    var fileId: String = ""
+    var fileId: Double = 0.0
 ) : Parcelable

@@ -11,6 +11,7 @@ import com.example.rapidchidori_mad5254_project.databinding.WallUploadsChildView
 import com.example.rapidchidori_mad5254_project.helper.AppUtils
 import com.example.rapidchidori_mad5254_project.ui.interfaces.WallListClickListener
 import com.squareup.picasso.Picasso
+import java.util.*
 
 
 class WallListViewHolder(private val binding: WallUploadsChildViewBinding) :
@@ -30,11 +31,11 @@ class WallListViewHolder(private val binding: WallUploadsChildViewBinding) :
         binding.root.setOnClickListener { listener.onItemClick(data) }
     }
 
-    private fun handleTimeView(uploadTime: String) {
+    private fun handleTimeView(uploadTime: Double) {
         val timeSince = DateUtils.getRelativeTimeSpanString(
             uploadTime.toLong(),
-            System.currentTimeMillis(),
-            DateUtils.MINUTE_IN_MILLIS
+            Calendar.getInstance().timeInMillis,
+            DateUtils.SECOND_IN_MILLIS
         ).toString()
         binding.tvTime.text = timeSince
     }

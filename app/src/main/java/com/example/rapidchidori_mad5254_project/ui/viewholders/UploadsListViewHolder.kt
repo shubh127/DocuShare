@@ -18,7 +18,7 @@ class UploadsListViewHolder(private val binding: UploadsChildViewBinding) :
         if (isOwner) {
             binding.ivDelete.visibility = View.VISIBLE
             binding.ivDelete.setOnClickListener {
-                listener.removeItem(data.fileId)
+                listener.removeItem(data.fileId.toString())
             }
         } else {
             binding.ivDelete.visibility = View.GONE

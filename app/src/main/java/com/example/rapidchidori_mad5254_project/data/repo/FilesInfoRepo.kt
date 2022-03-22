@@ -57,7 +57,7 @@ class FilesInfoRepo @Inject constructor() {
             val user = auth.currentUser
             val fileDb =
                 databaseReference.child(Calendar.getInstance().timeInMillis.toString())
-            fileDb.child(FILE_ID).setValue(Calendar.getInstance().timeInMillis.toString())
+            fileDb.child(FILE_ID).setValue(Calendar.getInstance().timeInMillis)
             fileDb.child(USER_ID).setValue(user?.uid)
             fileDb.child(FILE_TYPE).setValue(fileExt?.replace("/", ""))
             fileDb.child(TITLE).setValue(title)
@@ -130,19 +130,18 @@ class FilesInfoRepo @Inject constructor() {
                         if (dataSnapshot.exists()) {
                             for (child in dataSnapshot.children) {
                                 val uploadInfo = child.getValue(UploadInfo::class.java)
-                                if (uploadInfo != null) {
-                                    val wallInfo = WallListInfo()
-                                    wallInfo.userId = id
-                                    wallInfo.fileId = uploadInfo.fileId
-                                    wallInfo.fileType = uploadInfo.fileType
-                                    wallInfo.title = uploadInfo.title
-                                    wallInfo.url = uploadInfo.url
-                                    wallInfo.uploadTime = uploadInfo.fileId
-                                    data.add(wallInfo)
-                                }
+                                val wallInfo = WallListInfo()
+                                wallInfo.userId = id
+                                wallInfo.fileId = uploadInfo?.fileId.toString()
+                                wallInfo.fileType = uploadInfo?.fileType.toString()
+                                wallInfo.title = uploadInfo?.title.toString()
+                                wallInfo.url = uploadInfo?.url.toString()
+                                wallInfo.uploadTime = uploadInfo?.fileId!!
+                                data.add(wallInfo)
                             }
                             wallListData.value = data
                         }
+                        wallListData.value = data
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {}

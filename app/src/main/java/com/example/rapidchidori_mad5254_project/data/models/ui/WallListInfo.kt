@@ -8,5 +8,5 @@ data class WallListInfo(
     var userId: String = "",
     var userName: String = "",
     var userImageUrl: String = "",
-    var uploadTime: String = ""
+    var uploadTime: Double = 0.0
 )
