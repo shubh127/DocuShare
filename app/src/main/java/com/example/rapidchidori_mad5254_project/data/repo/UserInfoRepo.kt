@@ -119,9 +119,14 @@ class UserInfoRepo @Inject constructor() {
             }
     }
 
-    fun getUserInfoFromFirebase() {
-        val user = auth.currentUser
-        val userReference = databaseReference.child(user?.uid!!)
+    fun getUserInfoFromFirebase(uid: String = "") {
+        var id = uid
+        if (id.isEmpty()) {
+            val user = auth.currentUser
+            id = user?.uid!!
+        }
+
+        val userReference = databaseReference.child(id)
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {

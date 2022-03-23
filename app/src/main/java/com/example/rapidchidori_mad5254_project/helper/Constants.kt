@@ -17,7 +17,6 @@ object Constants {
     const val EMAIL = " shubh.behal76@gmail.com"
     const val INTENT_TYPE_MAIL = "message/rfc822"
 
-
     const val USER_INFO_TABLE_NAME = "UserInfo"
     const val COLUMN_DISPLAY_PICTURE = "displayPicture"
     const val COLUMN_FULL_NAME = "fullName"

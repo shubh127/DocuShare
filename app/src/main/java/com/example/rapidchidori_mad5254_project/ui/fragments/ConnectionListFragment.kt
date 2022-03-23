@@ -1,6 +1,7 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -16,6 +17,9 @@ import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.FragmentConnectionListBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
+import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.ConnectionListAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.ConnectionClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.ConnectionListViewModel
@@ -93,5 +97,12 @@ class ConnectionListFragment : Fragment(), View.OnClickListener, ConnectionClick
         if (dialog.isShowing) {
             dialog.dismiss()
         }
+    }
+
+    override fun onConnectionClick(userID: String) {
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(USER_ID, userID)
+        i.putExtra(FRAGMENT_TYPE, Constants.FRAGMENT_TYPE_OTHER_PROFILE)
+        startActivity(i)
     }
 }

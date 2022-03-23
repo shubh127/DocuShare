@@ -21,6 +21,7 @@ import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentOthersProfileBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
 import com.example.rapidchidori_mad5254_project.ui.adapters.UploadsListAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.UploadsClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.OtherProfileViewModel
@@ -66,13 +67,17 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
         data?.let {
             setDataToViews(it)
         } ?: run {
-            //todo handle null data case
+           viewModel.getUserInfo(arguments?.getString(USER_ID))
         }
     }
 
     fun setUpListeners() {
         binding.civDisplayPicture.setOnClickListener(this)
         binding.btnFollow.setOnClickListener(this)
+        viewModel.getUserInfoLiveData().observe(viewLifecycleOwner) {
+            setDataToViews(it)
+        }
+
         viewModel.isFollowing().observe(viewLifecycleOwner) {
             handleFollowBtn(it)
         }

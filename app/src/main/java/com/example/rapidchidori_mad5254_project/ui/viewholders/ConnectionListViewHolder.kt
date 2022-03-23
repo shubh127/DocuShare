@@ -15,6 +15,8 @@ class ConnectionListViewHolder(private val binding: ConnectionListChildViewBindi
     fun bind(data: ConnectionsListInfo, listener: ConnectionClickListener) {
         binding.tvName.text = data.fullName
         handleProfilePictureView(data.displayPicture)
+
+        binding.root.setOnClickListener { listener.onConnectionClick(data.userID) }
     }
 
     private fun handleProfilePictureView(url: String) {
