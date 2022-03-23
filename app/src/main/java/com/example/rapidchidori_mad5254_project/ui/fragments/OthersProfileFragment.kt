@@ -67,7 +67,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
         data?.let {
             setDataToViews(it)
         } ?: run {
-           viewModel.getUserInfo(arguments?.getString(USER_ID))
+            viewModel.getUserInfo(arguments?.getString(USER_ID))
         }
     }
 
