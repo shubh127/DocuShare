@@ -61,5 +61,10 @@ object Constants {
     const val FRAGMENT_TYPE_EDIT_PROFILE = "editProfile"
     const val FRAGMENT_TYPE_PROFILE_PICTURE = "profilePicture"
     const val FRAGMENT_TYPE_OPEN_FILE = "openFile"
-    const val FRAGMENT_TYPE_OTHER_PROFILE = "otherProfle"
+    const val FRAGMENT_TYPE_OTHER_PROFILE = "otherProfile"
+    const val FRAGMENT_TYPE_CONNECTION = "connection"
+
+    const val CONNECTION_TYPE = "connectionType"
+    const val CONNECTION_TYPE_FOLLOWER = "Followers"
+    const val CONNECTION_TYPE_FOLLOWING = "Following"
 }

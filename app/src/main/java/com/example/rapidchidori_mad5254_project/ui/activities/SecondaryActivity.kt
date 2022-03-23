@@ -6,6 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.databinding.ActivitySecondaryBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_CONNECTION
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OTHER_PROFILE
@@ -52,6 +53,9 @@ class SecondaryActivity : AppCompatActivity() {
             }
             FRAGMENT_TYPE_OTHER_PROFILE -> {
                 graph.setStartDestination(R.id.othersProfileFragment)
+            }
+            FRAGMENT_TYPE_CONNECTION -> {
+                graph.setStartDestination(R.id.connectionListFragment)
             }
         }
         navHostFragment.navController.setGraph(graph, intent?.extras)

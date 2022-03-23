@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
 import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
+import com.example.rapidchidori_mad5254_project.data.models.ui.ConnectionsListInfo
 import com.example.rapidchidori_mad5254_project.data.models.ui.WallListInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_COLLEGE
@@ -51,6 +52,7 @@ class UserInfoRepo @Inject constructor() {
     private val passUpdateLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     private val wallList: SingleLiveEvent<List<WallListInfo>> = SingleLiveEvent()
     private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
+    private val connectionsList: SingleLiveEvent<List<ConnectionsListInfo>> = SingleLiveEvent()
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -292,6 +294,7 @@ class UserInfoRepo @Inject constructor() {
                     fullName.value = snapshot.child(COLUMN_FULL_NAME).value.toString()
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 //no op
             }
@@ -300,5 +303,37 @@ class UserInfoRepo @Inject constructor() {
 
     fun getFullNameLiveData(): SingleLiveEvent<String> {
         return fullName
+    }
+
+    fun getAdditionalData(ids: List<String>) {
+        val list = mutableListOf<ConnectionsListInfo>()
+        for (id in ids) {
+            databaseReference.orderByChild(USER_ID).equalTo(id)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (child in dataSnapshot.children) {
+                                val userInfo = child.getValue(UserInfo::class.java)
+                                if (userInfo != null) {
+                                    list.add(
+                                        ConnectionsListInfo(
+                                            id,
+                                            userInfo.displayPicture,
+                                            userInfo.fullName
+                                        )
+                                    )
+                                }
+                            }
+                            connectionsList.value = list
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
+    }
+
+    fun getConnectionListLiveData(): SingleLiveEvent<List<ConnectionsListInfo>> {
+        return connectionsList
     }
 }

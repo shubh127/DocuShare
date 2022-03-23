@@ -2,6 +2,7 @@ package com.example.rapidchidori_mad5254_project.data.repo
 
 import com.example.rapidchidori_mad5254_project.data.models.response.ConnectionInfo
 import com.example.rapidchidori_mad5254_project.helper.Constants
+import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE_FOLLOWER
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -19,6 +20,8 @@ class ConnectionRepo @Inject constructor() {
     private val followingCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     private val followersCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     private val followingIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
+    private val connectionIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
+
 
     fun addConnection(uID: String) {
         val cid = Calendar.getInstance().timeInMillis.toString()
@@ -141,5 +144,40 @@ class ConnectionRepo @Inject constructor() {
 
     fun getFollowingIdLiveData(): SingleLiveEvent<List<String>> {
         return followingIdLiveData
+    }
+
+    fun getConnectionIds(connectionType: String) {
+        var conType = Constants.FOLLOWER_ID
+        if (connectionType == CONNECTION_TYPE_FOLLOWER) {
+            conType = Constants.FOLLOWING_ID
+        }
+        val user = auth.currentUser
+        databaseReference
+            .orderByChild(conType)
+            .equalTo(user!!.uid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val connectionIdsList = mutableListOf<String>()
+                    if (snapshot.exists()) {
+                        for (child in snapshot.children) {
+                            val userInfo = child.getValue(ConnectionInfo::class.java)
+                            if (connectionType == CONNECTION_TYPE_FOLLOWER) {
+                                connectionIdsList.add(userInfo?.followerID!!)
+                            } else {
+                                connectionIdsList.add(userInfo?.followingID!!)
+                            }
+                        }
+                    }
+                    connectionIdLiveData.value = connectionIdsList
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    //no op
+                }
+            })
+    }
+
+    fun getConnectionIdLiveData(): SingleLiveEvent<List<String>> {
+        return connectionIdLiveData
     }
 }

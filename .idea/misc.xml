@@ -19,10 +19,12 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_other_info.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_secondary.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/connection_list_child_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_a.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_b.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_c.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_connection_list.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_entry.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_forgot_password.xml" value="0.1125" />

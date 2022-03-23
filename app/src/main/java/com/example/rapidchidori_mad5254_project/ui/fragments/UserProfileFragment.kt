@@ -27,9 +27,13 @@ import com.example.rapidchidori_mad5254_project.databinding.FragmentUserProfileB
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_DISPLAY_PICTURE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME
+import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE_FOLLOWER
+import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE_FOLLOWING
 import com.example.rapidchidori_mad5254_project.helper.Constants.EMAIL
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_DATA
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_CONNECTION
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_EDIT_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_PROFILE_PICTURE
@@ -90,6 +94,8 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
         binding.btnEditProfile.setOnClickListener(this)
         binding.civDisplayPicture.setOnClickListener(this)
         binding.ibMenu.setOnClickListener(this)
+        binding.followersView.setOnClickListener(this)
+        binding.followingsView.setOnClickListener(this)
 
         viewModel.getUserInfoLiveData().observe(viewLifecycleOwner) {
             setDataToViews(it)
@@ -180,7 +186,24 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
             binding.ibMenu.id -> {
                 openMenu()
             }
+            binding.followersView.id -> {
+                if (Integer.parseInt(binding.tvFollowersCount.text.toString()) > 0) {
+                    openConnectionsScreen(CONNECTION_TYPE_FOLLOWER)
+                }
+            }
+            binding.followingsView.id -> {
+                if (Integer.parseInt(binding.tvFollowingCount.text.toString()) > 0) {
+                    openConnectionsScreen(CONNECTION_TYPE_FOLLOWING)
+                }
+            }
         }
+    }
+
+    private fun openConnectionsScreen(connectionType: String) {
+        val i = Intent(requireActivity(), SecondaryActivity::class.java)
+        i.putExtra(CONNECTION_TYPE, connectionType)
+        i.putExtra(FRAGMENT_TYPE, FRAGMENT_TYPE_CONNECTION)
+        startActivity(i)
     }
 
     private fun openMenu() {

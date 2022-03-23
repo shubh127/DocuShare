@@ -49,4 +49,8 @@
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.ChangePasswordFragment"
         android:label="Change Password"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/connectionListFragment"
+        android:name="com.example.rapidchidori_mad5254_project.ui.fragments.ConnectionListFragment"
+        android:label="ConnectionListFragment" />
 </navigation>
