@@ -107,4 +107,5 @@
     <string name="named">Named- </string>
     <string name="dot">.</string>
     <string name="no_activity">There are no uploads by your connections or you might not be following anybody!!!\n \n Please do the needful</string>
+    <string name="no_connection">You don\'t have any connections!!!\n\n Please start to follow someone</string>
 </resources>

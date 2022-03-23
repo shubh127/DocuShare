@@ -52,5 +52,13 @@
     <fragment
         android:id="@+id/connectionListFragment"
         android:name="com.example.rapidchidori_mad5254_project.ui.fragments.ConnectionListFragment"
-        android:label="ConnectionListFragment" />
+        android:label="ConnectionListFragment">
+        <action
+            android:id="@+id/action_connectionListFragment_to_othersProfileFragment"
+            app:destination="@id/othersProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 </navigation>

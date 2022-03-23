@@ -1,7 +1,6 @@
 package com.example.rapidchidori_mad5254_project.ui.fragments
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -12,14 +11,14 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rapidchidori_mad5254_project.R
+import com.example.rapidchidori_mad5254_project.data.models.ui.ConnectionsListInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentConnectionListBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE
-import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
-import com.example.rapidchidori_mad5254_project.ui.activities.SecondaryActivity
 import com.example.rapidchidori_mad5254_project.ui.adapters.ConnectionListAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.ConnectionClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.ConnectionListViewModel
@@ -64,12 +63,27 @@ class ConnectionListFragment : Fragment(), View.OnClickListener, ConnectionClick
         binding.ibClose.setOnClickListener(this)
 
         viewModel.getConnectionIdLiveData().observe(viewLifecycleOwner) {
-            viewModel.getAdditionalData(it)
+            if (it.isNullOrEmpty()) {
+                showHideConnectionList(null)
+            } else {
+                viewModel.getAdditionalData(it)
+            }
         }
 
         viewModel.getConnectionListLiveData().observe(viewLifecycleOwner) {
-            hideLoader()
-            mAdapter.updateData(it)
+            showHideConnectionList(it)
+        }
+    }
+
+    private fun showHideConnectionList(connections: List<ConnectionsListInfo>?) {
+        hideLoader()
+        if (connections.isNullOrEmpty()) {
+            binding.tvNoConnections.visibility = View.VISIBLE
+            binding.rvConnections.visibility = View.GONE
+        } else {
+            binding.tvNoConnections.visibility = View.GONE
+            binding.rvConnections.visibility = View.VISIBLE
+            mAdapter.updateData(connections)
         }
     }
 
@@ -100,9 +114,12 @@ class ConnectionListFragment : Fragment(), View.OnClickListener, ConnectionClick
     }
 
     override fun onConnectionClick(userID: String) {
-        val i = Intent(requireActivity(), SecondaryActivity::class.java)
-        i.putExtra(USER_ID, userID)
-        i.putExtra(FRAGMENT_TYPE, Constants.FRAGMENT_TYPE_OTHER_PROFILE)
-        startActivity(i)
+        val bundle = Bundle()
+        bundle.putString(USER_ID, userID)
+        Navigation.findNavController(binding.root)
+            .navigate(
+                R.id.action_connectionListFragment_to_othersProfileFragment,
+                bundle
+            )
     }
 }
