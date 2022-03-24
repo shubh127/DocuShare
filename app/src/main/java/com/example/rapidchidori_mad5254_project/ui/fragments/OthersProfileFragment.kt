@@ -22,6 +22,10 @@ import com.example.rapidchidori_mad5254_project.data.models.response.UserInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentOthersProfileBinding
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
+import com.example.rapidchidori_mad5254_project.helper.notifications.ApiService
+import com.example.rapidchidori_mad5254_project.helper.notifications.Client
+import com.example.rapidchidori_mad5254_project.helper.notifications.Data
+import com.example.rapidchidori_mad5254_project.helper.notifications.NotificationSender
 import com.example.rapidchidori_mad5254_project.ui.adapters.UploadsListAdapter
 import com.example.rapidchidori_mad5254_project.ui.interfaces.UploadsClickListener
 import com.example.rapidchidori_mad5254_project.viewmodels.OtherProfileViewModel
@@ -36,6 +40,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
     private var url = ""
     private var uID = ""
     private lateinit var dialog: Dialog
+    private lateinit var apiService: ApiService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +57,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
     }
 
     private fun configViews() {
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(ApiService::class.java)
         mAdapter = UploadsListAdapter(mutableListOf(), this, false)
         binding.rvUploads.apply {
             adapter = mAdapter
@@ -200,6 +206,13 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
             uID
         )
         handleFollowBtn(binding.btnFollow.text == getString(R.string.follow))
+        sendNotification()
+    }
+
+    private fun sendNotification() {
+        var data = Data("Demo", "DEmo")
+        var sender: NotificationSender = NotificationSender(data, id.toString())
+//        apiService.sendNotification()
     }
 
     private fun openProfilePicture() {

@@ -1,6 +1,7 @@
 package com.example.rapidchidori_mad5254_project.data.repo
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
@@ -19,6 +20,8 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_PHONE
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
+import com.example.rapidchidori_mad5254_project.helper.notifications.Token
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
@@ -28,6 +31,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 import javax.inject.Inject
@@ -68,6 +72,7 @@ class UserInfoRepo @Inject constructor() {
                         .setValue(userDetail.email!!.lowercase())
                     currentUserDb.child(COLUMN_FULL_NAME_LOWER_CASE)
                         .setValue((userDetail.firstName + " " + userDetail.lastName).lowercase())
+                    updateToken()
                 } else {
                     registerException.value = it.exception?.message
                 }
@@ -106,6 +111,24 @@ class UserInfoRepo @Inject constructor() {
             if (!it.isSuccessful) {
                 loginException.value = it.exception?.message
             }
+            updateToken()
+        }
+    }
+
+    private fun updateToken() {
+        Timer().schedule(5000) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.d(">>>>>", task.exception?.message.toString())
+                    return@OnCompleteListener
+                }
+
+                task.result?.let {
+                    val user = auth.currentUser
+                    val currentUserDb = databaseReference.child(user!!.uid)
+                    currentUserDb.child("Token").setValue(Token(it))
+                }
+            })
         }
     }
 

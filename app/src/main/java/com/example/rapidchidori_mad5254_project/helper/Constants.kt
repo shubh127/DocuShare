@@ -66,4 +66,7 @@ object Constants {
     const val CONNECTION_TYPE = "connectionType"
     const val CONNECTION_TYPE_FOLLOWER = "Followers"
     const val CONNECTION_TYPE_FOLLOWING = "Following"
+
+    const val CHANNEL_ID = "notificationChannel"
+    const val CHANNEL_NAME = "com.example.rapidchidori_mad5254_project.helper"
 }

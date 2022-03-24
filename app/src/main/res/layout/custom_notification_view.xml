@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_10">
+
+    <ImageView
+        android:id="@+id/iv_app_logo"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:importantForAccessibility="no"
+        android:src="@drawable/icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_notification_title"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/iv_app_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_app_logo"
+        tools:text="Demo notification text" />
+
+    <TextView
+        android:id="@+id/tv_notification_message"
+        style="@style/TextAppearance.Material3.BodySmall"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        app:layout_constraintStart_toEndOf="@id/iv_app_logo"
+        app:layout_constraintTop_toBottomOf="@id/tv_notification_title"
+        tools:text="Demo notification Message" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
