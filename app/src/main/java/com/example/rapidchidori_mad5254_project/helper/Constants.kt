@@ -33,6 +33,7 @@ object Constants {
     const val FILE_TYPE = "fileType"
     const val TITLE = "title"
     const val URL = "url"
+    const val FCM_TOKEN = "token"
 
     const val CONNECTION_INFO_TABLE_NAME = "ConnectionInfo"
     const val C_ID = "cID"
@@ -68,5 +69,8 @@ object Constants {
     const val CONNECTION_TYPE_FOLLOWING = "Following"
 
     const val CHANNEL_ID = "notificationChannel"
-    const val CHANNEL_NAME = "com.example.rapidchidori_mad5254_project.helper"
+    const val NOTIFICATION_BASE_URL = "https://fcm.googleapis.com/"
+
+    const val CONNECTION_UPDATE = "Connection Updated"
+    const val FOLLOW_MSG = " has just followed you"
 }

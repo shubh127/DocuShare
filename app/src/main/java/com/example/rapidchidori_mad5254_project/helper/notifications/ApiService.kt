@@ -12,5 +12,5 @@ interface ApiService {
     )
 
     @POST("fcm/send")
-    fun sendNotification(@Body body: NotificationSender?): Call<MyResponse>?
+    fun sendNotification(@Body body: NotificationSender?): Call<NotificationApiResponse>?
 }

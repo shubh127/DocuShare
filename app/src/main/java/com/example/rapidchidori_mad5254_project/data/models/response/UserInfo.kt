@@ -12,6 +12,7 @@ data class UserInfo(
     var dob: String = "",
     var college: String = "",
     var phoneNo: String = "",
-    var email: String = ""
+    var email: String = "",
+    var fcmID: String = ""
 ) : Parcelable
 
