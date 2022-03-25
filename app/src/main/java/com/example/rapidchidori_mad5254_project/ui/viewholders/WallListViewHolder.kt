@@ -21,10 +21,13 @@ class WallListViewHolder(private val binding: WallUploadsChildViewBinding) :
     fun bind(data: WallListInfo, listener: WallListClickListener) {
         binding.ivFileType.setImageResource(AppUtils.getImageBasedOnFileType(data.fileType))
         binding.tvName.text =
-            """${data.userName}${binding.tvName.context.getString(R.string.uploaded_a_file)}"""
+            """${data.userName} ${binding.tvName.context.getString(R.string.uploaded_a_file)}"""
         binding.tvFileName.text =
-            binding.tvFileName.context.getString(R.string.named) +
-                    data.title + binding.tvFileName.context.getString(R.string.dot) + data.fileType
+            """${binding.tvFileName.context.getString(R.string.named)} ${data.title}${
+                binding.tvFileName.context.getString(
+                    R.string.dot
+                )
+            }${data.fileType}"""
         handleProfilePictureView(data.userImageUrl)
         handleTimeView(data.uploadTime)
 

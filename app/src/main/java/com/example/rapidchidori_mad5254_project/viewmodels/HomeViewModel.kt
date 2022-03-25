@@ -60,4 +60,8 @@ class HomeViewModel @Inject constructor(
     fun getFullNameLiveData(): SingleLiveEvent<String> {
         return userInfoRepo.getFullNameLiveData()
     }
+
+    fun sendUploadNotification(userName: String) {
+        connectionsRepo.sendUploadNotification(userName)
+    }
 }

@@ -35,6 +35,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
     private lateinit var mAdapter: UploadsListAdapter
     private var url = ""
     private var uID = ""
+    private var fcmId = ""
     private lateinit var dialog: Dialog
 
     override fun onCreateView(
@@ -114,6 +115,7 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
     }
 
     private fun setDataToViews(userInfo: UserInfo) {
+        fcmId = userInfo.fcmID
         uID = userInfo.userID
         binding.tvUserName.apply {
             text = userInfo.fullName
@@ -195,11 +197,15 @@ class OthersProfileFragment : Fragment(), UploadsClickListener, View.OnClickList
     }
 
     private fun onFollowUnfollowClick() {
+        val isFollowing = binding.btnFollow.text == getString(R.string.follow)
         viewModel.updateConnection(
-            binding.btnFollow.text == getString(R.string.follow),
+            isFollowing,
             uID
         )
-        handleFollowBtn(binding.btnFollow.text == getString(R.string.follow))
+        handleFollowBtn(isFollowing)
+        if (isFollowing) {
+            viewModel.sendConnectionNotification(fcmId)
+        }
     }
 
     private fun openProfilePicture() {

@@ -16,9 +16,15 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAM
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_FULL_NAME_LOWER_CASE
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_GENDER
 import com.example.rapidchidori_mad5254_project.helper.Constants.COLUMN_PHONE
+import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_UPDATE
+import com.example.rapidchidori_mad5254_project.helper.Constants.FCM_TOKEN
+import com.example.rapidchidori_mad5254_project.helper.Constants.FOLLOW_MSG
+import com.example.rapidchidori_mad5254_project.helper.Constants.NOTIFICATION_BASE_URL
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_ID
 import com.example.rapidchidori_mad5254_project.helper.Constants.USER_INFO_TABLE_NAME
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
+import com.example.rapidchidori_mad5254_project.helper.notifications.*
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
@@ -28,7 +34,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.schedule
@@ -53,6 +63,8 @@ class UserInfoRepo @Inject constructor() {
     private val wallList: SingleLiveEvent<List<WallListInfo>> = SingleLiveEvent()
     private val fullName: SingleLiveEvent<String> = SingleLiveEvent()
     private val connectionsList: SingleLiveEvent<List<ConnectionsListInfo>> = SingleLiveEvent()
+    private val apiService: ApiService =
+        Client.getClient(NOTIFICATION_BASE_URL).create(ApiService::class.java)
 
     fun registerUser(userDetail: UserDetailInfo) {
         auth.createUserWithEmailAndPassword(userDetail.email!!, userDetail.password!!)
@@ -68,6 +80,7 @@ class UserInfoRepo @Inject constructor() {
                         .setValue(userDetail.email!!.lowercase())
                     currentUserDb.child(COLUMN_FULL_NAME_LOWER_CASE)
                         .setValue((userDetail.firstName + " " + userDetail.lastName).lowercase())
+                    updateToken()
                 } else {
                     registerException.value = it.exception?.message
                 }
@@ -106,7 +119,22 @@ class UserInfoRepo @Inject constructor() {
             if (!it.isSuccessful) {
                 loginException.value = it.exception?.message
             }
+            updateToken()
         }
+    }
+
+    private fun updateToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+
+            task.result?.let {
+                val user = auth.currentUser
+                val currentUserDb = databaseReference.child(user!!.uid)
+                currentUserDb.child(FCM_TOKEN).setValue(it)
+            }
+        })
     }
 
     fun sendPasswordResetEmail(input: String) {
@@ -139,6 +167,7 @@ class UserInfoRepo @Inject constructor() {
                     info.college = snapshot.child(COLUMN_COLLEGE).value.toString()
                     info.phoneNo = snapshot.child(COLUMN_PHONE).value.toString()
                     info.email = snapshot.child(COLUMN_EMAIL).value.toString()
+                    info.fcmID = snapshot.child(FCM_TOKEN).value.toString()
                     userInfoData.value = info
                 }
             }
@@ -340,5 +369,38 @@ class UserInfoRepo @Inject constructor() {
 
     fun getConnectionListLiveData(): SingleLiveEvent<List<ConnectionsListInfo>> {
         return connectionsList
+    }
+
+    fun sendConnectionNotification(uID: String) {
+        val user = auth.currentUser
+        val userReference = databaseReference.child(user?.uid!!)
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.child(COLUMN_FULL_NAME).value.toString()
+                    val data = Data(
+                        CONNECTION_UPDATE,
+                        snapshot.child(COLUMN_FULL_NAME).value.toString() + FOLLOW_MSG
+                    )
+                    val sender = NotificationSender(data, uID)
+                    apiService.sendNotification(sender)?.enqueue(object : Callback<NotificationApiResponse?> {
+                        override fun onResponse(
+                            call: Call<NotificationApiResponse?>,
+                            response: Response<NotificationApiResponse?>
+                        ) {
+                            //no op
+                        }
+
+                        override fun onFailure(call: Call<NotificationApiResponse?>, t: Throwable) {
+                            //no op
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //no op
+            }
+        })
     }
 }

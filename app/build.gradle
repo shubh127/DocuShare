@@ -40,7 +40,6 @@ android {
 }
 
 dependencies {
-
     def core_version = "1.7.0"
     def app_compat_version = "1.4.1"
     def material_design_version = "1.5.0"
@@ -54,6 +53,8 @@ dependencies {
     def firebase_storage_version = "20.0.1"
     def circle_image_view_version = "3.1.0"
     def picasso_lib_version = "2.71828"
+    def fcm_version = "23.0.2"
+    def retrofit_version = "2.9.0"
 
     //androidx code library
     implementation "androidx.core:core-ktx:$core_version"
@@ -94,4 +95,10 @@ dependencies {
 
     //picasso lib to load images from URL
     implementation "com.squareup.picasso:picasso:$picasso_lib_version"
+
+    //firebase messaging dependency to send notification
+    implementation "com.google.firebase:firebase-messaging-ktx:$fcm_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 }
