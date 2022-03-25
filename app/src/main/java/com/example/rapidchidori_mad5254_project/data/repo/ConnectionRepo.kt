@@ -4,11 +4,15 @@ import com.example.rapidchidori_mad5254_project.data.models.response.ConnectionI
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.CONNECTION_TYPE_FOLLOWER
 import com.example.rapidchidori_mad5254_project.helper.SingleLiveEvent
+import com.example.rapidchidori_mad5254_project.helper.notifications.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
 
@@ -21,7 +25,8 @@ class ConnectionRepo @Inject constructor() {
     private val followersCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     private val followingIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
     private val connectionIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
-
+    private val apiService: ApiService =
+        Client.getClient(Constants.NOTIFICATION_BASE_URL).create(ApiService::class.java)
 
     fun addConnection(uID: String) {
         val cid = Calendar.getInstance().timeInMillis.toString()
@@ -179,5 +184,45 @@ class ConnectionRepo @Inject constructor() {
 
     fun getConnectionIdLiveData(): SingleLiveEvent<List<String>> {
         return connectionIdLiveData
+    }
+
+    fun sendUploadNotification(userName: String) {
+        val user = auth.currentUser
+        databaseReference
+            .orderByChild(Constants.FOLLOWING_ID)
+            .startAt(user!!.uid).endAt((user.uid + "\uf8ff"))
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (child in snapshot.children) {
+                        val userInfo = child.getValue(ConnectionInfo::class.java)
+                        callNotificationApi(userInfo?.followingID!!, userName)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    //no op
+                }
+            })
+    }
+
+    private fun callNotificationApi(connectionId: String, userName: String) {
+        val data = Data(
+            Constants.CONNECTION_ACTIVITY,
+            "Your Connection " + userName + "uploaded a file recently"
+        )
+        val sender = NotificationSender(data, connectionId)
+        apiService.sendNotification(sender)?.enqueue(object :
+            Callback<NotificationApiResponse?> {
+            override fun onResponse(
+                call: Call<NotificationApiResponse?>,
+                response: Response<NotificationApiResponse?>
+            ) {
+                //no op
+            }
+
+            override fun onFailure(call: Call<NotificationApiResponse?>, t: Throwable) {
+                //no op
+            }
+        })
     }
 }

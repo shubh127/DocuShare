@@ -74,4 +74,6 @@ object Constants {
 
     const val CONNECTION_UPDATE = "Connection Updated"
     const val FOLLOW_MSG = " has just followed you"
+
+    const val CONNECTION_ACTIVITY = "Connection Activity"
 }

@@ -139,6 +139,7 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
         viewModel.isUploadSuccess().observe(viewLifecycleOwner) {
             if (it) {
                 onUpload(getString(R.string.document_upload_successful))
+                viewModel.sendUploadNotification(binding.tvAppName.text.toString())
             }
         }
     }
