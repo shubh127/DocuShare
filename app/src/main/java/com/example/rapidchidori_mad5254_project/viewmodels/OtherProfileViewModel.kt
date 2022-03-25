@@ -65,7 +65,7 @@ class OtherProfileViewModel @Inject constructor(
         return userRepo.getUserInfoLiveData()
     }
 
-    fun sendConnectionNotification(uID: String) {
-        userRepo.sendConnectionNotification(uID)
+    fun sendConnectionNotification(fcmId: String) {
+        userRepo.sendConnectionNotification(fcmId)
     }
 }

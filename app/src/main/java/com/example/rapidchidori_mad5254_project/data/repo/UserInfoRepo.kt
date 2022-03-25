@@ -371,18 +371,19 @@ class UserInfoRepo @Inject constructor() {
         return connectionsList
     }
 
-    fun sendConnectionNotification(uID: String) {
+    fun sendConnectionNotification(fcmId: String) {
         val user = auth.currentUser
-        val userReference = databaseReference.child(user?.uid!!)
+        val id = user!!.uid
+        val userReference = databaseReference.child(id)
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    snapshot.child(COLUMN_FULL_NAME).value.toString()
                     val data = Data(
                         CONNECTION_UPDATE,
-                        snapshot.child(COLUMN_FULL_NAME).value.toString() + FOLLOW_MSG
+                        snapshot.child(COLUMN_FULL_NAME).value.toString() + FOLLOW_MSG,
+                        id
                     )
-                    val sender = NotificationSender(data, uID)
+                    val sender = NotificationSender(data, fcmId)
                     apiService.sendNotification(sender)
                         ?.enqueue(object : Callback<NotificationApiResponse?> {
                             override fun onResponse(

@@ -1,5 +1,6 @@
 package com.example.rapidchidori_mad5254_project.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -11,10 +12,12 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_E
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OPEN_FILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_OTHER_PROFILE
 import com.example.rapidchidori_mad5254_project.helper.Constants.FRAGMENT_TYPE_PROFILE_PICTURE
+import com.example.rapidchidori_mad5254_project.helper.Constants.IS_FROM_NOTIFICATION
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SecondaryActivity : AppCompatActivity() {
+    private lateinit var navHostFragment: NavHostFragment
     private lateinit var binding: ActivitySecondaryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +39,7 @@ class SecondaryActivity : AppCompatActivity() {
     }
 
     private fun openFragmentBasedOnFragmentType(fragmentType: String?) {
-        val navHostFragment = supportFragmentManager
+        navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         val inflater = navController.navInflater
@@ -59,5 +62,18 @@ class SecondaryActivity : AppCompatActivity() {
             }
         }
         navHostFragment.navController.setGraph(graph, intent?.extras)
+    }
+
+    override fun onBackPressed() {
+        if (intent.extras?.getBoolean(IS_FROM_NOTIFICATION) == true &&
+            navHostFragment.childFragmentManager.backStackEntryCount == 0
+        ) {
+            val i = Intent(this, LoginSignUpActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(i)
+            finish()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
