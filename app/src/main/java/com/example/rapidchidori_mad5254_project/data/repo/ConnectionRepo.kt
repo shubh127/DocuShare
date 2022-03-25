@@ -206,21 +206,39 @@ class ConnectionRepo @Inject constructor() {
     }
 
     private fun callNotificationApi(connectionId: String, userName: String) {
-        val data = Data(
-            Constants.CONNECTION_ACTIVITY,
-            "Your Connection " + userName + "uploaded a file recently"
-        )
-        val sender = NotificationSender(data, connectionId)
-        apiService.sendNotification(sender)?.enqueue(object :
-            Callback<NotificationApiResponse?> {
-            override fun onResponse(
-                call: Call<NotificationApiResponse?>,
-                response: Response<NotificationApiResponse?>
-            ) {
-                //no op
+
+
+        val user = auth.currentUser
+        val userReference =
+            database.reference.child(Constants.USER_INFO_TABLE_NAME).child(user?.uid!!)
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val data = Data(
+                        Constants.CONNECTION_ACTIVITY,
+                        "Your Connection " + userName + "uploaded a file recently"
+                    )
+                    val sender = NotificationSender(
+                        data,
+                        snapshot.child(Constants.FCM_TOKEN).value.toString()
+                    )
+                    apiService.sendNotification(sender)?.enqueue(object :
+                        Callback<NotificationApiResponse?> {
+                        override fun onResponse(
+                            call: Call<NotificationApiResponse?>,
+                            response: Response<NotificationApiResponse?>
+                        ) {
+                            //no op
+                        }
+
+                        override fun onFailure(call: Call<NotificationApiResponse?>, t: Throwable) {
+                            //no op
+                        }
+                    })
+                }
             }
 
-            override fun onFailure(call: Call<NotificationApiResponse?>, t: Throwable) {
+            override fun onCancelled(error: DatabaseError) {
                 //no op
             }
         })
