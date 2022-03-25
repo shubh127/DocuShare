@@ -69,6 +69,7 @@ object Constants {
     const val CONNECTION_TYPE_FOLLOWING = "Following"
 
     const val CHANNEL_ID = "notificationChannel"
+    const val CHANNEL_NAME = "SoftNotes"
     const val NOTIFICATION_BASE_URL = "https://fcm.googleapis.com/"
 
     const val CONNECTION_UPDATE = "Connection Updated"

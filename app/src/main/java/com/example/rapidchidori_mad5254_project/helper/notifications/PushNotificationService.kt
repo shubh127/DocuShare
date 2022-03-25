@@ -1,12 +1,18 @@
 package com.example.rapidchidori_mad5254_project.helper.notifications
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.rapidchidori_mad5254_project.R
+import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.CHANNEL_ID
+import com.example.rapidchidori_mad5254_project.helper.Constants.CHANNEL_NAME
 import com.example.rapidchidori_mad5254_project.ui.activities.LoginSignUpActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -37,11 +43,21 @@ class PushNotificationService : FirebaseMessagingService() {
         ).setSmallIcon(R.drawable.icon)
             .setContentTitle(title)
             .setContentText(msg)
-            .setStyle(NotificationCompat.BigTextStyle())
+            .setVibrate(longArrayOf(
+                Constants.DELAY_2_SEC,
+                Constants.DELAY_2_SEC,
+                Constants.DELAY_2_SEC,
+                Constants.DELAY_2_SEC
+            ))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-        val notificationManager = NotificationManagerCompat.from(this)
+            .setAutoCancel(false)
+        val notificationManager =getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel =
+                NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
         notificationManager.notify(0, builder.build())
     }
 }
