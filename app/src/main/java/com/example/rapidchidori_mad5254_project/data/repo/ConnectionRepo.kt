@@ -206,11 +206,8 @@ class ConnectionRepo @Inject constructor() {
     }
 
     private fun callNotificationApi(connectionId: String, userName: String) {
-
-
-        val user = auth.currentUser
         val userReference =
-            database.reference.child(Constants.USER_INFO_TABLE_NAME).child(user?.uid!!)
+            database.reference.child(Constants.USER_INFO_TABLE_NAME).child(connectionId)
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
