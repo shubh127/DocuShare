@@ -195,7 +195,7 @@ class ConnectionRepo @Inject constructor() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (child in snapshot.children) {
                         val userInfo = child.getValue(ConnectionInfo::class.java)
-                        callNotificationApi(userInfo?.followingID!!, userName)
+                        callNotificationApi(userInfo?.followerID!!, userName)
                     }
                 }
 
