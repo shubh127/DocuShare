@@ -188,7 +188,6 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
             StartActivityForResult()
         ) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
                     val file =
                         File(requireContext().externalCacheDir!!.absolutePath, CAMERA_IMAGE_NAME)
                     val uri: Uri = FileProvider.getUriForFile(
@@ -197,8 +196,6 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
                         file
                     )
                     getFileName(uri)
-                }
-
             }
         }
     }
