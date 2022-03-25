@@ -61,7 +61,17 @@ class HomeViewModel @Inject constructor(
         return userInfoRepo.getFullNameLiveData()
     }
 
-    fun sendUploadNotification(userName: String) {
-        connectionsRepo.sendUploadNotification(userName)
+    fun sendUploadNotification(userName: String, list: List<String>) {
+        for (id in list) {
+            userInfoRepo.sendUploadNotification(id, userName)
+        }
+    }
+
+    fun getConnectionList() {
+        connectionsRepo.getConnectionList()
+    }
+
+    fun getConnectionIdLiveData(): SingleLiveEvent<List<String>> {
+        return connectionsRepo.getConnectionIdLiveData()
     }
 }

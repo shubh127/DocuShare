@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.CHANNEL_ID
@@ -16,6 +15,7 @@ import com.example.rapidchidori_mad5254_project.helper.Constants.CHANNEL_NAME
 import com.example.rapidchidori_mad5254_project.ui.activities.LoginSignUpActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.util.*
 
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
@@ -43,21 +43,24 @@ class PushNotificationService : FirebaseMessagingService() {
         ).setSmallIcon(R.drawable.icon)
             .setContentTitle(title)
             .setContentText(msg)
-            .setVibrate(longArrayOf(
-                Constants.DELAY_2_SEC,
-                Constants.DELAY_2_SEC,
-                Constants.DELAY_2_SEC,
-                Constants.DELAY_2_SEC
-            ))
+            .setVibrate(
+                longArrayOf(
+                    Constants.DELAY_2_SEC,
+                    Constants.DELAY_2_SEC,
+                    Constants.DELAY_2_SEC,
+                    Constants.DELAY_2_SEC
+                )
+            )
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(pendingIntent)
             .setAutoCancel(false)
-        val notificationManager =getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(notificationChannel)
         }
-        notificationManager.notify(0, builder.build())
+        notificationManager.notify(Calendar.getInstance().timeInMillis.toInt(), builder.build())
     }
 }

@@ -383,7 +383,46 @@ class UserInfoRepo @Inject constructor() {
                         snapshot.child(COLUMN_FULL_NAME).value.toString() + FOLLOW_MSG
                     )
                     val sender = NotificationSender(data, uID)
-                    apiService.sendNotification(sender)?.enqueue(object : Callback<NotificationApiResponse?> {
+                    apiService.sendNotification(sender)
+                        ?.enqueue(object : Callback<NotificationApiResponse?> {
+                            override fun onResponse(
+                                call: Call<NotificationApiResponse?>,
+                                response: Response<NotificationApiResponse?>
+                            ) {
+                                //no op
+                            }
+
+                            override fun onFailure(
+                                call: Call<NotificationApiResponse?>,
+                                t: Throwable
+                            ) {
+                                //no op
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //no op
+            }
+        })
+    }
+
+    fun sendUploadNotification(connectionId: String, userName: String) {
+        val userReference = databaseReference.child(connectionId)
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val data = Data(
+                        Constants.CONNECTION_ACTIVITY,
+                        "Your Connection " + userName + "uploaded a file recently"
+                    )
+                    val sender = NotificationSender(
+                        data,
+                        snapshot.child(FCM_TOKEN).value.toString()
+                    )
+                    apiService.sendNotification(sender)?.enqueue(object :
+                        Callback<NotificationApiResponse?> {
                         override fun onResponse(
                             call: Call<NotificationApiResponse?>,
                             response: Response<NotificationApiResponse?>

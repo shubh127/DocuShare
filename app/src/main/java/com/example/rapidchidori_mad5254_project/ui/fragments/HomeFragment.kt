@@ -120,6 +120,10 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
             }
         }
 
+        viewModel.getConnectionIdLiveData().observe(viewLifecycleOwner) {
+            viewModel.sendUploadNotification(binding.tvAppName.text.toString(), it)
+        }
+
         viewModel.getWallListData().observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 showHideUploadsList(null)
@@ -139,7 +143,7 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
         viewModel.isUploadSuccess().observe(viewLifecycleOwner) {
             if (it) {
                 onUpload(getString(R.string.document_upload_successful))
-                viewModel.sendUploadNotification(binding.tvAppName.text.toString())
+                viewModel.getConnectionList()
             }
         }
     }
@@ -188,14 +192,14 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
             StartActivityForResult()
         ) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
-                    val file =
-                        File(requireContext().externalCacheDir!!.absolutePath, CAMERA_IMAGE_NAME)
-                    val uri: Uri = FileProvider.getUriForFile(
-                        requireContext(),
-                        requireContext().packageName.toString() + PROVIDER_NAME,
-                        file
-                    )
-                    getFileName(uri)
+                val file =
+                    File(requireContext().externalCacheDir!!.absolutePath, CAMERA_IMAGE_NAME)
+                val uri: Uri = FileProvider.getUriForFile(
+                    requireContext(),
+                    requireContext().packageName.toString() + PROVIDER_NAME,
+                    file
+                )
+                getFileName(uri)
             }
         }
     }
