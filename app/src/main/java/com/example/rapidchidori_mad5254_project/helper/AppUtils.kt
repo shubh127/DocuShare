@@ -34,6 +34,9 @@ class AppUtils {
                 Constants.FILE_TYPE_XLS -> {
                     return R.drawable.exel
                 }
+                Constants.FILE_TYPE_XLSX -> {
+                    return R.drawable.exel
+                }
                 Constants.FILE_TYPE_JPG -> {
                     return R.drawable.jpg
                 }
@@ -41,7 +44,7 @@ class AppUtils {
                     return R.drawable.png
                 }
                 else -> {
-                    return R.drawable.placeholder
+                    return R.drawable.video
                 }
             }
         }

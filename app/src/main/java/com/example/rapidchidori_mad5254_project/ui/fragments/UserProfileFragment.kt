@@ -94,6 +94,7 @@ class UserProfileFragment : Fragment(), View.OnClickListener, UploadsClickListen
         binding.btnEditProfile.setOnClickListener(this)
         binding.civDisplayPicture.setOnClickListener(this)
         binding.ibMenu.setOnClickListener(this)
+
         binding.followersView.setOnClickListener(this)
         binding.followingsView.setOnClickListener(this)
 

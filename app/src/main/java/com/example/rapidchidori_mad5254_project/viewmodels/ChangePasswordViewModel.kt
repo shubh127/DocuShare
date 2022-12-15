@@ -13,21 +13,6 @@ class ChangePasswordViewModel @Inject constructor(
     private val repo: UserInfoRepo
 ) : ViewModel() {
 
-    fun checkPasswordValidity(input: String): Int {
-        val password = input.trim()
-        return when {
-            password.isEmpty() -> {
-                R.string.empty_password
-            }
-            password.length < 6 -> {
-                R.string.small_password
-            }
-            else -> {
-                Constants.VALID_INPUT_ID
-            }
-        }
-    }
-
     fun changePassword(email: String?, oldPass: String, newPass: String) {
         repo.changePassword(email, oldPass, newPass)
     }

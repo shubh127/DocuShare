@@ -1,6 +1,7 @@
 package com.example.rapidchidori_mad5254_project.ui.viewholders
 
 import android.annotation.SuppressLint
+import android.text.Html
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -20,14 +21,14 @@ class WallListViewHolder(private val binding: WallUploadsChildViewBinding) :
     @SuppressLint("SetTextI18n")
     fun bind(data: WallListInfo, listener: WallListClickListener) {
         binding.ivFileType.setImageResource(AppUtils.getImageBasedOnFileType(data.fileType))
-        binding.tvName.text =
-            """${data.userName} ${binding.tvName.context.getString(R.string.uploaded_a_file)}"""
-        binding.tvFileName.text =
-            """${binding.tvFileName.context.getString(R.string.named)} ${data.title}${
-                binding.tvFileName.context.getString(
-                    R.string.dot
-                )
-            }${data.fileType}"""
+        binding.tvName.text = Html.fromHtml(
+            "<b>${data.userName}</b> ${binding.tvName.context.getString(R.string.uploaded_a_file)}"
+        )
+        binding.tvFileName.text = Html.fromHtml(
+            binding.tvFileName.context.getString(R.string.named) + " <b>" + data.title + binding.tvFileName.context.getString(
+                R.string.dot
+            ) + data.fileType + "</b>"
+        )
         handleProfilePictureView(data.userImageUrl)
         handleTimeView(data.uploadTime)
 

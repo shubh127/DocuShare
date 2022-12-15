@@ -10,8 +10,11 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
+import android.widget.MediaController
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.response.UploadInfo
 import com.example.rapidchidori_mad5254_project.databinding.FragmentOpenFileBinding
@@ -19,8 +22,10 @@ import com.example.rapidchidori_mad5254_project.helper.Constants
 import com.example.rapidchidori_mad5254_project.helper.Constants.BASE_URL
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_DATA
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_TYPE_JPG
+import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_TYPE_MP4
 import com.example.rapidchidori_mad5254_project.helper.Constants.FILE_TYPE_PNG
 import com.example.rapidchidori_mad5254_project.helper.Constants.UTF_8
+import com.example.rapidchidori_mad5254_project.viewmodels.OpenFileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.UnsupportedEncodingException
@@ -29,8 +34,10 @@ import java.net.URLEncoder
 
 @AndroidEntryPoint
 class OpenFileFragment : Fragment(), View.OnClickListener {
+    private val viewModel: OpenFileViewModel by viewModels()
     private lateinit var binding: FragmentOpenFileBinding
     private var data: UploadInfo? = null
+    private var isLiked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,18 +59,28 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
             text = data?.title
             typeface = Typeface.createFromAsset(requireActivity().assets, Constants.FONT_NAME)
         }
-        if (data?.fileType == FILE_TYPE_JPG || data?.fileType == FILE_TYPE_PNG) {
-            showImageData(data!!.url)
-        } else {
-            showFileData(data!!.url)
+        when (data?.fileType) {
+            FILE_TYPE_JPG, FILE_TYPE_PNG -> {
+                showImageData(data!!.url)
+            }
+            FILE_TYPE_MP4 -> {
+                showVideoData(data!!.url)
+            }
+            else -> {
+                showFileData(data!!.url)
+            }
         }
+
+        viewModel.getLikeData(data!!.fileId)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun showFileData(url: String) {
+        binding.vvVideo.visibility = View.GONE
         binding.ivImage.visibility = View.GONE
         binding.wvFileOpen.apply {
             visibility = View.VISIBLE
+            webChromeClient = WebChromeClient()
             webViewClient = WebViewClient()
             settings.setSupportZoom(true)
             settings.javaScriptEnabled = true
@@ -79,6 +96,7 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
 
     private fun showImageData(url: String) {
         binding.ivImage.visibility = View.VISIBLE
+        binding.vvVideo.visibility = View.GONE
         binding.wvFileOpen.visibility = View.GONE
         Picasso.get()
             .load(url)
@@ -87,9 +105,41 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
             .into(binding.ivImage)
     }
 
+    private fun showVideoData(url: String) {
+        binding.vvVideo.visibility = View.VISIBLE
+        binding.ivImage.visibility = View.GONE
+        binding.wvFileOpen.visibility = View.GONE
+
+        val uri = Uri.parse(url)
+
+        binding.vvVideo.setVideoURI(uri)
+        val mediaController = MediaController(activity)
+        mediaController.setAnchorView(binding.vvVideo)
+        mediaController.setMediaPlayer(binding.vvVideo)
+        binding.vvVideo.setMediaController(mediaController)
+        binding.vvVideo.start()
+    }
+
     private fun setUpListeners() {
         binding.ibBack.setOnClickListener(this)
         binding.ibDownload.setOnClickListener(this)
+        binding.ibLike.setOnClickListener(this)
+
+        viewModel.getLikeCountLiveData().observe(viewLifecycleOwner) {
+            if (it > 0) {
+                binding.tvLikeCount.text = it.toString()
+            }
+        }
+
+        viewModel.getIsLikedLiveData().observe(viewLifecycleOwner) {
+            if (it) {
+                isLiked = it
+                binding.ibLike.setImageResource(R.drawable.ic_like_filled)
+            } else {
+                isLiked = it
+                binding.ibLike.setImageResource(R.drawable.ic_like_outline)
+            }
+        }
     }
 
     override fun onClick(view: View?) {
@@ -100,7 +150,27 @@ class OpenFileFragment : Fragment(), View.OnClickListener {
             binding.ibDownload.id -> {
                 startDownload()
             }
+            binding.ibLike.id -> {
+                handleLikeDislike()
+            }
         }
+    }
+
+    private fun handleLikeDislike() {
+        isLiked = if (isLiked) {
+            binding.ibLike.setImageResource(R.drawable.ic_like_outline)
+            binding.tvLikeCount.text =
+                (Integer.parseInt(binding.tvLikeCount.text.toString()) - 1).toString()
+            false
+        } else {
+            binding.ibLike.setImageResource(R.drawable.ic_like_filled)
+            true
+        }
+
+        viewModel.updateLikeCount(
+            isLiked,
+            data!!.fileId
+        )
     }
 
     private fun startDownload() {

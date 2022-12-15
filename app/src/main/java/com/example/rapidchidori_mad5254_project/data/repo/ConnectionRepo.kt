@@ -25,8 +25,6 @@ class ConnectionRepo @Inject constructor() {
     private val followersCountLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     private val followingIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
     private val connectionIdLiveData: SingleLiveEvent<List<String>> = SingleLiveEvent()
-    private val apiService: ApiService =
-        Client.getClient(Constants.NOTIFICATION_BASE_URL).create(ApiService::class.java)
 
     fun addConnection(uID: String) {
         val cid = Calendar.getInstance().timeInMillis.toString()

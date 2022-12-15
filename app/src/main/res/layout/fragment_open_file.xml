@@ -51,6 +51,36 @@
         tools:text="Demo File Name" />
 
     <ImageButton
+        android:id="@+id/ib_like"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@color/white"
+        android:importantForAccessibility="no"
+        android:outlineProvider="none"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_like_outline"
+        android:translationZ="@dimen/dp_4"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+        app:layout_constraintEnd_toStartOf="@id/ib_download"
+        app:layout_constraintTop_toTopOf="@id/toolbar_view" />
+
+    <TextView
+        android:id="@+id/tv_like_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:background="@color/white"
+        android:outlineProvider="none"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:translationZ="@dimen/dp_4"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+        app:layout_constraintEnd_toStartOf="@id/ib_like"
+        app:layout_constraintTop_toTopOf="@id/toolbar_view"
+        tools:text="100" />
+
+    <ImageButton
         android:id="@+id/ib_download"
         android:layout_width="@dimen/dp_24"
         android:layout_height="@dimen/dp_24"
@@ -72,6 +102,18 @@
         android:layout_margin="@dimen/dp_20"
         android:importantForAccessibility="no"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
+
+    <VideoView
+        android:id="@+id/vv_video"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:layout_margin="@dimen/dp_20"
+        android:importantForAccessibility="no"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

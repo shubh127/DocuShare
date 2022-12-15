@@ -53,6 +53,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var fileSelectorLauncher: ActivityResultLauncher<Intent>
     private var uri: Uri? = null
+    private var imageURL: String = "";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +105,8 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
         }
 
         viewModel.getDisplayPictureURL().observe(viewLifecycleOwner) {
-            updateDataOnFirebase(it)
+            this.imageURL = it
+            updateDataOnFirebase()
         }
 
         viewModel.getException().observe(viewLifecycleOwner) {
@@ -175,6 +177,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                 .error(R.drawable.placeholder)
                 .into(binding.civDisplayPicture)
         } ?: run {
+            this.imageURL = "";
             Picasso.get()
                 .load(R.drawable.placeholder)
                 .into(binding.civDisplayPicture)
@@ -182,6 +185,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleDisplayPicture(url: String) {
+        this.imageURL = url
         if (url.isNotEmpty()) {
             Picasso.get()
                 .load(url)
@@ -352,16 +356,18 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                 uri?.let {
                     viewModel.uploadImageToServer(it)
                 } ?: run {
-                    updateDataOnFirebase("")
+                    updateDataOnFirebase()
                 }
             } else {
                 Toast.makeText(context, getString(R.string.phone_number_error), Toast.LENGTH_SHORT)
                     .show()
             }
+        } else {
+            updateDataOnFirebase()
         }
     }
 
-    private fun updateDataOnFirebase(imageURL: String) {
+    private fun updateDataOnFirebase() {
         val info = UserInfo(
             "",
             imageURL,

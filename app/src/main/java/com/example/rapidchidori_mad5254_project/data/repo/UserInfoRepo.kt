@@ -1,6 +1,7 @@
 package com.example.rapidchidori_mad5254_project.data.repo
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rapidchidori_mad5254_project.R
 import com.example.rapidchidori_mad5254_project.data.models.request.UserDetailInfo
@@ -429,10 +430,12 @@ class UserInfoRepo @Inject constructor() {
                             response: Response<NotificationApiResponse?>
                         ) {
                             //no op
+                            Log.d(">>>>>","Success")
                         }
 
                         override fun onFailure(call: Call<NotificationApiResponse?>, t: Throwable) {
                             //no op
+                            Log.d(">>>>>","Success")
                         }
                     })
                 }

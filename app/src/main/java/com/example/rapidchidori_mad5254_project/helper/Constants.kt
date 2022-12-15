@@ -40,6 +40,9 @@ object Constants {
     const val FOLLOWER_ID = "followerID"
     const val FOLLOWING_ID = "followingID"
 
+    const val LIKE_INFO_TABLE_NAME = "LikeInfo"
+    const val L_ID = "lID"
+
 
     const val IMAGE_TYPE = "image/*"
 
@@ -50,12 +53,14 @@ object Constants {
     const val FILE_TYPE_PDF = "pdf"
     const val FILE_TYPE_TXT = "txt"
     const val FILE_TYPE_DOC = "doc"
-    const val FILE_TYPE_DOCS = "docs"
+    const val FILE_TYPE_DOCS = "docx"
     const val FILE_TYPE_PPT = "ppt"
     const val FILE_TYPE_PPTX = "pptx"
     const val FILE_TYPE_XLS = "xls"
+    const val FILE_TYPE_XLSX = "xlsx"
     const val FILE_TYPE_JPG = "jpg"
     const val FILE_TYPE_PNG = "png"
+    const val FILE_TYPE_MP4 = "mp4"
 
     const val FRAGMENT_TYPE = "fragmentType"
     const val FRAGMENT_TYPE_EDIT_PROFILE = "editProfile"

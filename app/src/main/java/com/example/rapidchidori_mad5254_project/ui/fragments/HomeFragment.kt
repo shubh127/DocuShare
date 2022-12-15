@@ -311,6 +311,7 @@ class HomeFragment : Fragment(), View.OnClickListener, WallListClickListener {
     }
 
     private fun openImagePicker() {
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
         galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         galleryIntent.type = IMAGE_TYPE

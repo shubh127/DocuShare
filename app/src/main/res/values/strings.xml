@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">SoftNotes</string>
-    <string name="welcome_text">Welcome to SoftNotes\n Share\n Upload N Download</string>
+    <string name="app_name">DocuShare</string>
+    <string name="welcome_text">Welcome to DocuShare\n Share\n Upload N Download</string>
     <string name="signup">SignUp</string>
     <string name="login">Login</string>
-    <string name="login_to_softnotes">Login to SoftNotes</string>
+    <string name="login_to_softnotes">Login to DocuShare</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="next">Next</string>
@@ -27,13 +27,13 @@
     <string name="password_question">You will need a secure password</string>
     <string name="confirm_password_question">Please Re-enter password to confirm</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="find_account">Find your account at SoftNotes</string>
+    <string name="find_account">Find your account at DocuShare</string>
     <string name="submit">Submit</string>
     <string name="pass_reset_email_success">Email sent successfully!!! Please check your inbox to reset password.</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
-    <string name="softnotes">SoftNotes</string>
+    <string name="softnotes">DocuShare</string>
     <string name="zero">0</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
@@ -68,8 +68,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="share_using">Share Using</string>
-    <string name="share_msg_body">Tired of copying notes the old way ? Download SoftNotes here: ***link*** and share notes over internet</string>
-    <string name="share_subject">SoftNotes Invitation</string>
+    <string name="share_msg_body">Tired of copying notes the old way ? Download DocuShare here: ***link*** and share notes over internet</string>
+    <string name="share_subject">DocuShare Invitation</string>
     <string name="opening_market">Opening market</string>
     <string name="help_msg">Sorry !!! Cannot help you at the movement…!!!</string>
     <string name="mailto">mailto:</string>
